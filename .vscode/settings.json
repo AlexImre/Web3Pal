@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": true,
+    "prettier.semi": true,
+    "javascript.format.semicolons": "insert",
+    "typescript.format.semicolons": "insert",
+    "files.autoSave": "onWindowChange",
+    "editor.cursorStyle": "line"
+}
