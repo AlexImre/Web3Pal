@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline'
-import DashboardProfileDropDown from '@/components/Dashboard/DashboardProfileDropDown'
 import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar'
 import DashboardMobileSidebar from '@/components/Dashboard/DashboardMobileSidebar'
-import MyInvoicesCard from '@/components/Dashboard/MyInvoicesCard'
+import InvoiceDisplay from '@/components/InvoiceDisplay/InvoiceDisplay'
 
 export default function CreateInvoice() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -29,7 +28,7 @@ export default function CreateInvoice() {
               <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <MyInvoicesCard />
+          <InvoiceDisplay />
         </div>
       </div>
     </>

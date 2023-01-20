@@ -1,12 +1,7 @@
 import React from 'react'
 import ServicesDisplaySection from './ServicesDisplaySection'
-import { ScaleIcon } from '@heroicons/react/24/outline'
-import { BanknotesIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
-import InvoiceModal from '@/components/InvoiceModal'
+import InvoiceModal from '../InvoiceModal'
 import { useState } from 'react'
-
-import { PaperClipIcon } from '@heroicons/react/20/solid'
-import { TextField } from '../Fields'
 import PersonalInformationSection from './PersonalInformationSection'
 import RecipientInformationSection from './RecipientInformationSection'
 import PaymentDetailsSection from './PaymentDetailsSection'

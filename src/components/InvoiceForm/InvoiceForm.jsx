@@ -10,7 +10,7 @@ import {
 import PersonalInformationForm from './PersonalInformationForm'
 import DateSection from './DateSection'
 import ToSection from './ToSection'
-import { NavLink } from '@/components/NavLink'
+import { NavLink } from '../NavLink'
 import { useState } from 'react'
 
 const navigation = [

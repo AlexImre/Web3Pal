@@ -3,7 +3,6 @@ import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline'
 import DashboardProfileDropDown from '@/components/Dashboard/DashboardProfileDropDown'
 import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar'
 import DashboardMobileSidebar from '@/components/Dashboard/DashboardMobileSidebar'
-import MyInvoicesCard from '@/components/Dashboard/MyInvoicesCard'
 
 export default function MyInvoices() {
   const [sidebarOpen, setSidebarOpen] = useState(false)

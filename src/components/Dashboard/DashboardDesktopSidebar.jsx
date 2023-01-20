@@ -16,7 +16,7 @@ export default function DashboardDesktopSidebar() {
     <>
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
-        <div className="flex flex-grow flex-col overflow-y-auto bg-gradient-to-r from-blue-700 to-blue-600 pt-5 pb-4">
+        <div className="flex flex-grow flex-col overflow-y-auto bg-gradient-to-br from-blue-800 to-blue-500 pt-5 pb-4">
           <div className="flex flex-shrink-0 items-center px-4">
             <div className="text-xl font-bold text-blue-100">
               Web3<span className="text-slate-900">Pal</span>
