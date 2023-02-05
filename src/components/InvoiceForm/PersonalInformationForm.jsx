@@ -4,8 +4,10 @@ import CountriesField from './Fields/CountriesField'
 import { StateContext } from '../../context/StateContext'
 import { useContext, useState } from 'react'
 import TextField from './Fields/TextField'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function PersonalInformationForm() {
+  const notifySuccess = () => toast.success('Personal information updated.')
   const { masterState, setMasterState } = useContext(StateContext)
   const [tempPersonalInfo, setTempPersonalInfo] = useState(
     masterState.personalInformation
@@ -39,11 +41,11 @@ export default function PersonalInformationForm() {
     } else {
       setError(false)
     }
-
     setMasterState({
       ...masterState,
       personalInformation: tempPersonalInfo,
     })
+    notifySuccess()
   }
 
   return (
@@ -160,6 +162,7 @@ export default function PersonalInformationForm() {
           </form>
         </div>
       </div>
+      <Toaster />
     </div>
   )
 }

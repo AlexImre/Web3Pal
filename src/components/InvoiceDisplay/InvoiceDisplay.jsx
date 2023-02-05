@@ -1,13 +1,15 @@
 import React from 'react'
 import ServicesDisplaySection from './ServicesDisplaySection'
 import InvoiceModal from '../InvoiceModal'
-import { useState } from 'react'
+import { StateContext, initialState } from '../../context/StateContext'
+import { useContext, useState } from 'react'
 import PersonalInformationSection from './PersonalInformationSection'
 import RecipientInformationSection from './RecipientInformationSection'
 import PaymentDetailsSection from './PaymentDetailsSection'
 import NotesSection from './NotesSection'
 
 export default function InvoiceDisplay() {
+  const { masterState, setMasterState } = useContext(StateContext)
   const [showModal, setShowModal] = useState(false)
   const addUser = async () => {
     const addedUser = await fetch('/api/addInvoice', {
@@ -61,7 +63,10 @@ export default function InvoiceDisplay() {
             Invoice template
           </div>
           <div>
-            <button className="mb-4 mr-4 w-20 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
+            <button
+              onClick={() => setMasterState(initialState)}
+              className="mb-4 mr-4 w-20 rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+            >
               New
             </button>
             <button

@@ -33,15 +33,15 @@ export default function PersonalInformation() {
                   {addressLine1 ? <br></br> : ''}
                   {addressLine2 ? addressLine2 : ''}{' '}
                   {addressLine2 ? <br></br> : ''}
-                  {`${city} ${county} ${postalCode}`}
-                  <br></br>
+                  {`${city} ${county} ${postalCode}`}{' '}
+                  {city || county || postalCode ? <br></br> : ''}
                   {country ? country : ''} {country ? <br></br> : ''}
                 </>
               ) : (
                 <>
-                  Name: <br></br>
-                  Email: <br></br>
-                  Address: <br></br>
+                  John Smith <br></br>
+                  John@Smith.com <br></br>
+                  123 Metaverse Lane <br></br>
                 </>
               )}
             </div>
