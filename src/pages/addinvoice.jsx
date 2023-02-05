@@ -15,7 +15,7 @@ export default function CreateInvoice() {
       />
 
       <DashboardDesktopSidebar />
-      <div className="min-h-full">
+      <div className="min-h-full bg-slate-100">
         <div className="flex flex-1 flex-col bg-slate-100 lg:pl-64">
           <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white md:hidden lg:border-none">
             {/* Open sidebar on mobile */}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Combobox } from '@headlessui/react'
 import { countries } from './countriesData'
@@ -10,8 +10,7 @@ function classNames(...classes) {
 }
 
 export default function CountriesField(props) {
-  const { name, value, onChange, setTempPersonalInfo, tempPersonalInfo } = props
-  const [selectedCountry, setSelectedCountry] = useState(null)
+  const { setTempPersonalInfo, tempPersonalInfo } = props
   const [query, setQuery] = useState('')
 
   const filteredCountries =

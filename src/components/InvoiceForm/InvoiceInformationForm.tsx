@@ -1,39 +1,41 @@
-import EmailField from './Fields/EmailField'
-import TextFieldRequired from './Fields/TextFieldWithValidation'
-import CountriesField from './Fields/CountriesField'
-import { useState } from 'react'
-import TextField from './Fields/TextField'
+import { StateContext } from '../../context/stateContext'
+import { useContext, useState } from 'react'
 import NumberFieldRequired from './Fields/NumberFieldWithValidation'
+import toast, { Toaster } from 'react-hot-toast'
 
-export default function DateSection() {
-  const [tempFromObject, setTempFromObject] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-  })
+
+export default function InvoiceInformationForm() {
+  const invoiceInfoToast = () => toast.success('Invoice information updated.')
+  const { masterState, setMasterState } = useContext(StateContext)
+  const [tempInvoiceInfo, setTempInvoiceInfo] = useState(masterState.invoiceInformation)
+  const { invoiceNumber, issueDate, dueDate } = tempInvoiceInfo
   const [error, setError] = useState(false)
 
   const handleChange = (e) => {
-    setTempFromObject({ ...tempFromObject, [e.target.name]: e.target.value })
+    setTempInvoiceInfo({ ...tempInvoiceInfo, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (tempFromObject.firstName === '' || tempFromObject.lastName === '') {
-      setError(true)
-      return
-    } else if (
-      tempFromObject.email === '' ||
-      !tempFromObject.email.includes('@')
-    ) {
-      setError(true)
-      return
-    } else {
-      setError(false)
-    }
+    // if (tempInvoiceInfo.firstName === '' || tempInvoiceInfo.lastName === '') {
+    //   setError(true)
+    //   return
+    // } else if (
+    //   tempInvoiceInfo.email === '' ||
+    //   !tempInvoiceInfo.email.includes('@')
+    // ) {
+    //   setError(true)
+    //   return
+    // } else {
+    //   setError(false)
+    // }
+    setMasterState({ ...masterState, invoiceInformation: tempInvoiceInfo })
+    invoiceInfoToast()
   }
 
   return (
+    <>
+    {/* <Toaster containerStyle={{ position: 'sticky' }} /> */}
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-2 md:gap-6">
         <div className="mt-5 md:col-span-2 md:mt-0">
@@ -41,11 +43,10 @@ export default function DateSection() {
             <div className="overflow-hidden shadow sm:rounded-md">
               <div className="bg-white px-4 py-5 sm:p-6">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
-                  Date Information
+                  Invoice Information
                 </h3>
                 <p className="mt-1 mb-5 text-sm text-gray-500">
-                  Enter information about the recipient of this invoice. This
-                  could be a person or a business.
+                  Enter the invoice number and key dates that will appear on this invoice.
                 </p>
                 <div className="mb-5 grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
@@ -53,6 +54,7 @@ export default function DateSection() {
                       label="Invoice number"
                       name="invoiceNumber"
                       width="w-full"
+                      value={invoiceNumber}
                       onChange={handleChange}
                     />
                   </div>
@@ -61,8 +63,9 @@ export default function DateSection() {
                   <div className="col-span-6 sm:col-span-3">
                     <NumberFieldRequired
                       label="Invoice issue date"
-                      name="invoiceNumber"
+                      name="issueDate"
                       width="w-full"
+                      value={issueDate}
                       onChange={handleChange}
                     />
                   </div>
@@ -71,8 +74,9 @@ export default function DateSection() {
                   <div className="col-span-6 sm:col-span-3">
                     <NumberFieldRequired
                       label="Invoice due date"
-                      name="invoiceNumber"
+                      name="dueDate"
                       width="w-full"
+                      value={dueDate}
                       onChange={handleChange}
                     />
                   </div>
@@ -91,5 +95,6 @@ export default function DateSection() {
         </div>
       </div>
     </div>
+    </>
   )
 }

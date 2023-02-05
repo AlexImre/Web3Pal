@@ -27,7 +27,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/components/InvoiceForm/PersonalInformationForm.tsx"  ],
   "exclude": [
     "node_modules"
   ]

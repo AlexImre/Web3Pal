@@ -8,7 +8,7 @@ import {
 } from '@heroicons/react/24/outline'
 
 import PersonalInformationForm from './PersonalInformationForm'
-import DateSection from './DateSection'
+import InvoiceInformationForm from './InvoiceInformationForm'
 import ToSection from './ToSection'
 import { NavLink } from '../NavLink'
 import { useState } from 'react'
@@ -115,7 +115,7 @@ export default function Example() {
         </section>
 
         <section id="dateInfo">
-          <DateSection />
+          <InvoiceInformationForm />
         </section>
 
         <section id="recipientInfo">

@@ -1,6 +1,6 @@
 import React from 'react'
-import { StateContext } from '../../context/StateContext'
-import { useContext, useState } from 'react'
+import { StateContext } from '../../context/stateContext'
+import { useContext } from 'react'
 
 export default function PersonalInformation() {
   const { masterState, setMasterState } = useContext(StateContext)
@@ -15,6 +15,8 @@ export default function PersonalInformation() {
     country,
   } = masterState.personalInformation
 
+  const { invoiceNumber, issueDate, dueDate } = masterState.invoiceInformation
+
   return (
     <div className="flex flex-col md:flex-row">
       <div className="w-full py-3">
@@ -24,7 +26,7 @@ export default function PersonalInformation() {
             <div className="text-lg font-medium text-slate-900">
               Personal Information
             </div>
-            <div className="truncate text-sm font-medium text-gray-700">
+            <div className="font-small truncate text-sm text-gray-500">
               {name && email ? (
                 <>
                   {name} <br></br>
@@ -55,8 +57,20 @@ export default function PersonalInformation() {
             <div className="text-lg font-medium text-slate-900">
               Invoice Information
             </div>
-            <div className="truncate text-sm font-medium text-gray-700">
-              Invoice number <br></br>Issue date<br></br> Due date
+            <div className="font-small truncate text-sm text-gray-500">
+              {invoiceNumber ? (
+              <>
+              {invoiceNumber} <br></br>
+              {issueDate} <br></br>
+              {dueDate}
+              </>
+              ) : (
+                <>
+                  Invoice number: 12 <br></br>
+                  Date of Issue: 01/01/2021 <br></br>
+                  Payment due by: 01/31/2021
+                </>
+              )}
             </div>
           </div>
         </div>

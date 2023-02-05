@@ -1,13 +1,13 @@
 import EmailField from './Fields/EmailField'
 import TextFieldRequired from './Fields/TextFieldWithValidation'
 import CountriesField from './Fields/CountriesField'
-import { StateContext } from '../../context/StateContext'
+import { StateContext } from '../../context/stateContext'
 import { useContext, useState } from 'react'
 import TextField from './Fields/TextField'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function PersonalInformationForm() {
-  const notifySuccess = () => toast.success('Personal information updated.')
+  const personalInfoToast = () => toast.success('Information updated.')
   const { masterState, setMasterState } = useContext(StateContext)
   const [tempPersonalInfo, setTempPersonalInfo] = useState(
     masterState.personalInformation
@@ -45,10 +45,14 @@ export default function PersonalInformationForm() {
       ...masterState,
       personalInformation: tempPersonalInfo,
     })
-    notifySuccess()
+    personalInfoToast()
   }
 
   return (
+    <>
+    <div style={{position: "sticky"}}>
+      <Toaster containerStyle={{ position: 'sticky' }} />
+    </div>
     <div className="mt-10 sm:mt-0">
       <div className="md:grid md:grid-cols-2 md:gap-6">
         <div className="mt-5 md:col-span-2 md:mt-0">
@@ -86,17 +90,8 @@ export default function PersonalInformationForm() {
 
                   <div className="col-span-6 sm:col-span-3">
                     <CountriesField
-                      name="country"
-                      value={country}
                       tempPersonalInfo={tempPersonalInfo}
                       setTempPersonalInfo={setTempPersonalInfo}
-                      onChange={handleChange}
-                      // onChange={(e) =>
-                      //   setTempPersonalInfo({
-                      //     ...tempPersonalInfo,
-                      //     country: e.target.value,
-                      //   })
-                      // }
                     />
                   </div>
 
@@ -162,7 +157,7 @@ export default function PersonalInformationForm() {
           </form>
         </div>
       </div>
-      <Toaster />
     </div>
+    </>
   )
 }

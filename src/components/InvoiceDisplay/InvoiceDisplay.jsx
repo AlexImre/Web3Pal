@@ -1,7 +1,7 @@
 import React from 'react'
 import ServicesDisplaySection from './ServicesDisplaySection'
 import InvoiceModal from '../InvoiceModal'
-import { StateContext, initialState } from '../../context/StateContext'
+import { StateContext, initialState } from '../../context/stateContext'
 import { useContext, useState } from 'react'
 import PersonalInformationSection from './PersonalInformationSection'
 import RecipientInformationSection from './RecipientInformationSection'

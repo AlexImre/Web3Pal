@@ -25,7 +25,7 @@ interface RecipientInformation {
 
 interface InvoiceInformation {
     invoiceNumber: string;
-    date: string;
+    issueDate: string;
     dueDate: string;
 }
 
@@ -125,7 +125,7 @@ export const initialState: {
 
     invoiceInformation: {
         invoiceNumber: '', 
-        date: '', 
+        issueDate: '', 
         dueDate: ''
     },
 
