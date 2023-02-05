@@ -25,7 +25,7 @@ export default function DashboardProfileDropDown() {
                 />
                 <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
                   <span className="sr-only">Open user menu for </span>
-                  Master Coder
+                  Anne Imre
                 </span>
                 <ChevronDownIcon
                   className="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
