@@ -33,9 +33,8 @@ export default function PersonalInformation() {
                   {addressLine1 ? <br></br> : ''}
                   {addressLine2 ? addressLine2 : ''}{' '}
                   {addressLine2 ? <br></br> : ''}
-                  {city ? city : ''} {city ? <br></br> : ''}
-                  {county ? county : ''} {county ? <br></br> : ''}
-                  {postalCode ? postalCode : ''} {postalCode ? <br></br> : ''}
+                  {`${city} ${county} ${postalCode}`}
+                  <br></br>
                   {country ? country : ''} {country ? <br></br> : ''}
                 </>
               ) : (
