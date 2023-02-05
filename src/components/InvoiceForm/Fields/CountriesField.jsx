@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Combobox } from '@headlessui/react'
 import { countries } from './countriesData'
@@ -9,9 +9,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function CountriesField(props) {
+  const { name, value, onChange, setTempPersonalInfo, tempPersonalInfo } = props
+  const [selectedCountry, setSelectedCountry] = useState(null)
   const [query, setQuery] = useState('')
-  const [selectedPerson, setSelectedPerson] = useState(null)
 
   const filteredCountries =
     query === ''
@@ -21,7 +22,13 @@ export default function Example() {
         })
 
   return (
-    <Combobox as="div" value={selectedPerson} onChange={setSelectedPerson}>
+    <Combobox
+      as="div"
+      value={tempPersonalInfo?.country}
+      onChange={(e) => {
+        setTempPersonalInfo({ ...tempPersonalInfo, country: e.name })
+      }}
+    >
       <Combobox.Label className="block text-sm font-medium text-gray-700">
         Country
       </Combobox.Label>
@@ -29,7 +36,7 @@ export default function Example() {
         <Combobox.Input
           className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
-          displayValue={(person) => person?.name}
+          // displayValue={(country) => country?.name}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronUpDownIcon

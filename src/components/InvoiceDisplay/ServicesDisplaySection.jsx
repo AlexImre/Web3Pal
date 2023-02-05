@@ -13,7 +13,7 @@ const projects = [
 
 export default function ServicesDisplay() {
   return (
-    <div className="w-full p-3">
+    <div className="w-full pb-3 pr-3">
       <div className="flex items-center">
         <div className="ml-5 w-0 flex-1">
           <div className="bg-white">

@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function RecipientInformation() {
   return (
-    <div className="w-full p-3">
+    <div className="w-full py-3">
       <div className="flex items-center">
         <div className="flex-shrink-0"></div>
         <div className="ml-5 w-0 flex-1">

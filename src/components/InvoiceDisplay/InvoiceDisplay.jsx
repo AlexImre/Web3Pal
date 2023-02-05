@@ -93,28 +93,3 @@ export default function InvoiceDisplay() {
     </>
   )
 }
-
-// example of smokey borders incase I need
-{
-  /* <div className="flex flex-col md:flex-row">
-<div className="mt-5 w-full px-4 sm:px-6 lg:px-8">
-  <div className="mt-2">
-    <div className="low-hidden rounded-lg bg-white shadow">
-      <div className="p-3">
-        <div className="flex items-center">
-          <div className="flex-shrink-0"></div>
-          <div className="ml-5 w-0 flex-1">
-            <div className="text-lg font-medium text-slate-900">
-              Notes
-            </div>
-            <div className="truncate text-sm font-medium text-gray-700">
-              Lovely job, thank you!
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div> */
-}

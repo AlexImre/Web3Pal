@@ -1,35 +1,49 @@
 import EmailField from './Fields/EmailField'
 import TextFieldRequired from './Fields/TextFieldWithValidation'
 import CountriesField from './Fields/CountriesField'
-import { useState } from 'react'
+import { StateContext } from '../../context/StateContext'
+import { useContext, useState } from 'react'
 import TextField from './Fields/TextField'
 
 export default function PersonalInformationForm() {
-  const [tempFromObject, setTempFromObject] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-  })
+  const { masterState, setMasterState } = useContext(StateContext)
+  const [tempPersonalInfo, setTempPersonalInfo] = useState(
+    masterState.personalInformation
+  )
+  const {
+    name,
+    email,
+    addressLine1,
+    addressLine2,
+    city,
+    county,
+    postalCode,
+    country,
+  } = tempPersonalInfo
   const [error, setError] = useState(false)
-
   const handleChange = (e) => {
-    setTempFromObject({ ...tempFromObject, [e.target.name]: e.target.value })
+    setTempPersonalInfo({
+      ...tempPersonalInfo,
+      [e.target.name]: e.target.value,
+    })
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (tempFromObject.firstName === '' || tempFromObject.lastName === '') {
+    if (name === '') {
       setError(true)
       return
-    } else if (
-      tempFromObject.email === '' ||
-      !tempFromObject.email.includes('@')
-    ) {
+    } else if (email === '' || !email.includes('@')) {
       setError(true)
       return
     } else {
       setError(false)
     }
+
+    setMasterState({
+      ...masterState,
+      personalInformation: tempPersonalInfo,
+    })
   }
 
   return (
@@ -49,67 +63,87 @@ export default function PersonalInformationForm() {
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
                     <TextFieldRequired
-                      label="First name"
-                      name="firstName"
+                      label="Name"
+                      name="name"
                       width="w-full"
                       onChange={handleChange}
-                      value={tempFromObject.firstName}
+                      value={name}
                       error={error}
                     />
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <TextFieldRequired
-                      label="Last name"
-                      name="lastName"
-                      width="w-full"
-                      onChange={handleChange}
-                      value={tempFromObject.lastName}
-                      error={error}
-                    />
-                  </div>
-
                   <div className="col-span-6 sm:col-span-3">
                     <EmailField
                       label="Email address"
                       name="email"
                       width="w-full"
                       onChange={handleChange}
-                      value={tempFromObject.email}
+                      value={email}
                       error={error}
                     />
                   </div>
 
-                  <br></br>
-
                   <div className="col-span-6 sm:col-span-3">
-                    <CountriesField />
+                    <CountriesField
+                      name="country"
+                      value={country}
+                      tempPersonalInfo={tempPersonalInfo}
+                      setTempPersonalInfo={setTempPersonalInfo}
+                      onChange={handleChange}
+                      // onChange={(e) =>
+                      //   setTempPersonalInfo({
+                      //     ...tempPersonalInfo,
+                      //     country: e.target.value,
+                      //   })
+                      // }
+                    />
                   </div>
 
                   <div className="col-span-6">
                     <TextField
-                      label="Street address"
-                      name="streetAddress"
+                      label="Address line 1"
+                      name="addressLine1"
                       width="w-full"
+                      onChange={handleChange}
+                      value={addressLine1}
+                    />
+                  </div>
+                  <div className="col-span-6">
+                    <TextField
+                      label="Address line 2"
+                      name="addressLine2"
+                      width="w-full"
+                      onChange={handleChange}
+                      value={addressLine2}
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                    <TextField label="City" name="city" width="w-full" />
+                    <TextField
+                      label="City"
+                      name="city"
+                      width="w-full"
+                      onChange={handleChange}
+                      value={city}
+                    />
                   </div>
 
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                     <TextField
                       label="State / Province"
-                      name="state"
+                      name="county"
                       width="w-full"
+                      onChange={handleChange}
+                      value={county}
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                     <TextField
                       label="ZIP / Postal code"
-                      name="zip"
+                      name="postalCode"
                       width="w-full"
+                      onChange={handleChange}
+                      value={postalCode}
                     />
                   </div>
                 </div>
