@@ -4,7 +4,8 @@ import { StateContext } from '../context/stateContext'
 import { useState, useContext } from 'react'
 
 export default function App({ Component, pageProps }) {
-  const [masterState, setMasterState] = useState(useContext(StateContext))
+  const stateContext = useContext(StateContext)
+  const [masterState, setMasterState] = useState(stateContext.masterState)
 
   return (
     <>

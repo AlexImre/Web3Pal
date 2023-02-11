@@ -9,7 +9,8 @@ import {
 
 import PersonalInformationForm from './PersonalInformationForm'
 import InvoiceInformationForm from './InvoiceInformationForm'
-import ToSection from './ToSection'
+import RecipientInformationForm from './RecipientInformationForm'
+import PaymentInformationForm from './PaymentInformationForm'
 import { NavLink } from '../NavLink'
 import { useState } from 'react'
 
@@ -34,13 +35,13 @@ const navigation = [
   },
   {
     name: 'Payment Information',
-    href: '#',
+    href: '#paymentInfo',
     icon: CreditCardIcon,
     current: false,
   },
   {
     name: 'Services Provided',
-    href: '#',
+    href: '#servicesInfo',
     icon: BriefcaseIcon,
     current: false,
   },
@@ -119,7 +120,11 @@ export default function InvoiceForm() {
         </section>
 
         <section id="recipientInfo">
-          <ToSection />
+          <RecipientInformationForm />
+        </section>
+
+        <section id="paymentInfo">
+          <PaymentInformationForm />
         </section>
       </div>
     </div>

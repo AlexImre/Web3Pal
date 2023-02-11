@@ -1,9 +1,11 @@
-import React from 'react'
-import { StateContext } from '../../context/stateContext'
-import { useContext } from 'react'
+import React from 'react';
+import { StateContext } from '../../context/stateContext';
+import { useContext } from 'react';
 
 export default function PersonalInformation() {
-  const { masterState, setMasterState } = useContext(StateContext)
+  const stateContext = useContext(StateContext);
+  const { personalInformation, invoiceInformation } = stateContext.masterState;
+
   const {
     name,
     email,
@@ -13,9 +15,9 @@ export default function PersonalInformation() {
     county,
     postalCode,
     country,
-  } = masterState.personalInformation
+  } = personalInformation;
 
-  const { invoiceNumber, issueDate, dueDate } = masterState.invoiceInformation
+  const { invoiceNumber, issueDate, dueDate } = invoiceInformation;
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -35,7 +37,9 @@ export default function PersonalInformation() {
                   {addressLine1 ? <br></br> : ''}
                   {addressLine2 ? addressLine2 : ''}{' '}
                   {addressLine2 ? <br></br> : ''}
-                  {`${city} ${county} ${postalCode}`}{' '}
+                  {`${city ? city : ''} ${county ? county : ''} ${
+                    postalCode ? postalCode : ''
+                  }`}{' '}
                   {city || county || postalCode ? <br></br> : ''}
                   {country ? country : ''} {country ? <br></br> : ''}
                 </>
@@ -59,11 +63,11 @@ export default function PersonalInformation() {
             </div>
             <div className="font-small truncate text-sm text-gray-500">
               {invoiceNumber ? (
-              <>
-              {invoiceNumber} <br></br>
-              {issueDate} <br></br>
-              {dueDate}
-              </>
+                <>
+                  {invoiceNumber} <br></br>
+                  {issueDate} <br></br>
+                  {dueDate}
+                </>
               ) : (
                 <>
                   Invoice number: 12 <br></br>
@@ -76,5 +80,5 @@ export default function PersonalInformation() {
         </div>
       </div>
     </div>
-  )
+  );
 }

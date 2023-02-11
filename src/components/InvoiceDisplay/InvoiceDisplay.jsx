@@ -1,17 +1,17 @@
-import React from 'react'
-import ServicesDisplaySection from './ServicesDisplaySection'
-import InvoiceModal from '../InvoiceModal'
-import { StateContext, initialState } from '../../context/stateContext'
-import { useContext, useState } from 'react'
-import PersonalInformationSection from './PersonalInformationSection'
-import EmptyInvoiceHolder from './EmptyInvoiceHolder'
-import RecipientInformationSection from './RecipientInformationSection'
-import PaymentDetailsSection from './PaymentDetailsSection'
-import NotesSection from './NotesSection'
+import React from 'react';
+import ServicesDisplaySection from './ServicesDisplaySection';
+import InvoiceModal from '../InvoiceModal';
+import { StateContext, initialState } from '../../context/stateContext';
+import { useContext, useState } from 'react';
+import PersonalInformationSection from './PersonalInformationSection';
+import EmptyInvoiceHolder from './EmptyInvoiceHolder';
+import RecipientInformationSection from './RecipientInformationSection';
+import PaymentDetailsSection from './PaymentDetailsSection';
+import NotesSection from './NotesSection';
 
 export default function InvoiceDisplay() {
-  const { masterState, setMasterState } = useContext(StateContext)
-  const [showModal, setShowModal] = useState(false)
+  const { masterState, setMasterState } = useContext(StateContext);
+  const [showModal, setShowModal] = useState(false);
   const addUser = async () => {
     const addedUser = await fetch('/api/addInvoice', {
       method: 'POST',
@@ -51,10 +51,10 @@ export default function InvoiceDisplay() {
           { id: 'wallet2', amount: 2000 },
         ],
       }),
-    })
-    const data = addedUser
-    console.log(data)
-  }
+    });
+    const data = addedUser;
+    console.log(data);
+  };
 
   return (
     <>
@@ -66,18 +66,18 @@ export default function InvoiceDisplay() {
           <div>
             <button
               onClick={() => setMasterState(initialState)}
-              className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-white hover:bg-indigo-700 text-sm font-medium"
+              className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
             >
               New
             </button>
             <button
-              className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-white hover:bg-indigo-700 text-sm font-medium"
+              className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
               onClick={() => setShowModal(true)}
             >
               Edit
             </button>
             {showModal && <InvoiceModal setShowModal={setShowModal} />}
-            <button className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-white hover:bg-indigo-700 text-sm font-medium">
+            <button className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
               Export
             </button>
           </div>
@@ -87,16 +87,16 @@ export default function InvoiceDisplay() {
           <div className="px-4 py-5 sm:px-6">
             <PersonalInformationSection />
 
-            <RecipientInformationSection />
+            {/* <RecipientInformationSection />
 
             <PaymentDetailsSection />
 
             <ServicesDisplaySection />
 
-            <NotesSection />
+            <NotesSection /> */}
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }

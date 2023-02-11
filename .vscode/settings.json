@@ -4,5 +4,8 @@
     "javascript.format.semicolons": "insert",
     "typescript.format.semicolons": "insert",
     "files.autoSave": "onWindowChange",
-    "editor.cursorStyle": "line"
+    "editor.cursorStyle": "line",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
 }

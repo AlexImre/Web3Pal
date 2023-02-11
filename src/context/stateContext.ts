@@ -29,7 +29,7 @@ interface InvoiceInformation {
     dueDate: string;
 }
 
-interface currencyInformation {
+interface PaymentInformation {
     invoiceLabelling: string;
     paymentMethod: string;
     popularPlatform: string;
@@ -82,13 +82,13 @@ interface tempInvoice {
     notes: string;
 }
 
-export const initialState: {
+type MasterStateType = {
     uuid: string;
     timestamp: any;
     personalInformation: PersonalInformation;
     recipientInformation: RecipientInformation;
     invoiceInformation: InvoiceInformation;
-    currencyInformation: currencyInformation;
+    paymentInformation: PaymentInformation;
     servicesInformation: any;
     notesSection: notesSection;
     tempInvoice: tempInvoice;
@@ -96,7 +96,9 @@ export const initialState: {
     myServices: any;
     myAmounts: any;
     marketData: any;
-} = {
+}
+
+export const initialState: MasterStateType = {
     uuid: uuidv4(),
 
     timestamp: Date.now(),
@@ -129,7 +131,7 @@ export const initialState: {
         dueDate: ''
     },
 
-    currencyInformation: {
+    paymentInformation: {
         invoiceLabelling: '',
         paymentMethod: 'Crypto',
         popularPlatform: '',
@@ -202,4 +204,14 @@ export const initialState: {
     marketData: [],
 }
 
-export const StateContext = createContext(initialState);
+type MasterStateContextType = {
+    masterState: MasterStateType
+    setMasterState: React.Dispatch<React.SetStateAction<MasterStateType>>;
+}
+
+export const defaultState: MasterStateContextType = {
+    masterState: initialState,
+    setMasterState: () => { }
+}
+
+export const StateContext = createContext<MasterStateContextType | null>(defaultState);

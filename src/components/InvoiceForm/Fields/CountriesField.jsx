@@ -1,31 +1,31 @@
-import { useState } from 'react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { Combobox } from '@headlessui/react'
-import { countries } from './countriesData'
+import { useState } from 'react';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { Combobox } from '@headlessui/react';
+import { countries } from './countriesData';
 
-const allCountries = countries
+const allCountries = countries;
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function CountriesField(props) {
-  const { setTempPersonalInfo, tempPersonalInfo } = props
-  const [query, setQuery] = useState('')
+  const { tempInfo, setTempInfo } = props;
+  const [query, setQuery] = useState('');
 
   const filteredCountries =
     query === ''
       ? allCountries
       : allCountries.filter((country) => {
-          return country.name.toLowerCase().includes(query.toLowerCase())
-        })
+          return country.name.toLowerCase().includes(query.toLowerCase());
+        });
 
   return (
     <Combobox
       as="div"
-      value={tempPersonalInfo?.country}
+      value={tempInfo?.country}
       onChange={(e) => {
-        setTempPersonalInfo({ ...tempPersonalInfo, country: e.name })
+        setTempInfo({ ...tempInfo, country: e.name });
       }}
     >
       <Combobox.Label className="block text-sm font-medium text-gray-700">
@@ -86,5 +86,5 @@ export default function CountriesField(props) {
         )}
       </div>
     </Combobox>
-  )
+  );
 }

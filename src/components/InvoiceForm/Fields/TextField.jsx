@@ -13,7 +13,7 @@ export default function TextFieldRequired(props) {
           id={name}
           value={value}
           onChange={(e) => onChange(e)}
-          className={`${width} mt-1 block rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm`}
+          className={`${width} mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm`}
           aria-invalid="true"
           aria-describedby="email-error"
         />
