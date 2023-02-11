@@ -21,8 +21,8 @@ const navigation = [
     current: true,
   },
   {
-    name: 'Date Information',
-    href: '#dateInfo',
+    name: 'Invoice Information',
+    href: '#invoiceInfo',
     icon: CalendarIcon,
     current: false,
   },
@@ -51,7 +51,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function InvoiceForm() {
   const [tempFromObject, setTempFromObject] = useState({
     firstName: '',
     lastName: '',
@@ -114,7 +114,7 @@ export default function Example() {
           <PersonalInformationForm />
         </section>
 
-        <section id="dateInfo">
+        <section id="invoiceInfo">
           <InvoiceInformationForm />
         </section>
 

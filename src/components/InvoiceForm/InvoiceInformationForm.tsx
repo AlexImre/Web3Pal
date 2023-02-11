@@ -1,6 +1,7 @@
 import { StateContext } from '../../context/stateContext'
 import { useContext, useState } from 'react'
-import NumberFieldRequired from './Fields/NumberFieldWithValidation'
+import NumberFieldWithValidation from './Fields/NumberFieldWithValidation'
+import DateFieldWithValidation from './Fields/DateFieldWithValidation'
 import toast, { Toaster } from 'react-hot-toast'
 
 
@@ -50,7 +51,7 @@ export default function InvoiceInformationForm() {
                 </p>
                 <div className="mb-5 grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
-                    <NumberFieldRequired
+                    <NumberFieldWithValidation
                       label="Invoice number"
                       name="invoiceNumber"
                       width="w-full"
@@ -61,7 +62,7 @@ export default function InvoiceInformationForm() {
                 </div>
                 <div className="mb-5 grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
-                    <NumberFieldRequired
+                    <DateFieldWithValidation
                       label="Invoice issue date"
                       name="issueDate"
                       width="w-full"
@@ -72,7 +73,7 @@ export default function InvoiceInformationForm() {
                 </div>
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
-                    <NumberFieldRequired
+                    <DateFieldWithValidation
                       label="Invoice due date"
                       name="dueDate"
                       width="w-full"

@@ -1,6 +1,6 @@
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
 
-export default function NumberFieldWithValidation(props) {
+export default function NumberFieldRequired(props) {
   const { label, name, width, value, onChange, error } = props
 
   return (
@@ -10,7 +10,7 @@ export default function NumberFieldWithValidation(props) {
       </label>
       <div className="relative mt-1 rounded-md shadow-sm">
         <input
-          type="number"
+          type="date"
           name={name}
           id={name}
           value={value}

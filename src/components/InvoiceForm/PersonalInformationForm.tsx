@@ -20,7 +20,6 @@ export default function PersonalInformationForm() {
     city,
     county,
     postalCode,
-    country,
   } = tempPersonalInfo
   const [error, setError] = useState(false)
   const handleChange = (e) => {

@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/24/outline'
-import INVFORM2 from './InvoiceForm/InvoiceForm'
+import InvoiceForm from './InvoiceForm/InvoiceForm';
 
 export default function Modal(props) {
   const [open, setOpen] = useState(true)
@@ -20,7 +20,7 @@ export default function Modal(props) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-opacity-100 bg-gradient-to-r from-blue-600 to-blue-500 transition-opacity" />
+          <div className="fixed inset-0 bg-opacity-100 bg-gradient-to-r from-indigo-600 to-indigo-500 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -35,7 +35,7 @@ export default function Modal(props) {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="sm:min-w-sm relative my-10 transform overflow-hidden rounded-lg bg-slate-200 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:p-6 md:mx-20">
-                <INVFORM2 />
+                <InvoiceForm />
                 <div className="mt-5 sm:mt-6">
                   <button
                     type="button"
