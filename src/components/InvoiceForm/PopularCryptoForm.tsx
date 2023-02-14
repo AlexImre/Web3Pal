@@ -24,11 +24,14 @@ function PopularCryptoForm(props: any) {
             setCurrentPrice={setCurrentPrice}
           />
         </div>
-        <div className="col-span-6 flex content-center items-center text-indigo-500 sm:col-span-3 sm:text-sm">
+        <div className="col-span-6 content-center items-center text-indigo-500 sm:col-span-3 sm:text-sm">
           {currentPrice
-            ? `Live price: $
-              ${Intl.NumberFormat('en-US').format(currentPrice)}`
-            : 'Select a currency for recent prices.'}
+            ? `Market price: $${Intl.NumberFormat('en-US').format(
+                currentPrice
+              )}`
+            : 'Select a currency to view market price.'}{' '}
+          <br />
+          <div className="text-slate-600 sm:text-xs">Powered by Coingecko</div>
         </div>
       </div>
       <div className="my-5 grid grid-cols-6 gap-6">

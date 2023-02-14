@@ -18,7 +18,7 @@ export default function TextFieldRequired(props) {
           className={`${width} rounded-md pr-10 focus:outline-none sm:text-sm ${
             error && value === ''
               ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500'
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+              : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
           }`}
           aria-invalid="true"
           aria-describedby="email-error"
