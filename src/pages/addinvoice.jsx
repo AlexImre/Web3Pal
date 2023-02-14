@@ -1,11 +1,29 @@
-import { useState } from 'react'
-import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline'
-import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar'
-import DashboardMobileSidebar from '@/components/Dashboard/DashboardMobileSidebar'
-import InvoiceDisplay from '@/components/InvoiceDisplay/InvoiceDisplay'
+import { useEffect, useState } from 'react';
+import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline';
+import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar';
+import DashboardMobileSidebar from '@/components/Dashboard/DashboardMobileSidebar';
+import InvoiceDisplay from '@/components/InvoiceDisplay/InvoiceDisplay';
+import { getMarketData } from '../utils/coinGeckoApi';
+import { StateContext } from '../context/stateContext';
+import { useContext } from 'react';
 
-export default function CreateInvoice() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+export async function getServerSideProps() {
+  const marketData = await getMarketData();
+
+  return {
+    props: { marketData },
+  };
+}
+
+export default function CreateInvoice(props) {
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+
+  useEffect(() => {
+    setMasterState({ ...masterState, marketData: props.marketData });
+  }, []);
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <>
@@ -32,5 +50,5 @@ export default function CreateInvoice() {
         </div>
       </div>
     </>
-  )
+  );
 }

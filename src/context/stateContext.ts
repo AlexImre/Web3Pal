@@ -13,7 +13,7 @@ interface PersonalInformation {
 }
 
 interface RecipientInformation {
-    clientCompanyName: string;
+    clientName: string;
     clientEmail: string;
     clientAddressLine1: string;
     clientAddressLine2: string;
@@ -115,7 +115,7 @@ export const initialState: MasterStateType = {
     },
 
     recipientInformation: {
-        clientCompanyName: '',
+        clientName: '',
         clientEmail: '',
         clientAddressLine1: '', 
         clientAddressLine2: '', 
@@ -133,7 +133,7 @@ export const initialState: MasterStateType = {
 
     paymentInformation: {
         invoiceLabelling: '',
-        paymentMethod: 'Crypto',
+        paymentMethod: 'crypto',
         popularPlatform: '',
         popularCurrency: '',
         customCurrencyName: '',

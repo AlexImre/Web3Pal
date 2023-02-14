@@ -1,173 +1,87 @@
-import EmailField from './Fields/EmailField'
-import TextFieldRequired from './Fields/TextFieldWithValidation'
-import CountriesField from './Fields/CountriesField'
-import { StateContext } from '../../context/stateContext'
-import { useContext, useState } from 'react'
-import TextField from './Fields/TextField'
-import toast, { Toaster } from 'react-hot-toast'
-import NumberFieldWithValidation from './Fields/NumberFieldWithValidation';
+import { StateContext } from '../../context/stateContext';
+import { useContext, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import TextFieldWithValidation from './Fields/TextFieldWithValidation';
+import PaymentToggle from './PaymentToggle';
 
 export default function PaymentInformationForm() {
-  const personalInfoToast = () => toast.success('Information updated.')
-  const {masterState, setMasterState} = useContext(StateContext)
+  const personalInfoToast = () => toast.success('Information updated.');
+  const { masterState, setMasterState } = useContext(StateContext);
   const [tempPaymentInfo, setTempPaymentInfo] = useState(
     masterState.paymentInformation
-  )
-  const {
-    invoiceLabelling,
-    paymentMethod,
-    popularPlatform,
-    popularCurrency,
-    customCurrencyName,
-    customCurrencySymbol,
-    customCurrencyPlatform,
-    customCurrencyAddress,
-    walletName,
-    walletAddress,
-    bankAccountName,
-    bankAccountDetails,
-    livePrice,
-  } = tempPaymentInfo
-  const [error, setError] = useState(false)
+  );
+  const { invoiceLabelling } = tempPaymentInfo;
+  const [error, setError] = useState(false);
   const handleChange = (e) => {
     setTempPaymentInfo({
       ...tempPaymentInfo,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (invoiceLabelling === '') {
-      setError(true)
-      return
+      setError(true);
+      return;
     } else {
-      setError(false)
+      setError(false);
     }
     setMasterState({
       ...masterState,
       paymentInformation: tempPaymentInfo,
-    })
-    personalInfoToast()
-  }
+    });
+    personalInfoToast();
+  };
 
   return (
     <>
-    <div style={{position: "sticky"}}>
-      <Toaster containerStyle={{ position: 'sticky' }} />
-    </div>
-    <div className="mt-10 sm:mt-0">
-      <div className="md:grid md:grid-cols-2 md:gap-6">
-        <div className="mt-5 md:col-span-2 md:mt-0">
-          <form action="#" method="POST">
-            <div className="overflow-hidden shadow sm:rounded-md">
-              <div className="bg-white px-4 py-5 sm:p-6">
-                <h3 className="text-lg font-medium leading-6 text-gray-900">
-                  Payment Information
-                </h3>
-                <p className="mt-1 mb-5 text-sm text-gray-500">
-                  Enter information about the recipient of this invoice.
-                </p>
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6 sm:col-span-3">
-                    <NumberFieldWithValidation 
-                    label ="Invoice Labelling"
-  name="invoiceLabelling"
-                    width="w-full"
-                    onChange={handleChange}
-                    value={invoiceLabelling}
-                    error={error}
-                    />
-                    <TextFieldRequired
-                      label="Name"
-                      name="name"
-                      width="w-full"
-                      onChange={handleChange}
-                      value={name}
-                      error={error}
-                    />
+      <div style={{ position: 'sticky' }}>
+        <Toaster containerStyle={{ position: 'sticky' }} />
+      </div>
+      <div className="mt-10 sm:mt-0">
+        <div className="md:grid md:grid-cols-2 md:gap-6">
+          <div className="mt-5 md:col-span-2 md:mt-0">
+            <form action="#" method="POST">
+              <div className="overflow-hidden shadow sm:rounded-md">
+                <div className="bg-white px-4 py-5 sm:p-6">
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                    Payment Information
+                  </h3>
+                  <p className="mt-1 mb-5 text-sm text-gray-500">
+                    Enter currency and payment information.
+                  </p>
+                  <div className="grid grid-cols-6 gap-6">
+                    <div className="col-span-6 sm:col-span-3">
+                      <TextFieldWithValidation
+                        label="Invoice Labelling"
+                        name="invoiceLabelling"
+                        width="w-full"
+                        onChange={handleChange}
+                        value={invoiceLabelling}
+                        error={error}
+                      />
+                    </div>
                   </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <EmailField
-                      label="Email address"
-                      name="email"
-                      width="w-full"
-                      onChange={handleChange}
-                      value={email}
-                      error={error}
-                    />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <CountriesField
-                      tempInfo={tempPaymentInfo}
-                      setTempInfo={setTempPaymentInfo}
-                    />
-                  </div>
-
-                  <div className="col-span-6">
-                    <TextField
-                      label="Address line 1"
-                      name="addressLine1"
-                      width="w-full"
-                      onChange={handleChange}
-                      value={addressLine1}
-                    />
-                  </div>
-                  <div className="col-span-6">
-                    <TextField
-                      label="Address line 2"
-                      name="addressLine2"
-                      width="w-full"
-                      onChange={handleChange}
-                      value={addressLine2}
-                    />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                    <TextField
-                      label="City"
-                      name="city"
-                      width="w-full"
-                      onChange={handleChange}
-                      value={city}
-                    />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                    <TextField
-                      label="State / Province"
-                      name="county"
-                      width="w-full"
-                      onChange={handleChange}
-                      value={county}
-                    />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                    <TextField
-                      label="ZIP / Postal code"
-                      name="postalCode"
-                      width="w-full"
-                      onChange={handleChange}
-                      value={postalCode}
-                    />
-                  </div>
+                  <PaymentToggle
+                    tempPaymentInfo={tempPaymentInfo}
+                    setTempPaymentInfo={setTempPaymentInfo}
+                    handleChange={handleChange}
+                  />
+                </div>
+                <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                  <button
+                    className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    onClick={(e) => handleSubmit(e)}
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                <button
-                  className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  onClick={(e) => handleSubmit(e)}
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     </>
-  )
+  );
 }
