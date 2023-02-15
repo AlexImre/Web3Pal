@@ -112,7 +112,7 @@ export default function InvoiceForm() {
       </aside>
 
       <div className="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
-        <section>
+        <section id="personalInfo">
           <PersonalInformationForm />
         </section>
 

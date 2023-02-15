@@ -28,9 +28,9 @@ export default function ServicesDisplay(props) {
   return (
     <div className="w-full pb-3 pr-3">
       <div className="flex items-center">
-        <div className="ml-5 w-0 flex-1">
+        <div className="w-0 flex-1">
           <div className="bg-white">
-            <div className="-mx-4 mt-8 flex flex-col sm:-mx-6 md:mx-0">
+            <div className="flex flex-col sm:-mx-6 md:mx-0">
               <table className="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
@@ -74,26 +74,29 @@ export default function ServicesDisplay(props) {
                 </thead>
                 <tbody>
                   {tempServicesInfo?.map((project) => (
-                    <tr key={project.id} className="border-b border-gray-200">
+                    <tr
+                      key={project.id}
+                      className="break-all border-b border-gray-200"
+                    >
                       <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
                         <div className="font-medium text-gray-900">
                           {project.description}
                         </div>
                       </td>
                       <td className="hidden py-4 px-3 text-right text-sm text-gray-500 sm:table-cell">
-                        {project.quantity}
+                        {Intl.NumberFormat('en-US').format(project.quantity)}
                       </td>
                       <td className="hidden py-4 px-3 text-right text-sm text-gray-500 sm:table-cell">
-                        {project.price}
+                        {Intl.NumberFormat('en-US').format(project.price)}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                        {project.discount}
+                        {Intl.NumberFormat('en-US').format(project.discount)}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                        {project.tax}
+                        {Intl.NumberFormat('en-US').format(project.tax)}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                        {project.amount}
+                        {Intl.NumberFormat('en-US').format(project.amount)}
                       </td>
                     </tr>
                   ))}

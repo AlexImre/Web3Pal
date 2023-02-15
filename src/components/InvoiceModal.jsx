@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import InvoiceForm from './InvoiceForm/InvoiceForm';
+import { NavLink } from './NavLink';
 
 export default function Modal(props) {
   const [open, setOpen] = useState(true);
@@ -35,13 +36,21 @@ export default function Modal(props) {
             >
               <Dialog.Panel className="sm:min-w-sm relative my-10 transform overflow-hidden rounded-lg bg-slate-200 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:p-6 md:mx-20">
                 <InvoiceForm />
-                <div className="mt-5 sm:mt-6">
+                <div className="mt-5 flex sm:mt-6">
+                  <NavLink href="#personalInfo">
+                    <button
+                      type="button"
+                      className="inline-flex w-32 justify-center rounded-md border border-transparent bg-slate-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
+                    >
+                      Go to top
+                    </button>
+                  </NavLink>
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
                     onClick={() => setShowModal(false)}
                   >
-                    Go back to invoice
+                    Back to invoice
                   </button>
                 </div>
               </Dialog.Panel>

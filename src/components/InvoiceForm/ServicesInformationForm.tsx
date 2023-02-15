@@ -14,8 +14,6 @@ export default function PersonalInformationForm() {
   const [error, setError] = useState(false);
 
   const handleChange = (e: any, uuid: string) => {
-    console.log('e.target.name', e.target.name);
-    console.log('e.target.value', typeof e.target.value);
     setTempServicesInfo(
       tempServicesInfo.map((service: any) => {
         if (service?.uuid === uuid) {

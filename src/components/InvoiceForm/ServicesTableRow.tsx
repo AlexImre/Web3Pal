@@ -29,7 +29,7 @@ function ServicesTableRow(props: any) {
 
   return (
     <>
-      <div className="col-span-8 sm:col-span-2">
+      <div className="col-span-8 overflow-x-auto sm:col-span-2">
         <ServicesField
           type="text"
           name="description"
@@ -39,7 +39,7 @@ function ServicesTableRow(props: any) {
           handleChange={(e: any) => handleChange(e, uuid)}
         />
       </div>
-      <div className="col-span-8 sm:col-span-1">
+      <div className="col-span-8 overflow-x-auto sm:col-span-1">
         <ServicesField
           type="number"
           name="quantity"
@@ -79,8 +79,8 @@ function ServicesTableRow(props: any) {
           handleChange={(e: any) => handleChange(e, uuid)}
         />
       </div>
-      <div className="col-span-8 flex items-center justify-center sm:col-span-1 sm:text-sm">
-        {serviceAmount}
+      <div className="col-span-8 flex items-center justify-center overflow-x-auto sm:col-span-1 sm:text-sm">
+        {parseFloat(serviceAmount.toFixed(2))}
       </div>
       {index === 0 ? (
         ''
