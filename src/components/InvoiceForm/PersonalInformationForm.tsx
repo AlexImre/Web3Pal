@@ -9,7 +9,6 @@ import toast, { Toaster } from 'react-hot-toast';
 export default function PersonalInformationForm() {
   const personalInfoToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
-  console.log('masterState', masterState);
   const [tempPersonalInfo, setTempPersonalInfo] = useState(
     masterState.personalInformation
   );

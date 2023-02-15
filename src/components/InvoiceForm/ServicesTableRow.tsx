@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ServicesField from './Fields/ServicesField';
 import { TrashIcon } from '@heroicons/react/24/outline';
+import { getServiceAmount } from './getServiceAmount';
 
 function ServicesTableRow(props: any) {
   const {
@@ -9,9 +10,10 @@ function ServicesTableRow(props: any) {
     tempServicesInfo,
     setTempServicesInfo,
     handleChange,
+    updateServiceAmount,
   } = props;
 
-  const { uuid, description, quantity, price, amount, tax, discount } = service;
+  const { uuid, description, quantity, price, tax, discount } = service;
 
   const removeRow = () => {
     setTempServicesInfo(
@@ -19,13 +21,11 @@ function ServicesTableRow(props: any) {
     );
   };
 
-  const getAmount = () => {
-    if (!quantity || !price || quantity === 0 || price === 0) {
-      return 0;
-    }
-    let convertDiscount = (discount / 100) * price;
-    return (quantity * price - convertDiscount) * (1 + tax / 100);
-  };
+  const serviceAmount = getServiceAmount(service) || 0;
+
+  useEffect(() => {
+    updateServiceAmount(uuid, serviceAmount);
+  }, [serviceAmount]);
 
   return (
     <>
@@ -79,8 +79,8 @@ function ServicesTableRow(props: any) {
           handleChange={(e: any) => handleChange(e, uuid)}
         />
       </div>
-      <div className="col-span-8 flex items-center justify-center sm:col-span-1 sm:text-sm ">
-        {Intl.NumberFormat('en-US').format(getAmount())}
+      <div className="col-span-8 flex items-center justify-center sm:col-span-1 sm:text-sm">
+        {serviceAmount}
       </div>
       {index === 0 ? (
         ''

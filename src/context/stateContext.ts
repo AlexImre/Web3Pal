@@ -84,7 +84,7 @@ interface tempInvoice {
 
 type Service = {
     uuid: string;
-    serviceId: string;
+    serviceId: Number;
     description: string;
     quantity: number;
     price: number;
@@ -160,7 +160,7 @@ export const initialState: MasterStateType = {
 
     servicesInformation: [{
         uuid: uuidv4(),
-        serviceId: '',
+        serviceId: 0,
         description: '',
         quantity: 0,
         price: 0,

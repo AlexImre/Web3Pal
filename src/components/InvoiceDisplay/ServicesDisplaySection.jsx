@@ -1,29 +1,36 @@
-const projects = [
-  {
-    id: 1,
-    description: 'Crypto services',
-    quantity: 1,
-    price: 100,
-    discount: 0,
-    tax: 0,
-    amount: 100,
-  },
-  // More projects...
-];
+export default function ServicesDisplay(props) {
+  const { tempServicesInfo } = props;
+  const getSubtotal = () => {
+    return tempServicesInfo?.reduce((accumulator, object) => {
+      return accumulator + object.quantity * object.price - object.discount;
+    }, 0);
+  };
 
-export default function ServicesDisplay() {
+  const getTax = () => {
+    return tempServicesInfo?.reduce((accumulator, object) => {
+      return (
+        accumulator +
+        (object.amount - (object.quantity * object.price - object.discount))
+      );
+    }, 0);
+  };
+
+  const getTotal = () => {
+    return tempServicesInfo?.reduce((accumulator, object) => {
+      return accumulator + object.amount;
+    }, 0);
+  };
+
+  const tax = getTax() || 0;
+  const subtotal = getSubtotal() || 0;
+  const total = getTotal() || 0;
+
   return (
     <div className="w-full pb-3 pr-3">
       <div className="flex items-center">
         <div className="ml-5 w-0 flex-1">
           <div className="bg-white">
-            {/* <div className="sm:flex sm:items-center">
-              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"></div>
-            </div> */}
             <div className="-mx-4 mt-8 flex flex-col sm:-mx-6 md:mx-0">
-              {/* <div className="mb-2 text-lg font-medium text-slate-900">
-                Services
-              </div> */}
               <table className="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
@@ -66,7 +73,7 @@ export default function ServicesDisplay() {
                   </tr>
                 </thead>
                 <tbody>
-                  {projects.map((project) => (
+                  {tempServicesInfo?.map((project) => (
                     <tr key={project.id} className="border-b border-gray-200">
                       <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
                         <div className="font-medium text-gray-900">
@@ -107,7 +114,7 @@ export default function ServicesDisplay() {
                       Subtotal
                     </th>
                     <td className="pl-3 pr-4 pt-6 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                      $3,900.00
+                      {Intl.NumberFormat('en-US').format(subtotal)}
                     </td>
                   </tr>
                   <tr>
@@ -125,7 +132,7 @@ export default function ServicesDisplay() {
                       Tax
                     </th>
                     <td className="pl-3 pr-4 pt-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                      $585.00
+                      {Intl.NumberFormat('en-US').format(tax)}
                     </td>
                   </tr>
                   <tr>
@@ -143,7 +150,7 @@ export default function ServicesDisplay() {
                       Total
                     </th>
                     <td className="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 sm:pr-6 md:pr-0">
-                      $4,485.00
+                      {Intl.NumberFormat('en-US').format(total)}
                     </td>
                   </tr>
                 </tfoot>

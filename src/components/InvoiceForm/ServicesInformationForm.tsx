@@ -14,23 +14,39 @@ export default function PersonalInformationForm() {
   const [error, setError] = useState(false);
 
   const handleChange = (e: any, uuid: string) => {
-    console.log('tempServicesInfo 99', tempServicesInfo);
-    const newArray = setTempServicesInfo(
+    console.log('e.target.name', e.target.name);
+    console.log('e.target.value', typeof e.target.value);
+    setTempServicesInfo(
       tempServicesInfo.map((service: any) => {
         if (service?.uuid === uuid) {
+          if (e.target.name === 'description') {
+            return {
+              ...service,
+              [e.target.name]: e.target.value,
+            };
+          }
           return {
             ...service,
-            [e.target.name]: e.target.value,
+            [e.target.name]: Number(e.target.value),
           };
         }
         return service;
       })
     );
+  };
 
-    console.log('newArray', newArray);
-
-    console.log('tempServicesInfo 22', tempServicesInfo);
-    // update state using map, also where to do this??
+  const updateServiceAmount = (uuid: string, serviceAmount: number) => {
+    setTempServicesInfo(
+      tempServicesInfo.map((service: any) => {
+        if (service?.uuid === uuid) {
+          return {
+            ...service,
+            amount: serviceAmount,
+          };
+        }
+        return service;
+      })
+    );
   };
 
   const handleSave = (e) => {
@@ -50,7 +66,7 @@ export default function PersonalInformationForm() {
     });
     console.log(
       'masterState.servicesInformation',
-      masterState.servicesInformation
+      masterState.servicesInformation[0]
     );
     // personalInfoToast();
   };
@@ -71,7 +87,7 @@ export default function PersonalInformationForm() {
                 <p className="mt-1 mb-5 text-sm text-gray-500">
                   Enter information about services provided.
                 </p>
-                <ServicesDisplaySection />
+                <ServicesDisplaySection tempServicesInfo={tempServicesInfo} />
                 <div className="flex justify-center">
                   <button
                     className="flexmb-4 mt-4 mr-4 w-1/2 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
@@ -86,6 +102,7 @@ export default function PersonalInformationForm() {
                       handleChange={handleChange}
                       tempServicesInfo={tempServicesInfo}
                       setTempServicesInfo={setTempServicesInfo}
+                      updateServiceAmount={updateServiceAmount}
                     />
                   )}
                 </div>

@@ -6,13 +6,21 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function ServicesModal(props) {
   const [showServicesModal, setServicesShowModal] = useState(false);
-  console.log('showServicesModal', showServicesModal);
-
   const personalInfoToast = () => toast.success('Information updated.');
   const [open, setOpen] = useState(true);
 
-  const { handleSave, handleChange, tempServicesInfo, setTempServicesInfo } =
-    props;
+  let startingId = 1;
+  const createId = () => {
+    return startingId++;
+  };
+
+  const {
+    handleSave,
+    handleChange,
+    tempServicesInfo,
+    setTempServicesInfo,
+    updateServiceAmount,
+  } = props;
 
   const setShowModal = props.setShowModal;
 
@@ -20,7 +28,7 @@ export default function ServicesModal(props) {
     e.preventDefault();
     const newService = {
       uuid: uuidv4(),
-      serviceId: '',
+      serviceId: createId(),
       description: '',
       quantity: 0,
       price: 0,
@@ -89,18 +97,21 @@ export default function ServicesModal(props) {
                               Amount
                             </div>
 
-                            {tempServicesInfo.map((service, index) => {
-                              return (
-                                <ServicesTableRow
-                                  service={service}
-                                  index={index}
-                                  key={index}
-                                  tempServicesInfo={tempServicesInfo}
-                                  setTempServicesInfo={setTempServicesInfo}
-                                  handleChange={handleChange}
-                                />
-                              );
-                            })}
+                            {tempServicesInfo.map(
+                              (service: any, index: any) => {
+                                return (
+                                  <ServicesTableRow
+                                    service={service}
+                                    index={index}
+                                    key={index}
+                                    tempServicesInfo={tempServicesInfo}
+                                    setTempServicesInfo={setTempServicesInfo}
+                                    handleChange={handleChange}
+                                    updateServiceAmount={updateServiceAmount}
+                                  />
+                                );
+                              }
+                            )}
                           </div>
                           <div>
                             <button
