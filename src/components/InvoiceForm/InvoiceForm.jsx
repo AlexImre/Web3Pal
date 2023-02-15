@@ -1,91 +1,23 @@
-import {
-  CreditCardIcon,
-  SquaresPlusIcon,
-  UserCircleIcon,
-  UserGroupIcon,
-  CalendarIcon,
-  BriefcaseIcon,
-} from '@heroicons/react/24/outline';
-
 import PersonalInformationForm from './PersonalInformationForm';
 import InvoiceInformationForm from './InvoiceInformationForm';
 import RecipientInformationForm from './RecipientInformationForm';
 import PaymentInformationForm from './PaymentInformationForm';
 import ServicesInformationForm from './ServicesInformationForm';
 import { NavLink } from '../NavLink';
-import { useState } from 'react';
-
-const navigation = [
-  {
-    name: 'Personal Information',
-    href: '#personalInfo',
-    icon: UserCircleIcon,
-    current: true,
-  },
-  {
-    name: 'Invoice Information',
-    href: '#invoiceInfo',
-    icon: CalendarIcon,
-    current: false,
-  },
-  {
-    name: 'Recipient Information',
-    href: '#recipientInfo',
-    icon: UserGroupIcon,
-    current: false,
-  },
-  {
-    name: 'Payment Information',
-    href: '#paymentInfo',
-    icon: CreditCardIcon,
-    current: false,
-  },
-  {
-    name: 'Services Provided',
-    href: '#servicesInfo',
-    icon: BriefcaseIcon,
-    current: false,
-  },
-  { name: 'Notes', href: '#', icon: SquaresPlusIcon, current: false },
-];
+import { navigation } from './navigation';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function InvoiceForm() {
-  const [tempFromObject, setTempFromObject] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-  });
-  const [error, setError] = useState(false);
-
-  const handleChange = (e) => {
-    setTempFromObject({ ...tempFromObject, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (tempFromObject.firstName === '' || tempFromObject.lastName === '') {
-      setError(true);
-      return;
-    } else if (
-      tempFromObject.email === '' ||
-      !tempFromObject.email.includes('@')
-    ) {
-      setError(true);
-      return;
-    } else {
-      setError(false);
-    }
-  };
   return (
     <div className="sticky lg:grid lg:grid-cols-12 lg:gap-x-5">
       <aside className="flex flex-col py-6 px-2 sm:px-6 lg:col-span-3 lg:py-0 lg:px-0">
         {navigation.map((item) => (
           <NavLink
             href={item.href}
+            smooth
             key={item.name}
             className={classNames(
               item.current

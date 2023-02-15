@@ -1,12 +1,17 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import InvoiceForm from './InvoiceForm/InvoiceForm';
-import { NavLink } from './NavLink';
 
 export default function Modal(props) {
   const [open, setOpen] = useState(true);
 
   const setShowModal = props.setShowModal;
+
+  const [element, setElement] = useState(null);
+  useEffect(() => {
+    setElement(document?.getElementById('testDiv'));
+  }, []);
+  console.log('element: ', element);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -24,7 +29,10 @@ export default function Modal(props) {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div
+            className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0"
+            id="testDiv"
+          >
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -37,14 +45,16 @@ export default function Modal(props) {
               <Dialog.Panel className="sm:min-w-sm relative my-10 transform overflow-hidden rounded-lg bg-slate-200 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:p-6 md:mx-20">
                 <InvoiceForm />
                 <div className="mt-5 flex sm:mt-6">
-                  <NavLink href="#personalInfo">
-                    <button
-                      type="button"
-                      className="inline-flex w-32 justify-center rounded-md border border-transparent bg-slate-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
-                    >
-                      Go to top
-                    </button>
-                  </NavLink>
+                  <button
+                    type="button"
+                    className="inline-flex w-32 justify-center rounded-md border border-transparent bg-slate-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
+                    onClick={() => {
+                      // window.scrollTo({ top: 0, behavior: 'smooth' });
+                      element.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Go to top
+                  </button>
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
