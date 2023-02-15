@@ -9,7 +9,7 @@ function classNames(...classes) {
 }
 
 export default function PopularCurrenciesDropDown(props: any) {
-  const { tempPaymentInfo, setTempPaymentInfo, setCurrentPrice } = props;
+  const { tempPaymentInfo, setTempPaymentInfo, setCurrentPrice, error } = props;
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
 
@@ -29,6 +29,7 @@ export default function PopularCurrenciesDropDown(props: any) {
     setTempPaymentInfo({
       ...tempPaymentInfo,
       popularCurrency: e.name,
+      marketPrice: e.current_price,
     });
   };
 

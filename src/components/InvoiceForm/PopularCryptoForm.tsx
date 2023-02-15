@@ -8,7 +8,7 @@ function PopularCryptoForm(props: any) {
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
   const { marketData } = masterState;
-  const { tempPaymentInfo, setTempPaymentInfo, handleChange } = props;
+  const { tempPaymentInfo, setTempPaymentInfo, handleChange, error } = props;
   const { walletName, walletAddress } = tempPaymentInfo;
 
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -22,6 +22,7 @@ function PopularCryptoForm(props: any) {
             setTempPaymentInfo={setTempPaymentInfo}
             currentPrice={currentPrice}
             setCurrentPrice={setCurrentPrice}
+            error={error}
           />
         </div>
         <div className="col-span-6 content-center items-center text-indigo-500 sm:col-span-3 sm:text-sm">
@@ -42,6 +43,7 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={walletName}
             onChange={handleChange}
+            error={error}
           />
         </div>
       </div>
@@ -53,6 +55,7 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={walletAddress}
             onChange={handleChange}
+            error={error}
           />
         </div>
       </div>

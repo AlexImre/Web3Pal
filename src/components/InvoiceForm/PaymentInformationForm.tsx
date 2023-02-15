@@ -10,7 +10,17 @@ export default function PaymentInformationForm() {
   const [tempPaymentInfo, setTempPaymentInfo] = useState(
     masterState.paymentInformation
   );
-  const { invoiceLabelling } = tempPaymentInfo;
+  const {
+    invoiceLabelling,
+    walletName,
+    walletAddress,
+    popularCurrency,
+    paymentMethod,
+    customCurrencyName,
+    customCurrencySymbol,
+    customCurrencyAddress,
+    customCurrencyPlatform,
+  } = tempPaymentInfo;
   const [error, setError] = useState(false);
   const handleChange = (e) => {
     setTempPaymentInfo({
@@ -21,17 +31,52 @@ export default function PaymentInformationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (invoiceLabelling === '') {
-      setError(true);
-      return;
-    } else {
-      setError(false);
+    if (paymentMethod === 'crypto') {
+      if (
+        invoiceLabelling === '' ||
+        popularCurrency === '' ||
+        walletName === '' ||
+        walletAddress === ''
+      ) {
+        setError(true);
+        return;
+      } else {
+        setError(false);
+      }
+      setMasterState({
+        ...masterState,
+        paymentInformation: {
+          ...tempPaymentInfo,
+          customCurrencyName: '',
+          customCurrencySymbol: '',
+          customCurrencyAddress: '',
+          customCurrencyPlatform: '',
+        },
+      });
+    } else if (paymentMethod === 'custom') {
+      if (
+        invoiceLabelling === '' ||
+        customCurrencyName === '' ||
+        customCurrencySymbol === '' ||
+        customCurrencyAddress === '' ||
+        customCurrencyPlatform === '' ||
+        walletName === '' ||
+        walletAddress === ''
+      ) {
+        setError(true);
+        return;
+      } else {
+        setError(false);
+      }
+      setMasterState({
+        ...masterState,
+        paymentInformation: {
+          ...tempPaymentInfo,
+          popularCurrency: '',
+        },
+      });
+      personalInfoToast();
     }
-    setMasterState({
-      ...masterState,
-      paymentInformation: tempPaymentInfo,
-    });
-    personalInfoToast();
   };
 
   return (
@@ -67,6 +112,7 @@ export default function PaymentInformationForm() {
                     tempPaymentInfo={tempPaymentInfo}
                     setTempPaymentInfo={setTempPaymentInfo}
                     handleChange={handleChange}
+                    error={error}
                   />
                 </div>
                 <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">

@@ -42,7 +42,7 @@ interface PaymentInformation {
     walletAddress: string;
     bankAccountName: string;
     bankAccountDetails: string;
-    livePrice: number;
+    marketPrice: number;
 }
 
 interface notesSection {
@@ -144,7 +144,7 @@ export const initialState: MasterStateType = {
         walletAddress: '',
         bankAccountName: '',
         bankAccountDetails: '',
-        livePrice: 0,
+        marketPrice:0,
     },
 
     servicesInformation: [{

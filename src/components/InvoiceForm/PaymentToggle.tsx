@@ -8,7 +8,7 @@ const currencyType = [
 ];
 
 export default function PaymentToggle(props: any) {
-  const { tempPaymentInfo, setTempPaymentInfo, handleChange } = props;
+  const { tempPaymentInfo, setTempPaymentInfo, handleChange, error } = props;
   const { paymentMethod } = tempPaymentInfo;
   const [selected, setSelected] = useState('crypto');
 
@@ -53,12 +53,13 @@ export default function PaymentToggle(props: any) {
           tempPaymentInfo={tempPaymentInfo}
           setTempPaymentInfo={setTempPaymentInfo}
           handleChange={handleChange}
+          error={error}
         />
       ) : (
         <CustomTokenForm
           tempPaymentInfo={tempPaymentInfo}
-          setTempPaymentInfo={setTempPaymentInfo}
           handleChange={handleChange}
+          error={error}
         />
       )}
     </div>
