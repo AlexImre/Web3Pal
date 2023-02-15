@@ -160,7 +160,7 @@ export const initialState: MasterStateType = {
 
     servicesInformation: [{
         uuid: uuidv4(),
-        serviceId: 0,
+        serviceId: '',
         description: '',
         quantity: 0,
         price: 0,

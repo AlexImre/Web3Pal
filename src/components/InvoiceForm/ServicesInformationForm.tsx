@@ -1,46 +1,39 @@
-import EmailField from './Fields/EmailField';
-import TextFieldRequired from './Fields/TextFieldWithValidation';
-import CountriesField from './Fields/CountriesField';
 import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
-import TextField from './Fields/TextField';
 import toast, { Toaster } from 'react-hot-toast';
-import TextFieldWithValidation from './Fields/TextFieldWithValidation';
-import NumberFieldWithValidation from './Fields/NumberFieldWithValidation';
-import ServicesTableRow from './ServicesTableRow';
-import NumberField from './Fields/NumberField';
 import ServicesModal from './ServicesModal';
-import InvoiceModal from '../InvoiceModal';
 import ServicesDisplaySection from '../InvoiceDisplay/ServicesDisplaySection';
 
 export default function PersonalInformationForm() {
   const [showServicesModal, setServicesShowModal] = useState(false);
-  console.log('showServicesModal', showServicesModal);
-
   const personalInfoToast = () => toast.success('Information updated.');
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const servicesInformation = stateContext.masterState.servicesInformation;
   const [tempServicesInfo, setTempServicesInfo] = useState(servicesInformation);
-  // const {
-  //   uuid,
-  //   serviceId,
-  //   description,
-  //   quantity,
-  //   price,
-  //   discount,
-  //   tax,
-  //   amount,
-  // } = tempServicesInfo[0];
   const [error, setError] = useState(false);
-  const handleChange = (e) => {
-    setTempServicesInfo({
-      ...tempServicesInfo,
-      [e.target.name]: e.target.value,
-    });
+
+  const handleChange = (e: any, uuid: string) => {
+    console.log('tempServicesInfo 99', tempServicesInfo);
+    const newArray = setTempServicesInfo(
+      tempServicesInfo.map((service: any) => {
+        if (service?.uuid === uuid) {
+          return {
+            ...service,
+            [e.target.name]: e.target.value,
+          };
+        }
+        return service;
+      })
+    );
+
+    console.log('newArray', newArray);
+
+    console.log('tempServicesInfo 22', tempServicesInfo);
+    // update state using map, also where to do this??
   };
 
-  const handleSubmit = (e) => {
+  const handleSave = (e) => {
     e.preventDefault();
     // if (clientName === '') {
     //   setError(true);
@@ -51,26 +44,15 @@ export default function PersonalInformationForm() {
     // } else {
     //   setError(false);
     // }
-    // setMasterState({
-    //   ...masterState,
-    //   servicesInformation: tempServicesInfo,
-    // });
+    setMasterState({
+      ...masterState,
+      servicesInformation: tempServicesInfo,
+    });
+    console.log(
+      'masterState.servicesInformation',
+      masterState.servicesInformation
+    );
     // personalInfoToast();
-  };
-
-  const addRow = (e: any) => {
-    e.preventDefault();
-    const newService = {
-      uuid: '',
-      serviceId: '',
-      description: '',
-      quantity: 0,
-      price: 0,
-      discount: 0,
-      tax: 0,
-      amount: 0,
-    };
-    setTempServicesInfo([...tempServicesInfo, newService]);
   };
 
   return (
@@ -98,7 +80,13 @@ export default function PersonalInformationForm() {
                     Edit services
                   </button>
                   {showServicesModal && (
-                    <ServicesModal setShowModal={setServicesShowModal} />
+                    <ServicesModal
+                      setShowModal={setServicesShowModal}
+                      handleSave={handleSave}
+                      handleChange={handleChange}
+                      tempServicesInfo={tempServicesInfo}
+                      setTempServicesInfo={setTempServicesInfo}
+                    />
                   )}
                 </div>
               </div>

@@ -1,44 +1,25 @@
-import { Fragment, useState, useContext } from 'react';
+import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { StateContext } from '../../context/stateContext';
 import toast, { Toaster } from 'react-hot-toast';
 import ServicesTableRow from './ServicesTableRow';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ServicesModal(props) {
   const [showServicesModal, setServicesShowModal] = useState(false);
   console.log('showServicesModal', showServicesModal);
 
   const personalInfoToast = () => toast.success('Information updated.');
-  const stateContext = useContext(StateContext);
-  const { masterState, setMasterState } = stateContext;
-  const servicesInformation = stateContext.masterState.servicesInformation;
-  const [tempServicesInfo, setTempServicesInfo] = useState(servicesInformation);
   const [open, setOpen] = useState(true);
 
-  const setShowModal = props.setShowModal;
+  const { handleSave, handleChange, tempServicesInfo, setTempServicesInfo } =
+    props;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // if (clientName === '') {
-    //   setError(true);
-    //   return;
-    // } else if (clientEmail === '' || !clientEmail.includes('@')) {
-    //   setError(true);
-    //   return;
-    // } else {
-    //   setError(false);
-    // }
-    // setMasterState({
-    //   ...masterState,
-    //   servicesInformation: tempServicesInfo,
-    // });
-    // personalInfoToast();
-  };
+  const setShowModal = props.setShowModal;
 
   const addRow = (e: any) => {
     e.preventDefault();
     const newService = {
-      uuid: '',
+      uuid: uuidv4(),
       serviceId: '',
       description: '',
       quantity: 0,
@@ -88,7 +69,7 @@ export default function ServicesModal(props) {
                           <p className="mt-1 mb-5 text-sm text-gray-500">
                             Enter information about services provided.
                           </p>
-                          <div className="grid grid-cols-8 gap-1">
+                          <div className="grid grid-cols-8 gap-2">
                             <div className="col-span-8 text-sm font-medium text-gray-700 sm:col-span-2">
                               Description
                             </div>
@@ -99,10 +80,10 @@ export default function ServicesModal(props) {
                               Price
                             </div>
                             <div className="col-span-8 text-sm font-medium text-gray-700 sm:col-span-1">
-                              Discount
+                              Discount (%)
                             </div>
                             <div className="col-span-8 text-sm font-medium text-gray-700 sm:col-span-1">
-                              Tax
+                              Tax (%)
                             </div>
                             <div className="col-span-8 text-sm font-medium text-gray-700 sm:col-span-1">
                               Amount
@@ -114,13 +95,16 @@ export default function ServicesModal(props) {
                                   service={service}
                                   index={index}
                                   key={index}
+                                  tempServicesInfo={tempServicesInfo}
+                                  setTempServicesInfo={setTempServicesInfo}
+                                  handleChange={handleChange}
                                 />
                               );
                             })}
                           </div>
                           <div>
                             <button
-                              className="my-2 inline-flex justify-center rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                              className="my-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                               onClick={(e) => addRow(e)}
                             >
                               Add
@@ -130,7 +114,7 @@ export default function ServicesModal(props) {
                         <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                           <button
                             className="inline-flex justify-center rounded-md border border-transparent bg-slate-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-                            onClick={(e) => handleSubmit(e)}
+                            onClick={(e) => handleSave(e)}
                           >
                             Save
                           </button>
@@ -145,7 +129,7 @@ export default function ServicesModal(props) {
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
                     onClick={() => setShowModal(false)}
                   >
-                    Go back
+                    Back
                   </button>
                 </div>
               </Dialog.Panel>
