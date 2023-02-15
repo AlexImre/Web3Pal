@@ -32,7 +32,7 @@ function PopularCryptoForm(props: any) {
               )}`
             : 'Select a currency to view market price.'}{' '}
           <br />
-          <div className="text-slate-600 sm:text-xs">Powered by Coingecko</div>
+          <div className="text-slate-600 sm:text-xs">Powered by CoinGecko</div>
         </div>
       </div>
       <div className="my-5 grid grid-cols-6 gap-6">

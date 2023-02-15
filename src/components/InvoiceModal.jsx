@@ -1,12 +1,12 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { CheckIcon } from '@heroicons/react/24/outline'
+import { Fragment, useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { CheckIcon } from '@heroicons/react/24/outline';
 import InvoiceForm from './InvoiceForm/InvoiceForm';
 
 export default function Modal(props) {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(true);
 
-  const setShowModal = props.setShowModal
+  const setShowModal = props.setShowModal;
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -39,10 +39,10 @@ export default function Modal(props) {
                 <div className="mt-5 sm:mt-6">
                   <button
                     type="button"
-                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
+                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-slate-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
                     onClick={() => setShowModal(false)}
                   >
-                    Go back to dashboard
+                    Go back to invoice
                   </button>
                 </div>
               </Dialog.Panel>
@@ -51,5 +51,5 @@ export default function Modal(props) {
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }

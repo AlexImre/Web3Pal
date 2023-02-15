@@ -1,6 +1,6 @@
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-export default function TextFieldRequired(props) {
+export default function TextFieldWithValidation(props) {
   const { label, name, width, value, onChange, error } = props;
 
   return (

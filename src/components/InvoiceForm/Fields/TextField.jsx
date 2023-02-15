@@ -1,5 +1,5 @@
 export default function TextFieldRequired(props) {
-  const { label, name, width, value, onChange } = props
+  const { label, name, width, value, onChange } = props;
 
   return (
     <div>
@@ -19,5 +19,5 @@ export default function TextFieldRequired(props) {
         />
       </div>
     </div>
-  )
+  );
 }

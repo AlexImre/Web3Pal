@@ -82,6 +82,17 @@ interface tempInvoice {
     notes: string;
 }
 
+type Service = {
+    uuid: string;
+    serviceId: string;
+    description: string;
+    quantity: number;
+    price: number;
+    discount: number;
+    tax: number;
+    amount: number;
+}
+
 type MasterStateType = {
     uuid: string;
     timestamp: any;
@@ -89,7 +100,7 @@ type MasterStateType = {
     recipientInformation: RecipientInformation;
     invoiceInformation: InvoiceInformation;
     paymentInformation: PaymentInformation;
-    servicesInformation: any;
+    servicesInformation: Array<Service>;
     notesSection: notesSection;
     tempInvoice: tempInvoice;
     myInvoices: any;

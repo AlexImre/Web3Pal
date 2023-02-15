@@ -1,7 +1,7 @@
-import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-export default function NumberFieldRequired(props) {
-  const { label, name, width, value, onChange, error } = props
+export default function DateFieldWithValidation(props) {
+  const { label, name, width, value, onChange, error } = props;
 
   return (
     <div>
@@ -43,5 +43,5 @@ export default function NumberFieldRequired(props) {
         ''
       )}
     </div>
-  )
+  );
 }
