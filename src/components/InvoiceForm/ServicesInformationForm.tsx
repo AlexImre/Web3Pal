@@ -88,23 +88,25 @@ export default function PersonalInformationForm() {
                   Enter information about services provided.
                 </p>
                 <ServicesDisplaySection tempServicesInfo={tempServicesInfo} />
-                <div className="flex justify-center">
+                {showServicesModal && (
+                  <ServicesModal
+                    setShowModal={setServicesShowModal}
+                    handleSave={handleSave}
+                    handleChange={handleChange}
+                    tempServicesInfo={tempServicesInfo}
+                    setTempServicesInfo={setTempServicesInfo}
+                    updateServiceAmount={updateServiceAmount}
+                  />
+                )}
+              </div>
+              <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                <div className="flex justify-end">
                   <button
-                    className="flexmb-4 mt-4 mr-4 w-1/2 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                    className="inline-flex w-20 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     onClick={() => setServicesShowModal(true)}
                   >
-                    Edit services
+                    Edit
                   </button>
-                  {showServicesModal && (
-                    <ServicesModal
-                      setShowModal={setServicesShowModal}
-                      handleSave={handleSave}
-                      handleChange={handleChange}
-                      tempServicesInfo={tempServicesInfo}
-                      setTempServicesInfo={setTempServicesInfo}
-                      updateServiceAmount={updateServiceAmount}
-                    />
-                  )}
                 </div>
               </div>
             </div>

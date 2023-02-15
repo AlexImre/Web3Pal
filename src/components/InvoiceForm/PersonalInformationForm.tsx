@@ -139,7 +139,7 @@ export default function PersonalInformationForm() {
                 </div>
                 <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                   <button
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="inline-flex w-20 justify-center rounded-md border border-transparent bg-slate-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
                     onClick={(e) => handleSubmit(e)}
                   >
                     Save
