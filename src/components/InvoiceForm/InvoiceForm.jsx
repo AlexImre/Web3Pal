@@ -3,64 +3,61 @@ import InvoiceInformationForm from './InvoiceInformationForm';
 import RecipientInformationForm from './RecipientInformationForm';
 import PaymentInformationForm from './PaymentInformationForm';
 import ServicesInformationForm from './ServicesInformationForm';
-import { NavLink } from '../NavLink';
 import { navigation } from './navigation';
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+import { createRef } from 'react';
 
 export default function InvoiceForm() {
+  const personalRef = createRef();
+  const invoiceRef = createRef();
+  const recipientRef = createRef();
+  const paymentRef = createRef();
+  const servicesRef = createRef();
+  const refs = [personalRef, invoiceRef, recipientRef, paymentRef, servicesRef];
+
   return (
     <div className="sticky lg:grid lg:grid-cols-12 lg:gap-x-5">
-      <aside className="flex flex-col py-6 px-2 sm:px-6 lg:col-span-3 lg:py-0 lg:px-0">
-        {navigation.map((item) => (
-          <NavLink
-            href={item.href}
-            smooth
+      <aside className="flex flex-col py-6 px-2 hover:cursor-pointer sm:px-6 lg:col-span-3 lg:py-0 lg:px-0">
+        {navigation.map((item, index) => (
+          <div
             key={item.name}
-            className={classNames(
-              item.current
-                ? 'bg-gray-50 text-indigo-700 hover:bg-white hover:text-indigo-700'
-                : 'text-gray-900 hover:bg-gray-50 hover:text-gray-900',
-              'group flex items-center rounded-md px-3 py-2 text-sm font-medium'
-            )}
-            aria-current={item.current ? 'page' : undefined}
+            className="group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-white hover:text-indigo-700"
           >
-            <div className="flex">
+            <div
+              className="flex"
+              onClick={() => {
+                refs[index].current.scrollIntoView({
+                  behavior: 'smooth',
+                });
+              }}
+            >
               <item.icon
-                className={classNames(
-                  item.current
-                    ? 'text-slate-600 group-hover:text-indigo-500'
-                    : 'text-slate-600 group-hover:text-gray-500',
-                  '-ml-1 mr-3 h-6 w-6 flex-shrink-0'
-                )}
+                className="-ml-1 mr-3 h-6 w-6 flex-shrink-0 text-slate-600 group-hover:text-indigo-500"
                 aria-hidden="true"
               />
               <span className="truncate">{item.name}</span>
             </div>
-          </NavLink>
+          </div>
         ))}
       </aside>
 
       <div className="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
-        <section id="personalInfo">
+        <section ref={personalRef}>
           <PersonalInformationForm />
         </section>
 
-        <section id="invoiceInfo">
+        <section ref={invoiceRef}>
           <InvoiceInformationForm />
         </section>
 
-        <section id="recipientInfo">
+        <section ref={recipientRef}>
           <RecipientInformationForm />
         </section>
 
-        <section id="paymentInfo">
+        <section ref={paymentRef}>
           <PaymentInformationForm />
         </section>
 
-        <section id="servicesInfo">
+        <section ref={servicesRef}>
           <ServicesInformationForm />
         </section>
       </div>
