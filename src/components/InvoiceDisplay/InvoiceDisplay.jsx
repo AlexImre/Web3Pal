@@ -77,12 +77,12 @@ export default function InvoiceDisplay() {
               Edit
             </button>
             {showModal && <InvoiceModal setShowModal={setShowModal} />}
-            <button className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
+            <button className="mb-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
               Export
             </button>
           </div>
         </div>
-        <EmptyInvoiceHolder />
+        {/* <EmptyInvoiceHolder /> */}
         <div className="bg-white shadow sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
             <PersonalInformationSection />
@@ -91,7 +91,9 @@ export default function InvoiceDisplay() {
 
             <PaymentDetailsSection />
 
-            <ServicesDisplaySection />
+            <div className="ml-3">
+              <ServicesDisplaySection />
+            </div>
 
             <NotesSection />
           </div>
