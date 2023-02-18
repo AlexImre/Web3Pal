@@ -1,29 +1,15 @@
+import {
+  getServicesSubtotal,
+  getServicesTax,
+  getServicesTotal,
+} from '../InvoiceForm/ServicesUtils';
+
 export default function ServicesDisplay(props) {
-  const { tempServicesInfo } = props;
-  const getSubtotal = () => {
-    return tempServicesInfo?.reduce((accumulator, object) => {
-      return accumulator + object.quantity * object.price - object.discount;
-    }, 0);
-  };
+  const { serviceData } = props;
 
-  const getTax = () => {
-    return tempServicesInfo?.reduce((accumulator, object) => {
-      return (
-        accumulator +
-        (object.amount - (object.quantity * object.price - object.discount))
-      );
-    }, 0);
-  };
-
-  const getTotal = () => {
-    return tempServicesInfo?.reduce((accumulator, object) => {
-      return accumulator + object.amount;
-    }, 0);
-  };
-
-  const tax = getTax() || 0;
-  const subtotal = getSubtotal() || 0;
-  const total = getTotal() || 0;
+  const tax = getServicesTax(serviceData) || 0;
+  const subTotal = getServicesSubtotal(serviceData) || 0;
+  const total = getServicesTotal(serviceData) || 0;
 
   return (
     <div className="w-full pb-3 pr-3">
@@ -73,7 +59,7 @@ export default function ServicesDisplay(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {tempServicesInfo?.map((project) => (
+                  {serviceData?.map((project) => (
                     <tr
                       key={project.id}
                       className="break-all border-b border-gray-200"
@@ -117,7 +103,7 @@ export default function ServicesDisplay(props) {
                       Subtotal
                     </th>
                     <td className="pl-3 pr-4 pt-6 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                      {Intl.NumberFormat('en-US').format(subtotal)}
+                      {Intl.NumberFormat('en-US').format(subTotal)}
                     </td>
                   </tr>
                   <tr>

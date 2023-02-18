@@ -1,11 +1,6 @@
 import React from 'react';
-import { StateContext } from '../../context/stateContext';
-import { useContext } from 'react';
 
-export default function PersonalInformation() {
-  const stateContext = useContext(StateContext);
-  const { personalInformation, invoiceInformation } = stateContext.masterState;
-
+export default function PersonalInformation(props: any) {
   const {
     name,
     email,
@@ -15,9 +10,8 @@ export default function PersonalInformation() {
     county,
     postalCode,
     country,
-  } = personalInformation;
-
-  const { invoiceNumber, issueDate, dueDate } = invoiceInformation;
+  } = props.personalInformation;
+  const { invoiceNumber, issueDate, dueDate } = props.invoiceInformation;
 
   return (
     <div className="flex flex-col md:flex-row">

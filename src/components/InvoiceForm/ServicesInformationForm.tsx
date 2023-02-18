@@ -79,7 +79,7 @@ export default function PersonalInformationForm() {
                 <p className="mt-1 mb-5 text-sm text-gray-500">
                   Enter information about services provided.
                 </p>
-                <ServicesDisplaySection tempServicesInfo={tempServicesInfo} />
+                <ServicesDisplaySection serviceData={tempServicesInfo} />
                 {showServicesModal && (
                   <ServicesModal
                     setShowModal={setServicesShowModal}

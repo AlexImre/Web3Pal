@@ -1,19 +1,16 @@
 import React from 'react';
-import { StateContext } from '../../context/stateContext';
-import { useContext } from 'react';
 
-export default function RecipientInformation() {
-  const { masterState, setMasterState } = useContext(StateContext);
+export default function RecipientInformation(props: any) {
   const {
-    name,
-    email,
-    addressLine1,
-    addressLine2,
-    city,
-    county,
-    postalCode,
-    country,
-  } = masterState.recipientInformation;
+    clientName,
+    clientEmail,
+    clientAddressLine1,
+    clientAddressLine2,
+    clientCity,
+    clientCounty,
+    clientPostalCode,
+    clientCountry,
+  } = props.recipientInformation;
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -25,19 +22,24 @@ export default function RecipientInformation() {
               Recipient Information
             </div>
             <div className="font-small truncate text-sm text-gray-500">
-              {name && email ? (
+              {clientName && clientEmail ? (
                 <>
-                  {name} <br></br>
-                  {email} <br></br>
-                  {addressLine1 ? addressLine1 : ''}{' '}
-                  {addressLine1 ? <br></br> : ''}
-                  {addressLine2 ? addressLine2 : ''}{' '}
-                  {addressLine2 ? <br></br> : ''}
-                  {`${city ? city : ''} ${county ? county : ''} ${
-                    postalCode ? postalCode : ''
-                  }`}{' '}
-                  {city || county || postalCode ? <br></br> : ''}
-                  {country ? country : ''} {country ? <br></br> : ''}
+                  {clientName} <br></br>
+                  {clientEmail} <br></br>
+                  {clientAddressLine1 ? clientAddressLine1 : ''}{' '}
+                  {clientAddressLine1 ? <br></br> : ''}
+                  {clientAddressLine2 ? clientAddressLine2 : ''}{' '}
+                  {clientAddressLine2 ? <br></br> : ''}
+                  {`${clientCity ? clientCity : ''} ${
+                    clientCounty ? clientCounty : ''
+                  } ${clientPostalCode ? clientPostalCode : ''}`}{' '}
+                  {clientCity || clientCounty || clientPostalCode ? (
+                    <br></br>
+                  ) : (
+                    ''
+                  )}
+                  {clientCountry ? clientCountry : ''}{' '}
+                  {clientCountry ? <br></br> : ''}
                 </>
               ) : (
                 <>

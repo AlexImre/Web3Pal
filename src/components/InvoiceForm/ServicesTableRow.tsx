@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ServicesField from './Fields/ServicesField';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { getServiceAmount } from './getServiceAmount';
+import { getServiceAmount } from './ServicesUtils';
 
 function ServicesTableRow(props: any) {
   const {

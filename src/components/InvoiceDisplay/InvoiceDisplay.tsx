@@ -4,13 +4,22 @@ import InvoiceModal from '../InvoiceModal';
 import { StateContext, initialState } from '../../context/stateContext';
 import { useContext, useState } from 'react';
 import PersonalInformationSection from './PersonalInformationSection';
-import EmptyInvoiceHolder from './EmptyInvoiceHolder';
 import RecipientInformationSection from './RecipientInformationSection';
 import PaymentDetailsSection from './PaymentDetailsSection';
 import NotesSection from './NotesSection';
 
 export default function InvoiceDisplay() {
-  const { masterState, setMasterState } = useContext(StateContext);
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+  const {
+    invoiceInformation,
+    personalInformation,
+    recipientInformation,
+    paymentInformation,
+    servicesInformation,
+    notesInformation,
+  } = masterState;
+  console.log('masterState', masterState);
   const [showModal, setShowModal] = useState(false);
   const addUser = async () => {
     const addedUser = await fetch('/api/addInvoice', {
@@ -53,7 +62,6 @@ export default function InvoiceDisplay() {
       }),
     });
     const data = addedUser;
-    console.log(data);
   };
 
   return (
@@ -82,20 +90,24 @@ export default function InvoiceDisplay() {
             </button>
           </div>
         </div>
-        {/* <EmptyInvoiceHolder /> */}
         <div className="bg-white shadow sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
-            <PersonalInformationSection />
+            <PersonalInformationSection
+              personalInformation={personalInformation}
+              invoiceInformation={invoiceInformation}
+            />
 
-            <RecipientInformationSection />
+            <RecipientInformationSection
+              recipientInformation={recipientInformation}
+            />
 
-            <PaymentDetailsSection />
+            <PaymentDetailsSection paymentInformation={paymentInformation} />
 
             <div className="ml-3">
-              <ServicesDisplaySection />
+              <ServicesDisplaySection serviceData={servicesInformation} />
             </div>
 
-            <NotesSection />
+            <NotesSection notesInformation={notesInformation} />
           </div>
         </div>
       </div>
