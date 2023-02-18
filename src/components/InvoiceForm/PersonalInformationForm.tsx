@@ -7,7 +7,7 @@ import TextField from './Fields/TextField';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function PersonalInformationForm() {
-  const personalInfoToast = () => toast.success('Information updated.');
+  const pesonalToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const [tempPersonalInfo, setTempPersonalInfo] = useState(
     masterState.personalInformation
@@ -37,14 +37,11 @@ export default function PersonalInformationForm() {
       ...masterState,
       personalInformation: tempPersonalInfo,
     });
-    personalInfoToast();
+    pesonalToast();
   };
 
   return (
     <>
-      <div style={{ position: 'sticky' }}>
-        <Toaster containerStyle={{ position: 'sticky' }} />
-      </div>
       <div className="mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-2 md:gap-6">
           <div className="mt-5 md:col-span-2 md:mt-0">

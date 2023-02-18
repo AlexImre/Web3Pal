@@ -7,7 +7,7 @@ import TextField from './Fields/TextField';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function PersonalInformationForm() {
-  const personalInfoToast = () => toast.success('Information updated.');
+  const recipientToast = () => toast.success('Information updated.');
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const recipientInformation = stateContext.masterState.recipientInformation;
@@ -24,6 +24,8 @@ export default function PersonalInformationForm() {
   } = tempRecipientInfo;
   const [error, setError] = useState(false);
   const handleChange = (e) => {
+    console.log('e.target.name', e.target.name);
+    console.log('e.target.value', e.target.value);
     setTempRecipientInfo({
       ...tempRecipientInfo,
       [e.target.name]: e.target.value,
@@ -45,14 +47,11 @@ export default function PersonalInformationForm() {
       ...masterState,
       recipientInformation: tempRecipientInfo,
     });
-    personalInfoToast();
+    recipientToast();
   };
 
   return (
     <>
-      <div style={{ position: 'sticky' }}>
-        <Toaster containerStyle={{ position: 'sticky' }} />
-      </div>
       <div className="mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-2 md:gap-6">
           <div className="mt-5 md:col-span-2 md:mt-0">
@@ -69,7 +68,7 @@ export default function PersonalInformationForm() {
                     <div className="col-span-6 sm:col-span-3">
                       <TextFieldRequired
                         label="Name"
-                        name="name"
+                        name="clientName"
                         width="w-full"
                         onChange={handleChange}
                         value={clientName}
@@ -79,7 +78,7 @@ export default function PersonalInformationForm() {
                     <div className="col-span-6 sm:col-span-3">
                       <EmailField
                         label="Email address"
-                        name="email"
+                        name="clientEmail"
                         width="w-full"
                         onChange={handleChange}
                         value={clientEmail}
@@ -97,7 +96,7 @@ export default function PersonalInformationForm() {
                     <div className="col-span-6">
                       <TextField
                         label="Address line 1"
-                        name="addressLine1"
+                        name="clientAddressLine1"
                         width="w-full"
                         onChange={handleChange}
                         value={clientAddressLine1}
@@ -106,7 +105,7 @@ export default function PersonalInformationForm() {
                     <div className="col-span-6">
                       <TextField
                         label="Address line 2"
-                        name="addressLine2"
+                        name="clientAddressLine2"
                         width="w-full"
                         onChange={handleChange}
                         value={clientAddressLine2}
@@ -116,7 +115,7 @@ export default function PersonalInformationForm() {
                     <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                       <TextField
                         label="City"
-                        name="city"
+                        name="clientCity"
                         width="w-full"
                         onChange={handleChange}
                         value={clientCity}
@@ -126,7 +125,7 @@ export default function PersonalInformationForm() {
                     <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                       <TextField
                         label="State / Province"
-                        name="county"
+                        name="clientCounty"
                         width="w-full"
                         onChange={handleChange}
                         value={clientCounty}
@@ -136,7 +135,7 @@ export default function PersonalInformationForm() {
                     <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                       <TextField
                         label="ZIP / Postal code"
-                        name="postalCode"
+                        name="clientPostalCode"
                         width="w-full"
                         onChange={handleChange}
                         value={clientPostalCode}

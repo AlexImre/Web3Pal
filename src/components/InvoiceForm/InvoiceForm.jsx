@@ -3,6 +3,7 @@ import InvoiceInformationForm from './InvoiceInformationForm';
 import RecipientInformationForm from './RecipientInformationForm';
 import PaymentInformationForm from './PaymentInformationForm';
 import ServicesInformationForm from './ServicesInformationForm';
+import NotesForm from './NotesForm';
 import { navigation } from './navigation';
 import { createRef } from 'react';
 
@@ -12,7 +13,15 @@ export default function InvoiceForm() {
   const recipientRef = createRef();
   const paymentRef = createRef();
   const servicesRef = createRef();
-  const refs = [personalRef, invoiceRef, recipientRef, paymentRef, servicesRef];
+  const notesRef = createRef();
+  const refs = [
+    personalRef,
+    invoiceRef,
+    recipientRef,
+    paymentRef,
+    servicesRef,
+    notesRef,
+  ];
 
   return (
     <div className="sticky lg:grid lg:grid-cols-12 lg:gap-x-5">
@@ -21,15 +30,13 @@ export default function InvoiceForm() {
           <div
             key={item.name}
             className="group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-white hover:text-indigo-700"
+            onClick={() => {
+              refs[index].current.scrollIntoView({
+                behavior: 'smooth',
+              });
+            }}
           >
-            <div
-              className="flex"
-              onClick={() => {
-                refs[index].current.scrollIntoView({
-                  behavior: 'smooth',
-                });
-              }}
-            >
+            <div className="flex">
               <item.icon
                 className="-ml-1 mr-3 h-6 w-6 flex-shrink-0 text-slate-600 group-hover:text-indigo-500"
                 aria-hidden="true"
@@ -59,6 +66,10 @@ export default function InvoiceForm() {
 
         <section ref={servicesRef}>
           <ServicesInformationForm />
+        </section>
+
+        <section ref={notesRef}>
+          <NotesForm />
         </section>
       </div>
     </div>

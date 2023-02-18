@@ -1,12 +1,10 @@
 import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
 import ServicesModal from './ServicesModal';
 import ServicesDisplaySection from '../InvoiceDisplay/ServicesDisplaySection';
 
 export default function PersonalInformationForm() {
   const [showServicesModal, setServicesShowModal] = useState(false);
-  const personalInfoToast = () => toast.success('Information updated.');
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const servicesInformation = stateContext.masterState.servicesInformation;
@@ -66,14 +64,10 @@ export default function PersonalInformationForm() {
       'masterState.servicesInformation',
       masterState.servicesInformation[0]
     );
-    // personalInfoToast();
   };
 
   return (
     <>
-      <div style={{ position: 'sticky' }}>
-        <Toaster containerStyle={{ position: 'sticky' }} />
-      </div>
       <div className="mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-2 md:gap-6">
           <div className="mt-5 md:col-span-2 md:mt-0">

@@ -45,11 +45,11 @@ interface PaymentInformation {
     marketPrice: number;
 }
 
-interface notesSection {
+interface NotesInformation {
     notes: string;
 }
 
-interface tempInvoice {
+interface TempInvoice {
     userId: string;
     uuid: string;
     firstName: string;
@@ -101,8 +101,8 @@ type MasterStateType = {
     invoiceInformation: InvoiceInformation;
     paymentInformation: PaymentInformation;
     servicesInformation: Array<Service>;
-    notesSection: notesSection;
-    tempInvoice: tempInvoice;
+    notesInformation: NotesInformation;
+    tempInvoice: TempInvoice;
     myInvoices: any;
     myServices: any;
     myAmounts: any;
@@ -169,7 +169,7 @@ export const initialState: MasterStateType = {
         amount: 0
     }],
 
-    notesSection: {
+    notesInformation: {
         notes: ''
     },
 

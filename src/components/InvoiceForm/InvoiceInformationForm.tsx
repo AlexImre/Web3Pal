@@ -5,7 +5,7 @@ import DateFieldWithValidation from './Fields/DateFieldWithValidation';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function InvoiceInformationForm() {
-  const invoiceInfoToast = () => toast.success('Invoice information updated.');
+  const invoiceToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const [tempInvoiceInfo, setTempInvoiceInfo] = useState(
     masterState.invoiceInformation
@@ -32,12 +32,11 @@ export default function InvoiceInformationForm() {
     //   setError(false)
     // }
     setMasterState({ ...masterState, invoiceInformation: tempInvoiceInfo });
-    invoiceInfoToast();
+    invoiceToast();
   };
 
   return (
     <>
-      {/* <Toaster containerStyle={{ position: 'sticky' }} /> */}
       <div className="mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-2 md:gap-6">
           <div className="mt-5 md:col-span-2 md:mt-0">

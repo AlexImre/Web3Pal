@@ -5,7 +5,7 @@ import TextFieldWithValidation from './Fields/TextFieldWithValidation';
 import PaymentToggle from './PaymentToggle';
 
 export default function PaymentInformationForm() {
-  const personalInfoToast = () => toast.success('Information updated.');
+  const paymentToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const [tempPaymentInfo, setTempPaymentInfo] = useState(
     masterState.paymentInformation
@@ -75,15 +75,12 @@ export default function PaymentInformationForm() {
           popularCurrency: '',
         },
       });
-      personalInfoToast();
     }
+    paymentToast();
   };
 
   return (
     <>
-      <div style={{ position: 'sticky' }}>
-        <Toaster containerStyle={{ position: 'sticky' }} />
-      </div>
       <div className="mt-10 sm:mt-0">
         <div className="md:grid md:grid-cols-2 md:gap-6">
           <div className="mt-5 md:col-span-2 md:mt-0">
