@@ -1,18 +1,18 @@
-import { Fragment } from 'react'
-import Link from 'next/link'
-import { Popover, Transition } from '@headlessui/react'
-import clsx from 'clsx'
+import { Fragment } from 'react';
+import Link from 'next/link';
+import { Popover, Transition } from '@headlessui/react';
+import clsx from 'clsx';
 
-import { Button } from '../components/Button'
-import { Container } from '../components/Container'
-import { NavLink } from '../components/NavLink'
+import { Button } from '../components/Button';
+import { Container } from '../components/Container';
+import { NavLink } from '../components/NavLink';
 
 function MobileNavLink({ href, children }) {
   return (
     <Popover.Button as={Link} href={href} className="block w-full p-2">
       {children}
     </Popover.Button>
-  )
+  );
 }
 
 function MobileNavIcon({ open }) {
@@ -39,7 +39,7 @@ function MobileNavIcon({ open }) {
         )}
       />
     </svg>
-  )
+  );
 }
 
 function MobileNavigation() {
@@ -85,7 +85,7 @@ function MobileNavigation() {
         </Transition.Child>
       </Transition.Root>
     </Popover>
-  )
+  );
 }
 
 export function Header() {
@@ -95,7 +95,7 @@ export function Header() {
         <nav className="z-5 relative flex justify-between">
           <div className="flex items-center md:gap-x-12">
             <div className="text-xl font-bold">
-              Web3<span className="text-blue-600">Pal</span>
+              Web3<span className="text-indigo-600">Pal</span>
             </div>
             {/* <Link href="#" aria-label="Home">
               <Logo className="h-10 w-auto" />
@@ -110,7 +110,7 @@ export function Header() {
             <div className="hidden md:block">
               <NavLink href="/login">Sign in</NavLink>
             </div>
-            <Button href="/register" color="blue">
+            <Button href="/register" color="indigo">
               <span>
                 Get started <span className="hidden lg:inline">today</span>
               </span>
@@ -122,5 +122,5 @@ export function Header() {
         </nav>
       </Container>
     </header>
-  )
+  );
 }
