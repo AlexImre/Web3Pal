@@ -4,7 +4,7 @@ import CountriesField from './Fields/CountriesField';
 import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
 import TextField from './Fields/TextField';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export default function PersonalInformationForm() {
   const pesonalToast = () => toast.success('Information updated.');

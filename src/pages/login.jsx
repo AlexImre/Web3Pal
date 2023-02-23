@@ -1,10 +1,11 @@
-import Head from 'next/head'
-import Link from 'next/link'
+import Head from 'next/head';
+import Link from 'next/link';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
-import { AuthLayout } from '@/components/AuthLayout'
-import { Button } from '@/components/Button'
-import { TextField } from '@/components/Fields'
-import { Logo } from '@/components/Logo'
+import { AuthLayout } from '@/components/AuthLayout';
+import { Button } from '@/components/Button';
+import { TextField } from '@/components/Fields';
+import { Logo } from '@/components/Logo';
 
 export default function Login() {
   return (
@@ -50,7 +51,7 @@ export default function Login() {
             autoComplete="current-password"
             required
           />
-          <div>
+          <div onClick={() => signIn()}>
             <Button
               type="submit"
               variant="solid"
@@ -62,8 +63,20 @@ export default function Login() {
               </span>
             </Button>
           </div>
+          <div onClick={() => signOut()}>
+            <Button
+              type="submit"
+              variant="solid"
+              color="blue"
+              className="w-full"
+            >
+              <span>
+                Sign Out <span aria-hidden="true">&rarr;</span>
+              </span>
+            </Button>
+          </div>
         </form>
       </AuthLayout>
     </>
-  )
+  );
 }

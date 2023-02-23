@@ -1,19 +1,19 @@
-import clientPromise from '../../../lib/mongodb'
+import clientPromise from '../../../lib/mongodb';
 
 export default async (req, res) => {
   try {
-    const client = await clientPromise
-    const db = client.db('InvoicesDefi')
+    const client = await clientPromise;
+    const db = client.db('web3pal');
 
-    const user = req.body
-    console.log(user)
-    console.log('saving user to DB')
+    const user = req.body;
+    console.log(user);
+    console.log('saving user to DB');
 
-    const post = await db.collection('Users').insertOne(user)
-    res.json(post)
-    console.log('saved user to DB')
+    const post = await db.collection('Users').insertOne(user);
+    res.json(post);
+    console.log('saved user to DB');
   } catch (e) {
-    console.error(e)
-    throw new Error(e).message
+    console.error(e);
+    throw new Error(e).message;
   }
-}
+};
