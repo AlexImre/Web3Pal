@@ -4,6 +4,7 @@ import { StateContext } from '../context/stateContext';
 import { useState, useContext } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { SessionProvider } from 'next-auth/react';
+import Script from 'next/script';
 
 export default function App({
   Component,

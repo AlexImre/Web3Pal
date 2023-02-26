@@ -7,11 +7,11 @@ export default async (req, res) => {
 
     const user = req.body;
     console.log(user);
-    console.log('saving user to DB');
+    console.log('saving invoice to DB');
 
-    const post = await db.collection('Users').insertOne(user);
+    const post = await db.collection('invoices').insertOne(user);
     res.json(post);
-    console.log('saved user to DB');
+    console.log('saved invoice to DB');
   } catch (e) {
     console.error(e);
     throw new Error(e).message;

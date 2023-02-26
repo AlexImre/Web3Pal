@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -30,7 +30,10 @@ module.exports = {
       maxWidth: {
         '2xl': '40rem',
       },
+      backgroundImage: {
+        googleButton: "url('/googleButton.png')",
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],
-}
+};
