@@ -7,11 +7,15 @@ import PersonalInformationSection from './PersonalInformationSection';
 import RecipientInformationSection from './RecipientInformationSection';
 import PaymentDetailsSection from './PaymentDetailsSection';
 import NotesSection from './NotesSection';
+import toast from 'react-hot-toast';
+import { useSession } from 'next-auth/react';
 
 export default function InvoiceDisplay() {
+  const { data: session } = useSession();
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const {
+    uuid,
     invoiceInformation,
     personalInformation,
     recipientInformation,
@@ -19,49 +23,30 @@ export default function InvoiceDisplay() {
     servicesInformation,
     notesInformation,
   } = masterState;
-  console.log('masterState', masterState);
   const [showModal, setShowModal] = useState(false);
-  const addUser = async () => {
-    const addedUser = await fetch('/api/addInvoice', {
+
+  const invoiceToast = () => toast.success('Information updated.');
+  const email = session?.user?.email;
+  const saveInvoice = async () => {
+    // TODO add validation, all req fields must be filled
+    const invoiceToSave = {
+      invoiceId: uuid,
+      user: email,
+      invoiceInformation: invoiceInformation,
+      personalInformation: personalInformation,
+      recipientInformation: recipientInformation,
+      paymentInformation: paymentInformation,
+      servicesInformation: servicesInformation,
+      notesInformation: notesInformation,
+    };
+    const addedInvoice = await fetch('/api/saveInvoice', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        id: '123',
-        name: 'John Doe',
-        invoices: [
-          {
-            id: 'invoice1',
-            fromSection: {
-              firstName: 'John',
-              lastName: 'Doe',
-              email: 'john@gmail.com',
-            },
-            toSection: {
-              clientName: 'Sherbs',
-              clientEmail: 'sherbs@sherbs.com',
-            },
-            services: [
-              { id: 'service1', amount: 100 },
-              { id: 'service2', amount: 200 },
-            ],
-          },
-          {
-            id: 'invoice2',
-            services: [
-              { id: 'service1', amount: 100 },
-              { id: 'service2', amount: 200 },
-            ],
-          },
-        ],
-        wallets: [
-          { id: 'wallet1', amount: 1000 },
-          { id: 'wallet2', amount: 2000 },
-        ],
-      }),
+      body: JSON.stringify(invoiceToSave),
     });
-    const data = addedUser;
+    addedInvoice.ok && invoiceToast();
   };
 
   return (
@@ -109,6 +94,14 @@ export default function InvoiceDisplay() {
 
             <NotesSection notesInformation={notesInformation} />
           </div>
+        </div>
+        <div className="flex justify-end">
+          <button
+            className="my-4 w-20 rounded bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700"
+            onClick={() => saveInvoice()}
+          >
+            Save
+          </button>
         </div>
       </div>
     </>
