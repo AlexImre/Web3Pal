@@ -21,7 +21,7 @@ export default function RecipientInformation(props: any) {
             <div className="text-lg font-medium text-slate-900">
               Recipient Information
             </div>
-            <div className="font-small truncate text-sm text-gray-500">
+            <div className="font-small text-sm text-gray-500">
               {clientName && clientEmail ? (
                 <>
                   {clientName} <br></br>

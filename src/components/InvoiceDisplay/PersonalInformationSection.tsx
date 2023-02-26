@@ -22,7 +22,7 @@ export default function PersonalInformation(props: any) {
             <div className="text-lg font-medium text-slate-900">
               Personal Information
             </div>
-            <div className="font-small truncate text-sm text-gray-500">
+            <div className="font-small text-sm text-gray-500">
               {name && email ? (
                 <>
                   {name} <br></br>

@@ -25,7 +25,7 @@ export default function InvoiceDisplay() {
   } = masterState;
   const [showModal, setShowModal] = useState(false);
 
-  const invoiceToast = () => toast.success('Information updated.');
+  const invoiceToast = () => toast.success('Invoice saved.');
   const email = session?.user?.email;
   const saveInvoice = async () => {
     // TODO add validation, all req fields must be filled
