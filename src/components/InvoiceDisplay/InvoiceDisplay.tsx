@@ -9,6 +9,7 @@ import PaymentDetailsSection from './PaymentDetailsSection';
 import NotesSection from './NotesSection';
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function InvoiceDisplay() {
   const { data: session } = useSession();
@@ -32,14 +33,14 @@ export default function InvoiceDisplay() {
     const invoiceToSave = {
       invoiceId: uuid,
       user: email,
-      invoiceInformation: invoiceInformation,
-      personalInformation: personalInformation,
-      recipientInformation: recipientInformation,
-      paymentInformation: paymentInformation,
-      servicesInformation: servicesInformation,
-      notesInformation: notesInformation,
+      invoiceInformation,
+      personalInformation,
+      recipientInformation,
+      paymentInformation,
+      servicesInformation,
+      notesInformation,
     };
-    const addedInvoice = await fetch('/api/saveInvoice', {
+    const addedInvoice = await fetch('/api/saveinvoice', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +59,14 @@ export default function InvoiceDisplay() {
           </div>
           <div>
             <button
-              onClick={() => setMasterState(initialState)}
+              onClick={() => {
+                setMasterState({
+                  ...initialState,
+                  uuid: uuidv4(),
+                  timestamp: Date.now(),
+                });
+                console.log('masterState', masterState);
+              }}
               className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
             >
               New
@@ -75,8 +83,10 @@ export default function InvoiceDisplay() {
             </button>
           </div>
         </div>
+        {/* {uuid} */}
         <div className="bg-white shadow sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
+            {uuid}
             <PersonalInformationSection
               personalInformation={personalInformation}
               invoiceInformation={invoiceInformation}

@@ -44,7 +44,18 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function MyInvoicesDisplay() {
+export default function MyInvoicesDisplay(props: any) {
+  const { invoices } = props;
+  // const {
+  //   personalInformation,
+  //   invoiceInformation,
+  //   recipientInformation,
+  //   paymentInformation,
+  //   servicesInformation,
+  //   notesInformation,
+  // } = invoices;
+  // console.log('invoices', invoices);
+  // console.log('personalInformation', personalInformation);
   const checkbox = useRef();
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
@@ -154,29 +165,29 @@ export default function MyInvoicesDisplay() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person) => (
+                  {invoices.map((invoice, index) => (
                     <tr
-                      key={person.email}
+                      key={invoice._id}
                       className={
-                        selectedInvoice.includes(person)
+                        selectedInvoice.includes(invoice)
                           ? 'bg-gray-50'
                           : undefined
                       }
                     >
                       <td className="relative px-7 sm:w-12 sm:px-6">
-                        {selectedInvoice.includes(person) && (
+                        {selectedInvoice.includes(invoice) && (
                           <div className="absolute inset-y-0 left-0 w-0.5 bg-indigo-600" />
                         )}
                         <input
                           type="checkbox"
                           className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          value={person.email}
-                          checked={selectedInvoice.includes(person)}
+                          value={invoice.user}
+                          checked={selectedInvoice.includes(invoice)}
                           onChange={(e) =>
                             setSelectedInvoice(
                               e.target.checked
-                                ? [...selectedInvoice, person]
-                                : selectedInvoice.filter((p) => p !== person)
+                                ? [...selectedInvoice, invoice]
+                                : selectedInvoice.filter((p) => p !== invoice)
                             )
                           }
                         />
@@ -184,21 +195,21 @@ export default function MyInvoicesDisplay() {
                       <td
                         className={classNames(
                           'whitespace-nowrap py-4 pr-3 text-sm font-medium',
-                          selectedInvoice.includes(person)
+                          selectedInvoice.includes(invoice)
                             ? 'text-indigo-600'
                             : 'text-gray-900'
                         )}
                       >
-                        {person.name}
+                        {invoice.personalInformation.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.title}
+                        {invoice.personalInformation.name}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
+                        {invoice.personalInformation.email}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.role}
+                        {invoice.personalInformation.email}
                       </td>
                       <td className="whitespace-nowrap py-4 text-right text-sm font-medium sm:pr-3">
                         <button

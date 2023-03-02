@@ -4,8 +4,46 @@ import DashboardProfileDropDown from '@/components/Dashboard/DashboardProfileDro
 import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar';
 import DashboardMobileSidebar from '@/components/Dashboard/DashboardMobileSidebar';
 import MyInvoicesDisplay from '../components/MyInvoices/MyInvoicesDisplay';
+import type {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from 'next';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './api/auth/[...nextauth]';
 
-export default function MyInvoices() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  // If the user is already logged in, redirect.
+  // Note: Make sure not to redirect to the same page
+  // To avoid an infinite loop!
+  console.log('session', session);
+
+  if (!session) {
+    return { redirect: { destination: '/login' } };
+  }
+
+  const invoices = await fetch(
+    `http://localhost:3000/api/invoices/${session.user.email}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const response = await invoices.json();
+
+  return {
+    props: { invoices: response },
+  };
+}
+
+export default function MyInvoices(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+  const { invoices } = props;
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -32,7 +70,7 @@ export default function MyInvoices() {
 
             <DashboardProfileDropDown />
           </div>
-          <MyInvoicesDisplay />
+          <MyInvoicesDisplay invoices={invoices} />
         </div>
       </div>
     </>

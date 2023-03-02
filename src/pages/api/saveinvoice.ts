@@ -1,14 +1,16 @@
 import clientPromise from '../../lib/mongodb';
+import { Request, Response } from 'express';
 
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   try {
     const client = await clientPromise;
     const db = client.db('web3pal');
     const invoice = req.body;
-    const query = { invoiceID: invoice.uuid };
+    const query = { invoiceID: invoice.invoiceId };
 
     const doesInvoiceExist = await db.collection('invoices').findOne(query);
     if (doesInvoiceExist) {
+      console.log('Invoice already exists, replacing...');
       const replaceInvoice = await db
         .collection('invoices')
         .replaceOne(query, invoice);
@@ -16,6 +18,7 @@ export default async (req, res) => {
     }
 
     if (!doesInvoiceExist) {
+      console.log('Invoice does not exist, creating...');
       const saveInvoice = await db.collection('invoices').insertOne(invoice);
       res.json(saveInvoice);
     }
