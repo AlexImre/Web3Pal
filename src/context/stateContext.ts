@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createContext } from 'react';
 
-interface PersonalInformation {
+export interface PersonalInformationType {
     name: string;
     email: string;
     addressLine1: string;
@@ -12,7 +12,7 @@ interface PersonalInformation {
     country: string;
 }
 
-interface RecipientInformation {
+export interface RecipientInformationType {
     clientName: string;
     clientEmail: string;
     clientAddressLine1: string;
@@ -23,13 +23,13 @@ interface RecipientInformation {
     clientCountry: string;
 }
 
-interface InvoiceInformation {
+export interface InvoiceInformationType {
     invoiceNumber: string;
     issueDate: string;
     dueDate: string;
 }
 
-interface PaymentInformation {
+export interface PaymentInformationType {
     invoiceLabelling: string;
     paymentMethod: string;
     popularPlatform: string;
@@ -45,11 +45,11 @@ interface PaymentInformation {
     marketPrice: number;
 }
 
-interface NotesInformation {
+export interface NotesInformationType {
     notes: string;
 }
 
-interface TempInvoice {
+export interface TempInvoiceType {
     userId: string;
     uuid: string;
     firstName: string;
@@ -82,7 +82,7 @@ interface TempInvoice {
     notes: string;
 }
 
-type Service = {
+export type ServiceType = {
     uuid: string;
     serviceId: Number;
     description: string;
@@ -93,20 +93,31 @@ type Service = {
     amount: number;
 }
 
-type MasterStateType = {
+export type MasterStateType = {
     uuid: string;
     timestamp: any;
-    personalInformation: PersonalInformation;
-    recipientInformation: RecipientInformation;
-    invoiceInformation: InvoiceInformation;
-    paymentInformation: PaymentInformation;
-    servicesInformation: Array<Service>;
-    notesInformation: NotesInformation;
-    tempInvoice: TempInvoice;
+    personalInformation: PersonalInformationType;
+    recipientInformation: RecipientInformationType;
+    invoiceInformation: InvoiceInformationType;
+    paymentInformation: PaymentInformationType;
+    servicesInformation: Array<ServiceType>;
+    notesInformation: NotesInformationType;
+    tempInvoice: TempInvoiceType;
     myInvoices: any;
     myServices: any;
     myAmounts: any;
     marketData: any;
+}
+
+export type AddInvoiceType = {
+    invoiceId: string;
+    user: string;
+    invoiceInformation: InvoiceInformationType;
+    personalInformation: PersonalInformationType;
+    recipientInformation: RecipientInformationType;
+    paymentInformation: PaymentInformationType;
+    servicesInformation: Array<ServiceType>;
+    notesInformation: NotesInformationType;
 }
 
 export const initialState: MasterStateType = {

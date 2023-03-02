@@ -1,11 +1,12 @@
 import clientPromise from '../../lib/mongodb';
 import { Request, Response } from 'express';
+import { AddInvoiceType } from '@/context/stateContext';
 
 export default async (req: Request, res: Response) => {
   try {
     const client = await clientPromise;
     const db = client.db('web3pal');
-    const invoice = req.body;
+    const invoice: AddInvoiceType = req.body;
     const query = { invoiceID: invoice.invoiceId };
 
     const doesInvoiceExist = await db.collection('invoices').findOne(query);

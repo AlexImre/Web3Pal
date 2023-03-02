@@ -10,6 +10,7 @@ import NotesSection from './NotesSection';
 import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 import { v4 as uuidv4 } from 'uuid';
+import { AddInvoiceType } from '../../context/stateContext';
 
 export default function InvoiceDisplay() {
   const { data: session } = useSession();
@@ -30,7 +31,7 @@ export default function InvoiceDisplay() {
   const email = session?.user?.email;
   const saveInvoice = async () => {
     // TODO add validation, all req fields must be filled
-    const invoiceToSave = {
+    const invoiceToSave: AddInvoiceType = {
       invoiceId: uuid,
       user: email,
       invoiceInformation,
