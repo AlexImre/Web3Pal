@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline'
-import DashboardProfileDropDown from '@/components/Dashboard/DashboardProfileDropDown'
-import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar'
-import DashboardMobileSidebar from '@/components/Dashboard/DashboardMobileSidebar'
+import { useState } from 'react';
+import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline';
+import DashboardProfileDropDown from '@/components/Dashboard/DashboardProfileDropDown';
+import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar';
+import DashboardMobileSidebar from '@/components/Dashboard/DashboardMobileSidebar';
+import MyInvoicesDisplay from '../components/MyInvoices/MyInvoicesDisplay';
 
 export default function MyInvoices() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <>
@@ -31,9 +32,9 @@ export default function MyInvoices() {
 
             <DashboardProfileDropDown />
           </div>
-          YOOOO
+          <MyInvoicesDisplay />
         </div>
       </div>
     </>
-  )
+  );
 }
