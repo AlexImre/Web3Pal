@@ -13,7 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AddInvoiceType } from '../../context/stateContext';
 import { addDummyData } from './DummyData';
 
-export default function InvoiceDisplay() {
+export default function AddInvoiceDisplay() {
   const { data: session } = useSession();
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
@@ -32,6 +32,7 @@ export default function InvoiceDisplay() {
   const email = session?.user?.email;
   const saveInvoice = async () => {
     // TODO add validation, all req fields must be filled
+    console.log('saving invoice with id: ', uuid);
     const invoiceToSave: AddInvoiceType = {
       invoiceId: uuid,
       user: email,
@@ -95,7 +96,6 @@ export default function InvoiceDisplay() {
         {/* {uuid} */}
         <div className="bg-white shadow sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
-            {uuid}
             <PersonalInformationSection
               personalInformation={personalInformation}
               invoiceInformation={invoiceInformation}
