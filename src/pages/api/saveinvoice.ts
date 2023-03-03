@@ -7,7 +7,7 @@ export default async (req: Request, res: Response) => {
     const client = await clientPromise;
     const db = client.db('web3pal');
     const invoice: AddInvoiceType = req.body;
-    const query = { invoiceID: invoice.invoiceId };
+    const query = { invoiceId: invoice.invoiceId };
 
     const doesInvoiceExist = await db.collection('invoices').findOne(query);
     if (doesInvoiceExist) {

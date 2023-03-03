@@ -1,5 +1,6 @@
 import { StateContext } from '@/context/stateContext';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
 import {
   useLayoutEffect,
   useRef,
@@ -8,12 +9,13 @@ import {
   useContext,
 } from 'react';
 import toast from 'react-hot-toast';
+import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function MyInvoicesDisplay(props: any) {
+export default function MyInvoicesDisplay() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
@@ -63,9 +65,117 @@ export default function MyInvoicesDisplay(props: any) {
     deletedInvoices.ok && invoiceToast();
   };
 
+  const handleEdit = (invoice) => {
+    console.log('Editing invoice with id: ', invoice.invoiceId);
+    setMasterState((prevState) => ({
+      ...prevState,
+      uuid: invoice.invoiceId,
+      invoiceInformation: invoice.invoiceInformation,
+      personalInformation: invoice.personalInformation,
+      recipientInformation: invoice.recipientInformation,
+      paymentInformation: invoice.paymentInformation,
+      servicesInformation: invoice.servicesInformation,
+      notesInformation: invoice.notesInformation,
+    }));
+  };
+
+  const defaultSortState = {
+    invoiceNumber: false,
+    clientName: false,
+    issueDate: false,
+    amount: false,
+  };
+  const [activeSort, setActiveSort] = useState(defaultSortState);
+
+  const [shouldSortInvoiceNumber, setShouldSortInvoiceNumber] = useState(true);
+  const sortInvoiceNumber = (a, b) => {
+    setActiveSort({ ...defaultSortState, invoiceNumber: true });
+    shouldSortInvoiceNumber
+      ? setShouldSortInvoiceNumber(false)
+      : setShouldSortInvoiceNumber(true);
+    if (shouldSortInvoiceNumber) {
+      return (
+        a.invoiceInformation.invoiceNumber - b.invoiceInformation.invoiceNumber
+      );
+    } else {
+      return (
+        b.invoiceInformation.invoiceNumber - a.invoiceInformation.invoiceNumber
+      );
+    }
+  };
+
+  const [shouldSortAmount, setShouldSortAmount] = useState(true);
+  const sortAmount = (a, b) => {
+    setActiveSort({ ...defaultSortState, amount: true });
+    shouldSortAmount ? setShouldSortAmount(false) : setShouldSortAmount(true);
+    if (shouldSortAmount) {
+      return (
+        getServicesTotal(a.servicesInformation) -
+        getServicesTotal(b.servicesInformation)
+      );
+    } else {
+      return (
+        getServicesTotal(b.servicesInformation) -
+        getServicesTotal(a.servicesInformation)
+      );
+    }
+  };
+
+  const handleAmountSorting = () => {
+    if (myInvoices.length === 0) return;
+    myInvoices.sort(sortAmount);
+  };
+
+  const handleInvoiceNumberSorting = () => {
+    if (myInvoices.length === 0) return;
+    myInvoices.sort(sortInvoiceNumber);
+  };
+
+  const [shouldSortDate, setShouldSortDate] = useState(true);
+  const sortDate = (a: any, b: any) => {
+    setActiveSort({ ...defaultSortState, issueDate: true });
+    const convertDateStringToNumber1 = Number(
+      new Date(a.invoiceInformation.issueDate)
+    );
+    const convertDateStringToNumber2 = Number(
+      new Date(b.invoiceInformation.issueDate)
+    );
+    shouldSortDate ? setShouldSortDate(false) : setShouldSortDate(true);
+    if (shouldSortDate) {
+      return convertDateStringToNumber1 - convertDateStringToNumber2;
+    } else {
+      return convertDateStringToNumber2 - convertDateStringToNumber1;
+    }
+  };
+
+  const handleDateSorting = () => {
+    if (myInvoices.length === 0) return;
+    myInvoices.sort(sortDate);
+  };
+
+  const [shouldSortClientName, setShouldSortClientName] = useState(false);
+  const handleClientNameSorting = () => {
+    setActiveSort({ ...defaultSortState, clientName: true });
+    if (myInvoices.length === 0) return;
+    myInvoices.sort((a, b) => {
+      shouldSortClientName
+        ? setShouldSortClientName(false)
+        : setShouldSortClientName(true);
+      if (shouldSortClientName) {
+        return a.recipientInformation.clientName.localeCompare(
+          b.recipientInformation.clientName
+        );
+      } else {
+        return b.recipientInformation.clientName.localeCompare(
+          a.recipientInformation.clientName
+        );
+      }
+    });
+  };
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      NOTE TO ADD SPECIAL COMPONENT IF NO INVOICES
+      {/* NOTE TO ADD SPECIAL COMPONENT IF NO INVOICES */}
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <div className="text-2xl font-semibold text-slate-900">
@@ -102,14 +212,33 @@ export default function MyInvoicesDisplay(props: any) {
                     </th>
                     <th
                       scope="col"
-                      className="flex min-w-[12rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
+                      className="flex min-w-[8rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
                     >
                       Invoice Number
-                      <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-                        <ChevronDownIcon
-                          className="h-5 w-5"
-                          aria-hidden="true"
-                        />
+                      <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
+                        {shouldSortInvoiceNumber ? (
+                          <ChevronDownIcon
+                            className={classNames(
+                              'h-5 w-5',
+                              activeSort.invoiceNumber
+                                ? 'rounded bg-indigo-100 text-indigo-600'
+                                : ''
+                            )}
+                            aria-hidden="true"
+                            onClick={handleInvoiceNumberSorting}
+                          />
+                        ) : (
+                          <ChevronUpIcon
+                            className={classNames(
+                              'h-5 w-5',
+                              activeSort.invoiceNumber
+                                ? 'rounded bg-indigo-100 text-indigo-600'
+                                : ''
+                            )}
+                            aria-hidden="true"
+                            onClick={handleInvoiceNumberSorting}
+                          />
+                        )}
                       </span>
                     </th>
                     <th
@@ -118,11 +247,30 @@ export default function MyInvoicesDisplay(props: any) {
                     >
                       <div className="flex">
                         To
-                        <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-                          <ChevronDownIcon
-                            className="h-5 w-5"
-                            aria-hidden="true"
-                          />
+                        <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
+                          {shouldSortClientName ? (
+                            <ChevronDownIcon
+                              className={classNames(
+                                'h-5 w-5',
+                                activeSort.clientName
+                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  : ''
+                              )}
+                              aria-hidden="true"
+                              onClick={handleClientNameSorting}
+                            />
+                          ) : (
+                            <ChevronUpIcon
+                              className={classNames(
+                                'h-5 w-5',
+                                activeSort.clientName
+                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  : ''
+                              )}
+                              aria-hidden="true"
+                              onClick={handleClientNameSorting}
+                            />
+                          )}
                         </span>
                       </div>
                     </th>
@@ -130,13 +278,67 @@ export default function MyInvoicesDisplay(props: any) {
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Issue Date
+                      <div className="flex">
+                        Issue Date
+                        <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                          {shouldSortDate ? (
+                            <ChevronDownIcon
+                              className={classNames(
+                                'h-5 w-5',
+                                activeSort.issueDate
+                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  : ''
+                              )}
+                              aria-hidden="true"
+                              onClick={handleDateSorting}
+                            />
+                          ) : (
+                            <ChevronUpIcon
+                              className={classNames(
+                                'h-5 w-5',
+                                activeSort.issueDate
+                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  : ''
+                              )}
+                              aria-hidden="true"
+                              onClick={handleDateSorting}
+                            />
+                          )}
+                        </span>
+                      </div>
                     </th>
                     <th
                       scope="col"
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Amount
+                      <div className="flex">
+                        Amount
+                        <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                          {shouldSortAmount ? (
+                            <ChevronDownIcon
+                              className={classNames(
+                                'h-5 w-5',
+                                activeSort.amount
+                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  : ''
+                              )}
+                              aria-hidden="true"
+                              onClick={handleAmountSorting}
+                            />
+                          ) : (
+                            <ChevronUpIcon
+                              className={classNames(
+                                'h-5 w-5',
+                                activeSort.amount
+                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  : ''
+                              )}
+                              aria-hidden="true"
+                              onClick={handleAmountSorting}
+                            />
+                          )}
+                        </span>
+                      </div>
                     </th>
                     <th
                       scope="col"
@@ -153,7 +355,7 @@ export default function MyInvoicesDisplay(props: any) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {myInvoices.map((invoice, index) => (
+                  {myInvoices.map((invoice) => (
                     <tr
                       key={invoice._id}
                       className={
@@ -188,44 +390,36 @@ export default function MyInvoicesDisplay(props: any) {
                             : 'text-gray-900'
                         )}
                       >
-                        {invoice.invoiceId.slice(0, 8)}
+                        {invoice.invoiceInformation.invoiceNumber}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {invoice.personalInformation.name}
+                        {invoice.recipientInformation.clientName}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {invoice.personalInformation.email}
+                        {invoice.invoiceInformation.issueDate}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {invoice.personalInformation.email}
+                        {getServicesTotal(invoice.servicesInformation)}{' '}
+                        {invoice.paymentInformation.invoiceLabelling}
                       </td>
-                      <td className="whitespace-nowrap py-4 text-right text-sm font-medium sm:pr-3">
-                        <button
-                          type="button"
-                          className="inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        >
-                          Edit
-                        </button>
-                        {/* <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Edit<span className="sr-only">, {person.name}</span>
-                        </a> */}
+                      <td className="whitespace-nowrap py-4 text-right text-sm font-medium">
+                        <Link href="/addinvoice">
+                          <button
+                            type="button"
+                            className="inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            onClick={() => handleEdit(invoice)}
+                          >
+                            Edit
+                          </button>
+                        </Link>
                       </td>
-                      <td className="whitespace-nowrap py-4 text-right text-sm font-medium sm:pr-3">
+                      <td className="whitespace-nowrap py-4 text-right text-sm font-medium">
                         <button
                           type="button"
                           className="inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                           Share
                         </button>
-                        {/* <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Share<span className="sr-only">, {person.name}</span>
-                        </a> */}
                       </td>
                     </tr>
                   ))}

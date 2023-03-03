@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline';
 import DashboardDesktopSidebar from '../components/Dashboard/DashboardDesktopSidebar';
 import DashboardMobileSidebar from '../components/Dashboard/DashboardMobileSidebar';
-import InvoiceDisplay from '../components/InvoiceDisplay/InvoiceDisplay';
+import AddInvoiceDisplay from '../components/AddInvoiceDisplay/AddInvoiceDisplay';
 import { getMarketData } from '../utils/coinGeckoApi';
 import { StateContext } from '../context/stateContext';
 import { useContext } from 'react';
@@ -46,7 +46,7 @@ export default function CreateInvoice(props) {
               <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <InvoiceDisplay />
+          <AddInvoiceDisplay />
         </div>
       </div>
     </>

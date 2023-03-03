@@ -1,7 +1,7 @@
 import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
 import ServicesModal from './ServicesModal';
-import ServicesDisplaySection from '../InvoiceDisplay/ServicesDisplaySection';
+import ServicesDisplaySection from '../AddInvoiceDisplay/ServicesDisplaySection';
 
 export default function PersonalInformationForm() {
   const [showServicesModal, setServicesShowModal] = useState(false);

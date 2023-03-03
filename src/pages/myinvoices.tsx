@@ -46,7 +46,6 @@ export default function MyInvoices(
   const { invoices } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const { myInvoices } = masterState;
 
   useEffect(() => {
     setMasterState({ ...masterState, myInvoices: invoices });
@@ -78,7 +77,7 @@ export default function MyInvoices(
 
             <DashboardProfileDropDown />
           </div>
-          <MyInvoicesDisplay invoices={invoices} />
+          <MyInvoicesDisplay />
         </div>
       </div>
     </>

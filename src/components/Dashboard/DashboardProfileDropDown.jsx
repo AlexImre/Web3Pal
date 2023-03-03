@@ -1,11 +1,11 @@
-import React from 'react'
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import Image from 'next/image'
+import React from 'react';
+import { Fragment } from 'react';
+import { Menu, Transition } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import Image from 'next/image';
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function DashboardProfileDropDown() {
@@ -25,7 +25,7 @@ export default function DashboardProfileDropDown() {
                 />
                 <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
                   <span className="sr-only">Open user menu for </span>
-                  Anne Imre
+                  Alex Imre
                 </span>
                 <ChevronDownIcon
                   className="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
@@ -88,5 +88,5 @@ export default function DashboardProfileDropDown() {
         </div>
       </div>
     </>
-  )
+  );
 }
