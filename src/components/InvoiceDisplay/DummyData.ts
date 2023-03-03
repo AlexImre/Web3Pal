@@ -1,5 +1,22 @@
 import { v4 as uuidv4 } from 'uuid';
 
+export const addDummyData = async () => {
+    dummyInvoiceData.invoiceId = uuidv4();
+    dummyInvoiceData.personalInformation.email = `testUser${Math.floor(
+      Math.random() * 100
+    )}@hotmail.com`;
+    dummyInvoiceData.personalInformation.name = `Test User ${Math.floor(
+      Math.random() * 100
+    )}`;
+    const addedInvoice = await fetch('/api/saveinvoice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dummyInvoiceData),
+    });
+  };
+
 export const dummyInvoiceData = {
     invoiceId: uuidv4(),
     user: `alexandre.imre@gmail.com`,

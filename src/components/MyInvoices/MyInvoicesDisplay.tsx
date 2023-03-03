@@ -18,16 +18,6 @@ export default function MyInvoicesDisplay(props: any) {
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
 
-  // const {
-  //   personalInformation,
-  //   invoiceInformation,
-  //   recipientInformation,
-  //   paymentInformation,
-  //   servicesInformation,
-  //   notesInformation,
-  // } = invoices;
-  // console.log('invoices', invoices);
-  // console.log('personalInformation', personalInformation);
   const checkbox = useRef();
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
@@ -72,8 +62,6 @@ export default function MyInvoicesDisplay(props: any) {
 
     deletedInvoices.ok && invoiceToast();
   };
-
-  console.log('selectedInvoice', selectedInvoice);
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
