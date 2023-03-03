@@ -1,51 +1,23 @@
+import { StateContext } from '@/context/stateContext';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { useLayoutEffect, useRef, useState, useEffect } from 'react';
-
-const people = [
-  {
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-  },
-  {
-    name: 'Alex Imre',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-  },
-  {
-    name: 'James Sherb',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-  },
-  {
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-  },
-  {
-    name: 'Alex Imre',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-  },
-  {
-    name: 'James Sherb',
-    title: 'Front-end Developer',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-  },
-];
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  useEffect,
+  useContext,
+} from 'react';
+import toast from 'react-hot-toast';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function MyInvoicesDisplay(props: any) {
-  const { invoices } = props;
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+  const { myInvoices } = masterState;
+
   // const {
   //   personalInformation,
   //   invoiceInformation,
@@ -63,22 +35,49 @@ export default function MyInvoicesDisplay(props: any) {
 
   useEffect(() => {
     const isIndeterminate =
-      selectedInvoice.length > 0 && selectedInvoice.length < people.length;
-    setChecked(selectedInvoice.length === people.length);
+      selectedInvoice.length > 0 && selectedInvoice.length < myInvoices.length;
+    setChecked(selectedInvoice.length === myInvoices.length);
     setIndeterminate(isIndeterminate);
-    if (checkbox.current) {
-      checkbox.current.indeterminate = isIndeterminate;
-    }
+    // if (checkbox.current) {
+    //   checkbox.current.indeterminate = isIndeterminate;
+    // }
   }, [selectedInvoice]);
 
   function toggleAll() {
-    setSelectedInvoice(checked || indeterminate ? [] : people);
+    setSelectedInvoice(checked || indeterminate ? [] : myInvoices);
     setChecked(!checked && !indeterminate);
     setIndeterminate(false);
   }
 
+  const handleDelete = async (selectedInvoices: any) => {
+    const selectedInvoiceIds = selectedInvoices.map(
+      (invoice: any) => invoice.invoiceId
+    );
+    const invoiceToast = () =>
+      toast.success(`Invoice${selectedInvoiceIds > 1 ? 's' : ''} deleted.`);
+    const deletedInvoices = await fetch('/api/deleteinvoices', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(selectedInvoiceIds),
+    });
+
+    setMasterState((prevState) => ({
+      ...prevState,
+      myInvoices: prevState.myInvoices.filter(
+        (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
+      ),
+    }));
+
+    deletedInvoices.ok && invoiceToast();
+  };
+
+  console.log('selectedInvoice', selectedInvoice);
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
+      NOTE TO ADD SPECIAL COMPONENT IF NO INVOICES
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <div className="text-2xl font-semibold text-slate-900">
@@ -95,6 +94,7 @@ export default function MyInvoicesDisplay(props: any) {
                   <button
                     type="button"
                     className="inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30"
+                    onClick={() => handleDelete(selectedInvoice)}
                   >
                     Delete selected {`(${selectedInvoice.length})`}
                   </button>
@@ -165,7 +165,7 @@ export default function MyInvoicesDisplay(props: any) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {invoices.map((invoice, index) => (
+                  {myInvoices.map((invoice, index) => (
                     <tr
                       key={invoice._id}
                       className={
@@ -200,7 +200,7 @@ export default function MyInvoicesDisplay(props: any) {
                             : 'text-gray-900'
                         )}
                       >
-                        {invoice.personalInformation.name}
+                        {invoice.invoiceId.slice(0, 8)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {invoice.personalInformation.name}

@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 import { v4 as uuidv4 } from 'uuid';
 import { AddInvoiceType } from '../../context/stateContext';
+import { dummyInvoiceData } from './DummyData';
 
 export default function InvoiceDisplay() {
   const { data: session } = useSession();
@@ -26,6 +27,25 @@ export default function InvoiceDisplay() {
     notesInformation,
   } = masterState;
   const [showModal, setShowModal] = useState(false);
+
+  const addDummyData = async () => {
+    console.log('dummyInvoiceData before', dummyInvoiceData.invoiceId);
+    dummyInvoiceData.invoiceId = uuidv4();
+    dummyInvoiceData.personalInformation.email = `testUser${Math.floor(
+      Math.random() * 100
+    )}@hotmail.com`;
+    dummyInvoiceData.personalInformation.name = `Test User ${Math.floor(
+      Math.random() * 100
+    )}`;
+    console.log('dummyInvoiceData after', dummyInvoiceData.invoiceId);
+    const addedInvoice = await fetch('/api/saveinvoice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dummyInvoiceData),
+    });
+  };
 
   const invoiceToast = () => toast.success('Invoice saved.');
   const email = session?.user?.email;
@@ -59,6 +79,14 @@ export default function InvoiceDisplay() {
             Invoice template
           </div>
           <div>
+            <button
+              onClick={() => {
+                addDummyData();
+              }}
+              className="mb-4 mr-4 w-20 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
+            >
+              +Test
+            </button>
             <button
               onClick={() => {
                 setMasterState({

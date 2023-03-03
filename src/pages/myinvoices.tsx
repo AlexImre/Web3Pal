@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline';
 import DashboardProfileDropDown from '@/components/Dashboard/DashboardProfileDropDown';
 import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar';
@@ -10,6 +10,7 @@ import type {
 } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
+import { StateContext } from '@/context/stateContext';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -17,7 +18,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
-  console.log('session', session);
 
   if (!session) {
     return { redirect: { destination: '/login' } };
@@ -44,6 +44,14 @@ export default function MyInvoices(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const { invoices } = props;
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+  const { myInvoices } = masterState;
+
+  useEffect(() => {
+    setMasterState({ ...masterState, myInvoices: invoices });
+  }, [invoices]);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
