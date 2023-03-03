@@ -59,7 +59,7 @@ export const dummyInvoiceData = {
         dueDate: '2021-01-31'
     },
     paymentInformation: {
-        invoiceLabelling: 'USD',
+        invoiceLabelling: 'ETH',
         paymentMethod: 'crypto',
         popularPlatform: 'Bitcoin',
         popularCurrency: 'BTC',
