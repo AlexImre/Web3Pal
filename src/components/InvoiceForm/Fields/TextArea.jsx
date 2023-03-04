@@ -1,11 +1,13 @@
 export default function TextArea(props) {
-  const { name, handleChange, value } = props;
+  const { name, handleChange, value, label } = props;
   return (
     <div>
       <label
         htmlFor="comment"
         className="block text-sm font-medium text-gray-700"
-      ></label>
+      >
+        {label}
+      </label>
       <div className="mt-1">
         <textarea
           rows={4}

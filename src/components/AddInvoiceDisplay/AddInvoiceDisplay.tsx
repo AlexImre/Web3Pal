@@ -32,7 +32,7 @@ export default function AddInvoiceDisplay() {
   const email = session?.user?.email;
   const saveInvoice = async () => {
     // TODO add validation, all req fields must be filled
-    console.log('saving invoice with id: ', uuid);
+    console.log('saving invoice with id:', uuid);
     const invoiceToSave: AddInvoiceType = {
       invoiceId: uuid,
       user: email,

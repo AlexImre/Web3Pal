@@ -13,7 +13,7 @@ export default function Wallets() {
 
   return (
     <>
-      <div className="min-h-full">
+      <div className="min-h-full bg-slate-100">
         <DashboardMobileSidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -22,7 +22,7 @@ export default function Wallets() {
         <DashboardDesktopSidebar />
 
         <div className="flex flex-1 flex-col lg:pl-64">
-          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
+          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-slate-100 lg:border-none">
             {/* Open sidebar on mobile */}
             <button
               type="button"
@@ -32,9 +32,11 @@ export default function Wallets() {
               <span className="sr-only">Open sidebar</span>
               <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
-            <DashboardProfileDropDown />
           </div>
-          <WalletsDisplay />
+          My Wallets
+          <div className="px-10">
+            <WalletsDisplay />
+          </div>
         </div>
       </div>
     </>
