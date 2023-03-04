@@ -66,7 +66,6 @@ export default function MyInvoicesDisplay() {
   };
 
   const handleEdit = (invoice) => {
-    console.log('Editing invoice with id: ', invoice.invoiceId);
     setMasterState((prevState) => ({
       ...prevState,
       uuid: invoice.invoiceId,
@@ -88,69 +87,65 @@ export default function MyInvoicesDisplay() {
   const [activeSort, setActiveSort] = useState(defaultSortState);
 
   const [shouldSortInvoiceNumber, setShouldSortInvoiceNumber] = useState(true);
-  const sortInvoiceNumber = (a, b) => {
-    setActiveSort({ ...defaultSortState, invoiceNumber: true });
-    shouldSortInvoiceNumber
-      ? setShouldSortInvoiceNumber(false)
-      : setShouldSortInvoiceNumber(true);
-    if (shouldSortInvoiceNumber) {
-      return (
-        a.invoiceInformation.invoiceNumber - b.invoiceInformation.invoiceNumber
-      );
-    } else {
-      return (
-        b.invoiceInformation.invoiceNumber - a.invoiceInformation.invoiceNumber
-      );
-    }
+  const handleInvoiceNumberSorting = () => {
+    if (myInvoices.length === 0) return;
+    myInvoices.sort((a, b) => {
+      setActiveSort({ ...defaultSortState, invoiceNumber: true });
+      shouldSortInvoiceNumber
+        ? setShouldSortInvoiceNumber(false)
+        : setShouldSortInvoiceNumber(true);
+      if (shouldSortInvoiceNumber) {
+        return (
+          a.invoiceInformation.invoiceNumber -
+          b.invoiceInformation.invoiceNumber
+        );
+      } else {
+        return (
+          b.invoiceInformation.invoiceNumber -
+          a.invoiceInformation.invoiceNumber
+        );
+      }
+    });
   };
 
   const [shouldSortAmount, setShouldSortAmount] = useState(true);
-  const sortAmount = (a, b) => {
-    setActiveSort({ ...defaultSortState, amount: true });
-    shouldSortAmount ? setShouldSortAmount(false) : setShouldSortAmount(true);
-    if (shouldSortAmount) {
-      return (
-        getServicesTotal(a.servicesInformation) -
-        getServicesTotal(b.servicesInformation)
-      );
-    } else {
-      return (
-        getServicesTotal(b.servicesInformation) -
-        getServicesTotal(a.servicesInformation)
-      );
-    }
-  };
-
   const handleAmountSorting = () => {
     if (myInvoices.length === 0) return;
-    myInvoices.sort(sortAmount);
-  };
-
-  const handleInvoiceNumberSorting = () => {
-    if (myInvoices.length === 0) return;
-    myInvoices.sort(sortInvoiceNumber);
+    myInvoices.sort((a, b) => {
+      setActiveSort({ ...defaultSortState, amount: true });
+      shouldSortAmount ? setShouldSortAmount(false) : setShouldSortAmount(true);
+      if (shouldSortAmount) {
+        return (
+          getServicesTotal(a.servicesInformation) -
+          getServicesTotal(b.servicesInformation)
+        );
+      } else {
+        return (
+          getServicesTotal(b.servicesInformation) -
+          getServicesTotal(a.servicesInformation)
+        );
+      }
+    });
   };
 
   const [shouldSortDate, setShouldSortDate] = useState(true);
-  const sortDate = (a: any, b: any) => {
-    setActiveSort({ ...defaultSortState, issueDate: true });
-    const convertDateStringToNumber1 = Number(
-      new Date(a.invoiceInformation.issueDate)
-    );
-    const convertDateStringToNumber2 = Number(
-      new Date(b.invoiceInformation.issueDate)
-    );
-    shouldSortDate ? setShouldSortDate(false) : setShouldSortDate(true);
-    if (shouldSortDate) {
-      return convertDateStringToNumber1 - convertDateStringToNumber2;
-    } else {
-      return convertDateStringToNumber2 - convertDateStringToNumber1;
-    }
-  };
-
   const handleDateSorting = () => {
     if (myInvoices.length === 0) return;
-    myInvoices.sort(sortDate);
+    myInvoices.sort((a: any, b: any) => {
+      setActiveSort({ ...defaultSortState, issueDate: true });
+      const convertDateStringToNumber1 = Number(
+        new Date(a.invoiceInformation.issueDate)
+      );
+      const convertDateStringToNumber2 = Number(
+        new Date(b.invoiceInformation.issueDate)
+      );
+      shouldSortDate ? setShouldSortDate(false) : setShouldSortDate(true);
+      if (shouldSortDate) {
+        return convertDateStringToNumber1 - convertDateStringToNumber2;
+      } else {
+        return convertDateStringToNumber2 - convertDateStringToNumber1;
+      }
+    });
   };
 
   const [shouldSortClientName, setShouldSortClientName] = useState(false);
@@ -221,7 +216,7 @@ export default function MyInvoicesDisplay() {
                             className={classNames(
                               'h-5 w-5',
                               activeSort.invoiceNumber
-                                ? 'rounded bg-indigo-100 text-indigo-600'
+                                ? 'rounded bg-gray-200 text-gray-600'
                                 : ''
                             )}
                             aria-hidden="true"
@@ -232,7 +227,7 @@ export default function MyInvoicesDisplay() {
                             className={classNames(
                               'h-5 w-5',
                               activeSort.invoiceNumber
-                                ? 'rounded bg-indigo-100 text-indigo-600'
+                                ? 'rounded bg-gray-200 text-gray-600'
                                 : ''
                             )}
                             aria-hidden="true"
@@ -247,13 +242,13 @@ export default function MyInvoicesDisplay() {
                     >
                       <div className="flex">
                         To
-                        <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
+                        <span className="ml-2 flex-none cursor-pointer cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
                           {shouldSortClientName ? (
                             <ChevronDownIcon
                               className={classNames(
                                 'h-5 w-5',
                                 activeSort.clientName
-                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  ? 'rounded bg-gray-200 text-gray-600'
                                   : ''
                               )}
                               aria-hidden="true"
@@ -264,7 +259,7 @@ export default function MyInvoicesDisplay() {
                               className={classNames(
                                 'h-5 w-5',
                                 activeSort.clientName
-                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  ? 'rounded bg-gray-200 text-gray-600'
                                   : ''
                               )}
                               aria-hidden="true"
@@ -280,13 +275,13 @@ export default function MyInvoicesDisplay() {
                     >
                       <div className="flex">
                         Issue Date
-                        <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                        <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
                           {shouldSortDate ? (
                             <ChevronDownIcon
                               className={classNames(
                                 'h-5 w-5',
                                 activeSort.issueDate
-                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  ? 'rounded bg-gray-200 text-gray-600'
                                   : ''
                               )}
                               aria-hidden="true"
@@ -297,7 +292,7 @@ export default function MyInvoicesDisplay() {
                               className={classNames(
                                 'h-5 w-5',
                                 activeSort.issueDate
-                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  ? 'rounded bg-gray-200 text-gray-600'
                                   : ''
                               )}
                               aria-hidden="true"
@@ -313,13 +308,13 @@ export default function MyInvoicesDisplay() {
                     >
                       <div className="flex">
                         Amount
-                        <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                        <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
                           {shouldSortAmount ? (
                             <ChevronDownIcon
                               className={classNames(
                                 'h-5 w-5',
                                 activeSort.amount
-                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  ? 'rounded bg-gray-200 text-gray-600'
                                   : ''
                               )}
                               aria-hidden="true"
@@ -330,7 +325,7 @@ export default function MyInvoicesDisplay() {
                               className={classNames(
                                 'h-5 w-5',
                                 activeSort.amount
-                                  ? 'rounded bg-indigo-100 text-indigo-600'
+                                  ? 'rounded bg-gray-200 text-gray-600'
                                   : ''
                               )}
                               aria-hidden="true"
