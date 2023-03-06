@@ -18,7 +18,7 @@ export default function PersonalInformation(props: any) {
       <div className="w-full py-3">
         <div className="flex items-center">
           <div className="flex-shrink-0"></div>
-          <div className="ml-3 w-0 flex-1">
+          <div className="ml-3 flex-1">
             <div className="text-lg font-medium text-slate-900">
               Personal Information
             </div>
@@ -48,19 +48,19 @@ export default function PersonalInformation(props: any) {
           </div>
         </div>
       </div>
-      <div className="w-full p-3">
+      <div className="w-full py-3">
         <div className="flex items-center">
           <div className="flex-shrink-0"></div>
-          <div className="ml-5 w-0 flex-1 text-left md:text-right">
+          <div className="ml-3 flex-1 text-left md:text-right">
             <div className="text-lg font-medium text-slate-900">
               Invoice Information
             </div>
             <div className="font-small truncate text-sm text-gray-500">
               {invoiceNumber ? (
                 <>
-                  {invoiceNumber} <br></br>
-                  {issueDate} <br></br>
-                  {dueDate}
+                  Invoice number: {invoiceNumber} <br></br>
+                  Date of issue: {issueDate} <br></br>
+                  Payment due by: {dueDate}
                 </>
               ) : (
                 <>

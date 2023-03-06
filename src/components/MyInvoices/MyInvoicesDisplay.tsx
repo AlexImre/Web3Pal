@@ -26,6 +26,10 @@ export default function MyInvoicesDisplay() {
   const [selectedInvoice, setSelectedInvoice] = useState([]);
 
   useEffect(() => {
+    setChecked(false);
+  }, []);
+
+  useEffect(() => {
     const isIndeterminate =
       selectedInvoice.length > 0 && selectedInvoice.length < myInvoices.length;
     setChecked(selectedInvoice.length === myInvoices.length);
@@ -409,12 +413,14 @@ export default function MyInvoicesDisplay() {
                         </Link>
                       </td>
                       <td className="whitespace-nowrap py-4 text-right text-sm font-medium">
-                        <button
-                          type="button"
-                          className="inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        >
-                          Share
-                        </button>
+                        <Link href={`/invoices/${invoice.invoiceId}`}>
+                          <button
+                            type="button"
+                            className="inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          >
+                            Share
+                          </button>
+                        </Link>
                       </td>
                     </tr>
                   ))}

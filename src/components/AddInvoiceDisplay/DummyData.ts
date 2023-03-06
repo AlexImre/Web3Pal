@@ -8,7 +8,7 @@ export const addDummyData = async () => {
   let name = names[Math.floor(Math.random() * 50)];
   dummyInvoiceData.personalInformation.name = name
   dummyInvoiceData.recipientInformation.clientName = name;
-  dummyInvoiceData.personalInformation.email = `${name.split(' ')})}@hotmail.com`;
+  dummyInvoiceData.personalInformation.email = `${name.split(' ')}@hotmail.com`;
   dummyInvoiceData.invoiceInformation.issueDate = new Date(Math.floor(Math.random() * Date.now())).toLocaleDateString('en-US');
   dummyInvoiceData.servicesInformation = [{
     uuid: uuidv4(),
