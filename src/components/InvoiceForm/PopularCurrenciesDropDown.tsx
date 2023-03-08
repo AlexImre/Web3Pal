@@ -13,14 +13,15 @@ export default function PopularCurrenciesDropDown(props: any) {
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
 
-  const name = masterState.marketData;
+  const coins = masterState.marketData;
+  console.log('coins', coins);
 
   const [query, setQuery] = useState('');
 
   const filteredName =
     query === ''
-      ? name
-      : name.filter((currency) => {
+      ? coins
+      : coins.filter((currency) => {
           return currency.name.toLowerCase().includes(query.toLowerCase());
         });
 
