@@ -14,12 +14,6 @@ export default function InvoicesHeader() {
       </nav>
       <div className="mx-5 flex items-center">
         <Web3Button icon="show" />
-        <button
-          type="button"
-          className="ml-4 inline-flex w-32 justify-center rounded-md border border-transparent bg-indigo-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm"
-        >
-          Pay now
-        </button>
       </div>
     </header>
   );

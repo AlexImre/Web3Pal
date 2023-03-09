@@ -33,6 +33,9 @@ export const addDummyData = async () => {
 export const dummyInvoiceData = {
     invoiceId: uuidv4(),
     user: `alexandre.imre@gmail.com`,
+    status: 'Unpaid',
+    txHash: '',
+    paidTimestamp: undefined,
     personalInformation: {
         name: 'John Doe',
         email: `testUser${Math.floor(Math.random() * 20)}@hotmail.com`,

@@ -25,6 +25,12 @@ export default function MyInvoicesDisplay() {
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState([]);
 
+  const statusStyles = {
+    Paid: 'bg-green-100 text-green-800',
+    Unpaid: 'bg-yellow-100 text-yellow-800',
+    Failed: 'bg-gray-100 text-gray-800',
+  };
+
   useEffect(() => {
     setChecked(false);
   }, []);
@@ -87,6 +93,7 @@ export default function MyInvoicesDisplay() {
     clientName: false,
     issueDate: false,
     amount: false,
+    status: false,
   };
   const [activeSort, setActiveSort] = useState(defaultSortState);
 
@@ -168,6 +175,20 @@ export default function MyInvoicesDisplay() {
         return b.recipientInformation.clientName.localeCompare(
           a.recipientInformation.clientName
         );
+      }
+    });
+  };
+
+  const [shouldSortStatus, setShouldSortStatus] = useState(false);
+  const handleStatusSorting = () => {
+    setActiveSort({ ...defaultSortState, status: true });
+    if (myInvoices.length === 0) return;
+    myInvoices.sort((a, b) => {
+      shouldSortStatus ? setShouldSortStatus(false) : setShouldSortStatus(true);
+      if (shouldSortStatus) {
+        return a.status.localeCompare(b.status);
+      } else {
+        return b.status.localeCompare(a.status);
       }
     });
   };
@@ -341,6 +362,39 @@ export default function MyInvoicesDisplay() {
                     </th>
                     <th
                       scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                    >
+                      <div className="flex">
+                        Status
+                        <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
+                          {shouldSortStatus ? (
+                            <ChevronDownIcon
+                              className={classNames(
+                                'h-5 w-5',
+                                activeSort.status
+                                  ? 'rounded bg-gray-200 text-gray-600'
+                                  : ''
+                              )}
+                              aria-hidden="true"
+                              onClick={handleStatusSorting}
+                            />
+                          ) : (
+                            <ChevronUpIcon
+                              className={classNames(
+                                'h-5 w-5',
+                                activeSort.status
+                                  ? 'rounded bg-gray-200 text-gray-600'
+                                  : ''
+                              )}
+                              aria-hidden="true"
+                              onClick={handleStatusSorting}
+                            />
+                          )}
+                        </span>
+                      </div>
+                    </th>
+                    <th
+                      scope="col"
                       className="relative py-3.5 pl-3 pr-4 sm:pr-3"
                     >
                       <span className="sr-only">Edit</span>
@@ -400,6 +454,16 @@ export default function MyInvoicesDisplay() {
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {getServicesTotal(invoice.servicesInformation)}{' '}
                         {invoice.paymentInformation.invoiceLabelling}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <span
+                          className={classNames(
+                            statusStyles[invoice.status],
+                            'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize'
+                          )}
+                        >
+                          {invoice.status}
+                        </span>
                       </td>
                       <td className="whitespace-nowrap py-4 text-right text-sm font-medium">
                         <Link href="/addinvoice">

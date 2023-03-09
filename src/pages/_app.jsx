@@ -12,31 +12,12 @@ import {
 import { Web3Modal } from '@web3modal/react';
 import { WagmiConfig, createClient, configureChains, mainnet } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
-// import { arbitrum, mainnet, polygon } from 'wagmi/chains';
+import { goerli } from 'wagmi/chains';
 
-// const chains = [arbitrum, mainnet, polygon];
-
-// Wagmi client
-// const { provider } = configureChains(chains, [
-//   walletConnectProvider({ projectId: process.env.WALLET_CONNECT_ID }),
-// ]);
-// const wagmiClient = createClient({
-//   autoConnect: true,
-//   connectors: modalConnectors({
-//     projectId: process.env.WALLET_CONNECT_ID,
-//     version: '2', // or "2"
-//     appName: 'Defi Invoice',
-//     chains,
-//   }),
-//   provider,
-// });
-
-// Web3Modal Ethereum Client
-
-const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet],
-  [publicProvider()]
-);
+const chains = [mainnet, goerli];
+const { provider, webSocketProvider } = configureChains(chains, [
+  publicProvider(),
+]);
 
 const wagmiClient = createClient({
   autoConnect: true,
@@ -44,7 +25,7 @@ const wagmiClient = createClient({
   webSocketProvider,
   connectors: modalConnectors({
     projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_ID,
-    version: '2', // or "2"
+    version: '2',
     appName: 'Web3Pal',
     chains,
   }),
@@ -73,6 +54,7 @@ export default function App({
       <Web3Modal
         projectId={process.env.NEXT_PUBLIC_WALLET_CONNECT_ID}
         ethereumClient={ethereumClient}
+        themeColor="purple"
       />
     </>
   );

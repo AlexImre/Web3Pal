@@ -1,6 +1,14 @@
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 
-export default function SuccessfulPaymentAlert(props: any) {
+type SuccessfulPaymentAlertPropType = {
+  txHash: string;
+};
+
+export default function SuccessfulPaymentAlert(
+  props: SuccessfulPaymentAlertPropType
+) {
+  const { txHash } = props;
+
   return (
     <div className="m-5 w-[600px] rounded-md bg-green-50  p-4 sm:rounded-lg">
       <div className="flex">
@@ -19,7 +27,9 @@ export default function SuccessfulPaymentAlert(props: any) {
               Success! This invoice has been paid. You can view this transaction{' '}
               <a
                 className="text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
-                href={`https://etherscan.io/tx/${props.tx}`}
+                href={`https://goerli.etherscan.io/tx/${txHash}`}
+                target="_blank"
+                rel="noreferrer"
               >
                 here.
               </a>

@@ -1,131 +1,119 @@
-import Web3 from 'web3';
+/* import Web3 from 'web3';
+import { providers } from 'web3modal';
+import { helloWorldAbi, contractAbi } from './abis';
 
 const web3 = new Web3(
-  'https://mainnet.infura.io/v3/8a1ee2c98c584a8a8470b0be59ac4c6e'
+  'https://goerli.infura.io/v3/8a1ee2c98c584a8a8470b0be59ac4c6e'
 );
-const contractAbi = [
-  {
-    inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
-    inputs: [],
-    name: 'amount',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'makePayment',
-    outputs: [],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'paid',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'payee',
-    outputs: [
-      {
-        internalType: 'address payable',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'payer',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_payer',
-        type: 'address',
-      },
-      {
-        internalType: 'address payable',
-        name: '_payee',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_amount',
-        type: 'uint256',
-      },
-    ],
-    name: 'setPayment',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-];
-const contractAddress = '0xE41e906819746C457F8004C50385035e48F3D7A8';
 
-// export const getBalance = async (address) => {
-//   const balance = await web3.eth.getBalance(address);
-//   const finalBalance = web3.utils.fromWei(balance, 'ether');
+const contractAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138';
+const paymentContract = new web3.eth.Contract(contractAbi, contractAddress);
 
-//   console.log('balance', finalBalance);
-//   return finalBalance;
-// };
+// const tx = await paymentContract.methods.makePayment().send({ from: '0x123' })
 
-export const makePayment = (payer, payee, amount) => {
-  const paymentContract = new web3.eth.Contract(contractAbi, contractAddress);
-  // const payer = payer;
-  // const payee = payee;
-  // const amount = amount;
-  paymentContract.methods
-    .setPayment(payer, payee, web3.utils.toWei(amount.toString(), 'ether'))
-    .send({ from: payer })
-    .then((res) => {
-      console.log('payment details set: ', res);
+export const getAccount = async () => {
+  if (window.ethereum) {
+    const accounts = await window.ethereum.request({
+      method: 'eth_requestAccounts',
+    });
+    console.log('accounts', accounts);
+  }
+};
+
+export const getProviders = () => {
+  console.log('window.ethereum.providers: ', window.ethereum.providers);
+};
+
+export const makePaymentViaWindowEthereum = async (payer, payee, amount) => {
+  // need to force user to the right chain and convert to ETH/WEI
+  const transactionParameters = {
+    from: payer, // must match user's active address.
+    to: payee, // Required except during contract publications.
+    // value: web3.utils.toWei(amount.toString(), 'ether'),
+    // gasLimit: '21000',
+    // maxFeePerGas: '300',
+    // maxPriorityFeePerGas: '10',
+    // nonce: '0',
+    value: web3.utils.toBN(10000000000000).toString(),
+  };
+
+  const txHash = await window.ethereum
+    .request({
+      method: 'eth_sendTransaction',
+      params: [transactionParameters],
     })
-    .catch((err) => {
-      console.log('error setting payment details: ', err);
+    .then((txHash) => {
+      console.log('txHash', txHash);
+    })
+    .catch((error) => {
+      console.error('error', error);
     });
 
-  // paymentContract.methods.makePayment();
-
-  // .then((res) => {
-  //   console.log('payment details set: ', res);
-  // })
-  // .catch((err) => {
-  //   console.log('error setting payment details: ', err);
-  // });
-  // paymentContract.methods.makePayment().send({ from: payer, value: web3.utils.toWei(amount.toString(), 'ether') });
+  return txHash;
 };
 
 /* https://stackoverflow.com/questions/55154713/error-the-method-eth-sendtransaction-does-not-exist-is-not-available */
+
+// const tx = {
+//   from: payer,
+//   to: payee,
+//   value: web3.utils.toWei(amount.toString(), 'ether'),
+//   gas: 500000,
+//   data: paymentContract.methods.makePayment().encodeABI(),
+// };
+
+// Prompt the payer to sign the transaction
+// .setPayment(payer, payee, web3.utils.toWei(amount.toString(), 'ether'))
+// web3.eth.accounts
+//   .signTransaction(tx, process.env.NEXT_PUBLIC_WEB3PAL_TEST_PRIVATE_KEY)
+//   .then((signedTx) => {
+//     // Send the signed transaction to the network
+//     web3.eth
+//       .sendSignedTransaction(signedTx.rawTransaction)
+//       .on('receipt', (receipt) => {
+//         console.log('Payment successful:', receipt);
+//       })
+//       .on('error', (error) => {
+//         console.error('Error making payment:', error);
+//       });
+//   })
+//   .catch((error) => {
+//     console.error('Error signing transaction:', error);
+//   });
+
+// paymentContract.methods
+//   .setPayment(payer, payee, web3.utils.toWei(amount.toString(), 'ether'))
+//   .send({
+//     from: payer,
+//     gas: 500000,
+//   })
+//   .then((receipt) => {
+//     console.log('Payment details set:', receipt);
+//     // Once payment details have been set, initiate the payment
+//     paymentContract.methods
+//       .makePayment()
+//       .send({
+//         from: payer,
+//         gas: 500000,
+//         value: web3.utils.toWei(amount.toString(), 'ether'),
+//       })
+//       .then((receipt) => {
+//         console.log('Payment successful:', receipt);
+//       })
+//       .catch((error) => {
+//         console.error('Error making payment:', error);
+//       });
+//   })
+//   .catch((error) => {
+//     console.error('Error setting payment details:', error);
+//   });
+
+// paymentContract.methods.makePayment();
+
+// .then((res) => {
+//   console.log('payment details set: ', res);
+// })
+// .catch((err) => {
+//   console.log('error setting payment details: ', err);
+// });
+// paymentContract.methods.makePayment().send({ from: payer, value: web3.utils.toWei(amount.toString(), 'ether') }); */

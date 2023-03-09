@@ -96,6 +96,9 @@ export type ServiceType = {
 export type MasterStateType = {
     uuid: string;
     timestamp: any;
+    status: string;
+    txHash?: string;
+    paidTimestamp?: Date;
     personalInformation: PersonalInformationType;
     recipientInformation: RecipientInformationType;
     invoiceInformation: InvoiceInformationType;
@@ -109,9 +112,12 @@ export type MasterStateType = {
     marketData: any;
 }
 
-export type AddInvoiceType = {
+export type InvoiceType = {
     invoiceId: string;
     user: string;
+    status?: string;
+    txHash?: string;
+    paidTimestamp?: Date;
     invoiceInformation: InvoiceInformationType;
     personalInformation: PersonalInformationType;
     recipientInformation: RecipientInformationType;
@@ -122,9 +128,10 @@ export type AddInvoiceType = {
 
 export const initialState: MasterStateType = {
     uuid: uuidv4(),
-
     timestamp: Date.now(),
-    
+    status: 'unpaid',
+    txHash: '',
+    paidTimestamp: undefined,
     personalInformation: {
         name: '',  
         email: '', 
@@ -135,7 +142,6 @@ export const initialState: MasterStateType = {
         postalCode: '', 
         country: ''
     },
-
     recipientInformation: {
         clientName: '',
         clientEmail: '',
@@ -146,13 +152,11 @@ export const initialState: MasterStateType = {
         clientPostalCode: '', 
         clientCountry: ''
     },
-
     invoiceInformation: {
         invoiceNumber: '', 
         issueDate: '', 
         dueDate: ''
     },
-
     paymentInformation: {
         invoiceLabelling: '',
         paymentMethod: 'crypto',
@@ -168,7 +172,6 @@ export const initialState: MasterStateType = {
         bankAccountDetails: '',
         marketPrice:0,
     },
-
     servicesInformation: [{
         uuid: uuidv4(),
         serviceId: 0,
@@ -179,11 +182,9 @@ export const initialState: MasterStateType = {
         tax: 0,
         amount: 0
     }],
-
     notesInformation: {
         notes: ''
     },
-
     tempInvoice: {
         userId: '',
         uuid: '',
@@ -216,13 +217,9 @@ export const initialState: MasterStateType = {
         bankAccountDetails: '',
         notes: '', 
     },
-
     myInvoices: [],
-
     myServices: [],
-
     myAmounts: [],
-
     marketData: [],
 }
 

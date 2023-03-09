@@ -1,6 +1,6 @@
 import clientPromise from '../../lib/mongodb';
 import { Request, Response } from 'express';
-import { AddInvoiceType } from '@/context/stateContext';
+import { InvoiceType } from '@/context/stateContext';
 
 export default async (req: Request, res: Response) => {
   try {
