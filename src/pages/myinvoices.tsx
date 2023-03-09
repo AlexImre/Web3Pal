@@ -11,6 +11,7 @@ import type {
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { StateContext } from '@/context/stateContext';
+import EmptyInvoiceHolder from '@/components/MyInvoices/EmptyInvoiceHolder';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -46,9 +47,12 @@ export default function MyInvoices(
   const { invoices } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  const { myInvoices } = masterState;
+  const [numberOfInvoices, setNumberOfInvoices] = useState(0);
 
   useEffect(() => {
     setMasterState({ ...masterState, myInvoices: invoices });
+    setNumberOfInvoices(invoices.length);
   }, [invoices]);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -77,7 +81,22 @@ export default function MyInvoices(
 
             <DashboardProfileDropDown />
           </div>
-          <MyInvoicesDisplay />
+
+          <div className="px-4 sm:px-6 lg:px-8">
+            <div className="sm:flex sm:items-center">
+              <div className="sm:flex-auto">
+                <div className="text-2xl font-semibold text-slate-900">
+                  My Invoices
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {myInvoices.length === 0 ? (
+            <EmptyInvoiceHolder />
+          ) : (
+            <MyInvoicesDisplay />
+          )}
         </div>
       </div>
     </>

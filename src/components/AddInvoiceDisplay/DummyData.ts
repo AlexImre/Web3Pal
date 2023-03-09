@@ -18,7 +18,7 @@ export const addDummyData = async () => {
     price: Math.floor(Math.random() * 200),
     discount: 0,
     tax: 0,
-    amount: Math.floor(Math.random() * 10000)
+    amount: 0.001
   }];
 
   const addedInvoice = await fetch('/api/saveinvoice', {

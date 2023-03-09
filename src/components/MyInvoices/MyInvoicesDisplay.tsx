@@ -19,7 +19,6 @@ export default function MyInvoicesDisplay() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
-
   const checkbox = useRef();
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
@@ -32,13 +31,13 @@ export default function MyInvoicesDisplay() {
   };
 
   useEffect(() => {
-    setChecked(false);
-  }, []);
-
-  useEffect(() => {
     const isIndeterminate =
       selectedInvoice.length > 0 && selectedInvoice.length < myInvoices.length;
-    setChecked(selectedInvoice.length === myInvoices.length);
+    if (selectedInvoice.length === 0) {
+      setChecked(false);
+    } else {
+      setChecked(selectedInvoice.length === myInvoices.length);
+    }
     setIndeterminate(isIndeterminate);
     // if (checkbox.current) {
     //   checkbox.current.indeterminate = isIndeterminate;
@@ -71,6 +70,8 @@ export default function MyInvoicesDisplay() {
         (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
       ),
     }));
+
+    // setNumberOfInvoices(numberOfInvoices - myInvoices.length);
 
     deletedInvoices.ok && invoiceToast();
   };
@@ -195,14 +196,6 @@ export default function MyInvoicesDisplay() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      {/* NOTE TO ADD SPECIAL COMPONENT IF NO INVOICES */}
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <div className="text-2xl font-semibold text-slate-900">
-            My Invoices
-          </div>
-        </div>
-      </div>
       <div className="mt-8 flow-root">
         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
