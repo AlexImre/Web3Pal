@@ -8,7 +8,7 @@ export default function InvoiceInformationForm() {
   const invoiceToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const [tempInvoiceInfo, setTempInvoiceInfo] = useState(
-    masterState.invoiceInformation
+    masterState.invoice.invoiceInformation
   );
   const { invoiceNumber, issueDate, dueDate } = tempInvoiceInfo;
   const [error, setError] = useState(false);
@@ -31,7 +31,13 @@ export default function InvoiceInformationForm() {
     // } else {
     //   setError(false)
     // }
-    setMasterState({ ...masterState, invoiceInformation: tempInvoiceInfo });
+    setMasterState({
+      ...masterState,
+      invoice: {
+        ...masterState.invoice,
+        invoiceInformation: tempInvoiceInfo,
+      },
+    });
     invoiceToast();
   };
 

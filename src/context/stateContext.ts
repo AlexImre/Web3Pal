@@ -49,39 +49,6 @@ export interface NotesInformationType {
     notes: string;
 }
 
-export interface TempInvoiceType {
-    userId: string;
-    uuid: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    companyName: string;
-    addressLine1: string;
-    addressLine2: string;
-    city: string;
-    county: string;
-    postalCode: string;
-    country: string;
-    invoiceNumber: string;
-    date: string;
-    dueDate: string;
-    clientEmail: string;
-    clientCompanyName: string;
-    invoiceLabelling: string;
-    paymentMethod: string;
-    popularPlatform: string;
-    popularCurrency: string;
-    customCurrencyName: string;
-    customCurrencySymbol: string;
-    customCurrencyPlatform: string;
-    customCurrencyAddress: string;
-    walletName: string;
-    walletAddress: string;
-    bankAccountName: string;
-    bankAccountDetails: string;
-    notes: string;
-}
-
 export type ServiceType = {
     uuid: string;
     serviceId: Number;
@@ -94,18 +61,7 @@ export type ServiceType = {
 }
 
 export type MasterStateType = {
-    uuid: string;
-    timestamp: any;
-    status: string;
-    txHash?: string;
-    paidTimestamp?: Date;
-    personalInformation: PersonalInformationType;
-    recipientInformation: RecipientInformationType;
-    invoiceInformation: InvoiceInformationType;
-    paymentInformation: PaymentInformationType;
-    servicesInformation: Array<ServiceType>;
-    notesInformation: NotesInformationType;
-    tempInvoice: TempInvoiceType;
+    invoice: InvoiceType;
     myInvoices: any;
     myServices: any;
     myAmounts: any;
@@ -113,7 +69,9 @@ export type MasterStateType = {
 }
 
 export type InvoiceType = {
+    _id?: string;
     invoiceId: string;
+    createdTimestamp: Number;
     user: string;
     status?: string;
     txHash?: string;
@@ -127,95 +85,67 @@ export type InvoiceType = {
 }
 
 export const initialState: MasterStateType = {
-    uuid: uuidv4(),
-    timestamp: Date.now(),
-    status: 'unpaid',
-    txHash: '',
-    paidTimestamp: undefined,
-    personalInformation: {
-        name: '',  
-        email: '', 
-        addressLine1: '', 
-        addressLine2: '', 
-        city: '', 
-        county: '', 
-        postalCode: '', 
-        country: ''
-    },
-    recipientInformation: {
-        clientName: '',
-        clientEmail: '',
-        clientAddressLine1: '', 
-        clientAddressLine2: '', 
-        clientCity: '', 
-        clientCounty: '', 
-        clientPostalCode: '', 
-        clientCountry: ''
-    },
-    invoiceInformation: {
-        invoiceNumber: '', 
-        issueDate: '', 
-        dueDate: ''
-    },
-    paymentInformation: {
-        invoiceLabelling: '',
-        paymentMethod: 'crypto',
-        popularPlatform: '',
-        popularCurrency: '',
-        customCurrencyName: '',
-        customCurrencySymbol: '',
-        customCurrencyPlatform: '',
-        customCurrencyAddress: '',
-        walletName: '',
-        walletAddress: '',
-        bankAccountName: '',
-        bankAccountDetails: '',
-        marketPrice:0,
-    },
-    servicesInformation: [{
-        uuid: uuidv4(),
-        serviceId: 0,
-        description: '',
-        quantity: 0,
-        price: 0,
-        discount: 0,
-        tax: 0,
-        amount: 0
-    }],
-    notesInformation: {
-        notes: ''
-    },
-    tempInvoice: {
-        userId: '',
-        uuid: '',
-        firstName: '',
-        lastName: '', 
-        email: '',
-        companyName: '',
-        addressLine1: '',
-        addressLine2: '',
-        city: '',
-        county: '',
-        postalCode: '',
-        country: '',
-        invoiceNumber: '',
-        date:  '',
-        dueDate: '',
-        clientEmail: '',
-        clientCompanyName: '',
-        invoiceLabelling: '',
-        paymentMethod: '',
-        popularPlatform: '',
-        popularCurrency: '',
-        customCurrencyName: '',
-        customCurrencySymbol: '',
-        customCurrencyPlatform: '',
-        customCurrencyAddress: '',
-        walletName: '',
-        walletAddress: '',
-        bankAccountName: '',
-        bankAccountDetails: '',
-        notes: '', 
+    invoice: {
+        _id: undefined,
+        invoiceId: uuidv4(),
+        createdTimestamp: Date.now(),
+        user: '',
+        status: 'Unpaid',
+        txHash: '',
+        paidTimestamp: undefined,
+        personalInformation: {
+            name: '',  
+            email: '', 
+            addressLine1: '', 
+            addressLine2: '', 
+            city: '', 
+            county: '', 
+            postalCode: '', 
+            country: ''
+        },
+        recipientInformation: {
+            clientName: '',
+            clientEmail: '',
+            clientAddressLine1: '', 
+            clientAddressLine2: '', 
+            clientCity: '', 
+            clientCounty: '', 
+            clientPostalCode: '', 
+            clientCountry: ''
+        },
+        invoiceInformation: {
+            invoiceNumber: '', 
+            issueDate: '', 
+            dueDate: ''
+        },
+        paymentInformation: {
+            invoiceLabelling: '',
+            paymentMethod: 'crypto',
+            popularPlatform: '',
+            popularCurrency: '',
+            customCurrencyName: '',
+            customCurrencySymbol: '',
+            customCurrencyPlatform: '',
+            customCurrencyAddress: '',
+            walletName: '',
+            walletAddress: '',
+            bankAccountName: '',
+            bankAccountDetails: '',
+            marketPrice:0,
+        },
+        servicesInformation: [{
+            uuid: uuidv4(),
+            serviceId: 0,
+            description: '',
+            quantity: 0,
+            price: 0,
+            discount: 0,
+            tax: 0,
+            amount: 0
+        }],
+        notesInformation: {
+            notes: ''
+        },
     },
     myInvoices: [],
     myServices: [],

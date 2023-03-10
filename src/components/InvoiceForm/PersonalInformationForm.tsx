@@ -10,7 +10,7 @@ export default function PersonalInformationForm() {
   const pesonalToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const [tempPersonalInfo, setTempPersonalInfo] = useState(
-    masterState.personalInformation
+    masterState.invoice.personalInformation
   );
   const { name, email, addressLine1, addressLine2, city, county, postalCode } =
     tempPersonalInfo;
@@ -35,7 +35,10 @@ export default function PersonalInformationForm() {
     }
     setMasterState({
       ...masterState,
-      personalInformation: tempPersonalInfo,
+      invoice: {
+        ...masterState.invoice,
+        personalInformation: tempPersonalInfo,
+      },
     });
     pesonalToast();
   };

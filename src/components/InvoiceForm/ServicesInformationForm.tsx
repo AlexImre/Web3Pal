@@ -7,7 +7,8 @@ export default function PersonalInformationForm() {
   const [showServicesModal, setServicesShowModal] = useState(false);
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const servicesInformation = stateContext.masterState.servicesInformation;
+  const servicesInformation =
+    stateContext.masterState.invoice.servicesInformation;
   const [tempServicesInfo, setTempServicesInfo] = useState(servicesInformation);
   const [error, setError] = useState(false);
 
@@ -58,11 +59,14 @@ export default function PersonalInformationForm() {
     // }
     setMasterState({
       ...masterState,
-      servicesInformation: tempServicesInfo,
+      invoice: {
+        ...masterState.invoice,
+        servicesInformation: tempServicesInfo,
+      },
     });
     console.log(
       'masterState.servicesInformation',
-      masterState.servicesInformation[0]
+      masterState.invoice.servicesInformation[0]
     );
   };
 

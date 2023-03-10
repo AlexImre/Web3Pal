@@ -61,6 +61,9 @@ function Wallets() {
                         value={walletAddress}
                         onChange={(e) => handleChange(e)}
                       />
+                      <span className="cursor-pointer text-xs hover:text-indigo-500">
+                        Click here to add connected wallet address
+                      </span>
                     </div>
                   </div>
                 </div>

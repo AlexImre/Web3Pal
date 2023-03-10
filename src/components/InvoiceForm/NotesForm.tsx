@@ -7,7 +7,7 @@ export default function NotesForm() {
   const notesToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const [tempNotesInfo, setTempNotesInfo] = useState(
-    masterState.notesInformation
+    masterState.invoice.notesInformation
   );
   const { notes } = tempNotesInfo;
   const [error, setError] = useState(false);
@@ -22,8 +22,11 @@ export default function NotesForm() {
     e.preventDefault();
     setMasterState({
       ...masterState,
-      notesInformation: {
-        ...tempNotesInfo,
+      invoice: {
+        ...masterState.invoice,
+        notesInformation: {
+          ...tempNotesInfo,
+        },
       },
     });
     notesToast();

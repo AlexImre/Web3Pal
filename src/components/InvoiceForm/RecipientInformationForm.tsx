@@ -4,13 +4,14 @@ import CountriesField from './Fields/CountriesField';
 import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
 import TextField from './Fields/TextField';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export default function PersonalInformationForm() {
   const recipientToast = () => toast.success('Information updated.');
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const recipientInformation = stateContext.masterState.recipientInformation;
+  const recipientInformation =
+    stateContext.masterState.invoice.recipientInformation;
   const [tempRecipientInfo, setTempRecipientInfo] =
     useState(recipientInformation);
   const {
@@ -45,7 +46,10 @@ export default function PersonalInformationForm() {
     }
     setMasterState({
       ...masterState,
-      recipientInformation: tempRecipientInfo,
+      invoice: {
+        ...masterState.invoice,
+        recipientInformation: tempRecipientInfo,
+      },
     });
     recipientToast();
   };

@@ -18,26 +18,27 @@ export default function AddInvoiceDisplay() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const {
-    uuid,
+    invoiceId,
     invoiceInformation,
     personalInformation,
     recipientInformation,
     paymentInformation,
     servicesInformation,
     notesInformation,
-  } = masterState;
+  } = masterState.invoice;
   const [showModal, setShowModal] = useState(false);
 
   const invoiceToast = () => toast.success('Invoice saved.');
   const email = session?.user?.email;
   const saveInvoice = async () => {
     // TODO add validation, all req fields must be filled
-    console.log('saving invoice with id:', uuid);
+    console.log('saving invoice with id:', invoiceId);
     const invoiceToSave: InvoiceType = {
-      invoiceId: uuid,
+      invoiceId,
       user: email,
       status: 'Unpaid',
       txHash: '',
+      createdTimestamp: Date.now(),
       paidTimestamp: undefined,
       invoiceInformation,
       personalInformation,
@@ -76,8 +77,11 @@ export default function AddInvoiceDisplay() {
               onClick={() => {
                 setMasterState({
                   ...initialState,
-                  uuid: uuidv4(),
-                  timestamp: Date.now(),
+                  invoice: {
+                    ...initialState.invoice,
+                    invoiceId: uuidv4(),
+                    createdTimestamp: Date.now(),
+                  },
                 });
               }}
               className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"

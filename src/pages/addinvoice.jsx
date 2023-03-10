@@ -7,20 +7,55 @@ import { getMarketData } from '../utils/coinGeckoApi';
 import { StateContext } from '../context/stateContext';
 import { useContext } from 'react';
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ query }) {
   const marketData = await getMarketData();
+  const invoiceId = query.invoiceId;
+
+  const fetchInvoice = await fetch(
+    `http://localhost:3000/api/view/${invoiceId}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const invoice = await fetchInvoice.json();
 
   return {
-    props: { marketData },
+    props: { marketData, invoice },
   };
 }
 
-export default function CreateInvoice(props) {
+// TO DO: Give invoice being passed across a TYPE, create a separate CONTEXT for it OR MOVE all invoice properties to its own INVOICE property within masterState?
+/* 
+...masterState {
+  invoice: {
+    invoiceId:
+    invoiceInformation:
+    ...
+  }
+}
+*/
+// MOVE Market data to its own separate context
+// If Invoice is PAID, show PAID on page and don't allow any edits
+
+export default function CreateInvoice({ marketData, invoice }) {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  console.log('masterState', masterState);
+  const invoiceToEdit = invoice[0];
 
   useEffect(() => {
-    setMasterState({ ...masterState, marketData: props.marketData });
+    if (invoiceToEdit) {
+      setMasterState({
+        ...masterState,
+        invoice: invoiceToEdit,
+      });
+    } else {
+      setMasterState({ ...masterState, marketData: marketData });
+    }
   }, []);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);

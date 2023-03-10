@@ -1,6 +1,6 @@
 import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import TextFieldWithValidation from './Fields/TextFieldWithValidation';
 import PaymentToggle from './PaymentToggle';
 
@@ -8,7 +8,7 @@ export default function PaymentInformationForm() {
   const paymentToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const [tempPaymentInfo, setTempPaymentInfo] = useState(
-    masterState.paymentInformation
+    masterState.invoice.paymentInformation
   );
   const {
     invoiceLabelling,
@@ -45,12 +45,15 @@ export default function PaymentInformationForm() {
       }
       setMasterState({
         ...masterState,
-        paymentInformation: {
-          ...tempPaymentInfo,
-          customCurrencyName: '',
-          customCurrencySymbol: '',
-          customCurrencyAddress: '',
-          customCurrencyPlatform: '',
+        invoice: {
+          ...masterState.invoice,
+          paymentInformation: {
+            ...tempPaymentInfo,
+            customCurrencyName: '',
+            customCurrencySymbol: '',
+            customCurrencyAddress: '',
+            customCurrencyPlatform: '',
+          },
         },
       });
     } else if (paymentMethod === 'custom') {
@@ -70,9 +73,12 @@ export default function PaymentInformationForm() {
       }
       setMasterState({
         ...masterState,
-        paymentInformation: {
-          ...tempPaymentInfo,
-          popularCurrency: '',
+        invoice: {
+          ...masterState.invoice,
+          paymentInformation: {
+            ...tempPaymentInfo,
+            popularCurrency: '',
+          },
         },
       });
     }
