@@ -16,6 +16,7 @@ function classNames(...classes: string[]) {
 }
 
 // TO DO: "DELETE SELECTED IS STUCK SHOWING AFTER DELETING INVOICES"
+// TO DO: "Add logic for overdue status"
 
 export default function MyInvoicesDisplay() {
   const stateContext = useContext(StateContext);
@@ -30,6 +31,7 @@ export default function MyInvoicesDisplay() {
     Paid: 'bg-green-100 text-green-800',
     Unpaid: 'bg-yellow-100 text-yellow-800',
     Failed: 'bg-gray-100 text-gray-800',
+    Overdue: 'bg-red-100 text-red-800',
   };
 
   useEffect(() => {
@@ -57,9 +59,6 @@ export default function MyInvoicesDisplay() {
       (invoice: any) => invoice.invoiceId
     );
 
-    const selectedInvoiceNumbers = selectedInvoices.map(
-      (invoice: any) => invoice.invoiceInformation.invoiceNumber
-    );
     const invoiceToast = () =>
       toast.success(
         `Invoice${selectedInvoiceIds.length > 1 ? 's' : ''} deleted.`
@@ -72,17 +71,13 @@ export default function MyInvoicesDisplay() {
       body: JSON.stringify(selectedInvoiceIds),
     });
 
-    console.log('selectedInvoiceNumbers: ', selectedInvoiceNumbers);
-
     setMasterState((prevState) => ({
       ...prevState,
       myInvoices: prevState.myInvoices.filter(
         (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
       ),
     }));
-
-    // setNumberOfInvoices(numberOfInvoices - myInvoices.length);
-
+    setSelectedInvoice([]);
     deletedInvoices.ok && invoiceToast();
   };
 

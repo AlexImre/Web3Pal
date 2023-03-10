@@ -6,14 +6,11 @@ export default async (req: Request, res: Response) => {
     const client = await clientPromise;
     const db = client.db('web3pal');
     const invoiceIds = req.body;
-    console.log("invoiceIds", invoiceIds)
 
     if (invoiceIds.length === 1) {
       console.log("deleting one invoice")
       const query = { invoiceId: invoiceIds[0] };
-      console.log("query", query)
       const deleteInvoice = await db.collection('invoices').deleteOne(query);
-      console.log("deleteInvoice", deleteInvoice)
       res.json(deleteInvoice);
     } 
     
@@ -22,7 +19,6 @@ export default async (req: Request, res: Response) => {
       const deleteInvoices = invoiceIds.map( async (invoiceId) => {
         const query = { invoiceId: invoiceId }
         await db.collection('invoices').deleteOne(query);
-        // res.json here probably not working amending header after sending??!
       })
       res.json(deleteInvoices);
     }
