@@ -15,6 +15,8 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+// TO DO: "DELETE SELECTED IS STUCK SHOWING AFTER DELETING INVOICES"
+
 export default function MyInvoicesDisplay() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
@@ -54,6 +56,10 @@ export default function MyInvoicesDisplay() {
     const selectedInvoiceIds = selectedInvoices.map(
       (invoice: any) => invoice.invoiceId
     );
+
+    const selectedInvoiceNumbers = selectedInvoices.map(
+      (invoice: any) => invoice.invoiceInformation.invoiceNumber
+    );
     const invoiceToast = () =>
       toast.success(
         `Invoice${selectedInvoiceIds.length > 1 ? 's' : ''} deleted.`
@@ -65,6 +71,8 @@ export default function MyInvoicesDisplay() {
       },
       body: JSON.stringify(selectedInvoiceIds),
     });
+
+    console.log('selectedInvoiceNumbers: ', selectedInvoiceNumbers);
 
     setMasterState((prevState) => ({
       ...prevState,
@@ -421,13 +429,16 @@ export default function MyInvoicesDisplay() {
                           className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                           value={invoice.user}
                           checked={selectedInvoice.includes(invoice)}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            console.log(
+                              invoice.invoiceInformation.invoiceNumber
+                            );
                             setSelectedInvoice(
                               e.target.checked
                                 ? [...selectedInvoice, invoice]
                                 : selectedInvoice.filter((p) => p !== invoice)
-                            )
-                          }
+                            );
+                          }}
                         />
                       </td>
                       <td
@@ -469,14 +480,14 @@ export default function MyInvoicesDisplay() {
                         >
                           <button
                             type="button"
-                            className="inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="mr-1 inline-flex w-12 items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             onClick={() => handleEdit(invoice)}
                           >
-                            Edit
+                            {invoice.status === 'Paid' ? 'View' : 'Edit'}
                           </button>
                         </Link>
                       </td>
-                      <td className="whitespace-nowrap py-4 text-right text-sm font-medium">
+                      <td className="w-12 whitespace-nowrap py-4 text-right text-sm font-medium">
                         <Link href={`/invoices/${invoice.invoiceId}`}>
                           <button
                             type="button"

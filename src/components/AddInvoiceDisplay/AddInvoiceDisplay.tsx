@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 import { v4 as uuidv4 } from 'uuid';
 import { InvoiceType } from '../../context/stateContext';
 import { addDummyData } from './DummyData';
+import SuccessfulPaymentAlert from '../Web3/SuccessfulPaymentAlert';
 
 export default function AddInvoiceDisplay() {
   const { data: session } = useSession();
@@ -19,6 +20,8 @@ export default function AddInvoiceDisplay() {
   const { masterState, setMasterState } = stateContext;
   const {
     invoiceId,
+    status,
+    txHash,
     invoiceInformation,
     personalInformation,
     recipientInformation,
@@ -28,10 +31,13 @@ export default function AddInvoiceDisplay() {
   } = masterState.invoice;
   const [showModal, setShowModal] = useState(false);
 
+  const hasInvoiceBeenPaid = status === 'Paid';
+
   const invoiceToast = () => toast.success('Invoice saved.');
   const email = session?.user?.email;
   const saveInvoice = async () => {
     // TODO add validation, all req fields must be filled
+    // TODO change replacing invoices to updating!
     console.log('saving invoice with id:', invoiceId);
     const invoiceToSave: InvoiceType = {
       invoiceId,
@@ -88,20 +94,27 @@ export default function AddInvoiceDisplay() {
             >
               New
             </button>
-            <button
-              className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
-              onClick={() => setShowModal(true)}
-            >
-              Edit
-            </button>
+            {!hasInvoiceBeenPaid && (
+              <button
+                className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                onClick={() => setShowModal(true)}
+              >
+                Edit
+              </button>
+            )}
             {showModal && <InvoiceModal setShowModal={setShowModal} />}
             <button className="mb-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
               Export
             </button>
           </div>
         </div>
-        {/* {uuid} */}
         <div className="bg-white shadow sm:rounded-lg">
+          {hasInvoiceBeenPaid && (
+            <SuccessfulPaymentAlert
+              txHash={txHash}
+              forRenderingInAddInvoiceDisplay={true}
+            />
+          )}
           <div className="px-4 py-5 sm:px-6">
             <PersonalInformationSection
               personalInformation={personalInformation}
@@ -122,12 +135,14 @@ export default function AddInvoiceDisplay() {
           </div>
         </div>
         <div className="flex justify-end">
-          <button
-            className="my-4 w-20 rounded bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700"
-            onClick={() => saveInvoice()}
-          >
-            Save
-          </button>
+          {!hasInvoiceBeenPaid && (
+            <button
+              className="my-4 w-20 rounded bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700"
+              onClick={() => saveInvoice()}
+            >
+              Save
+            </button>
+          )}
         </div>
       </div>
     </>

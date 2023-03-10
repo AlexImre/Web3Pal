@@ -6,6 +6,7 @@ import AddInvoiceDisplay from '../components/AddInvoiceDisplay/AddInvoiceDisplay
 import { getMarketData } from '../utils/coinGeckoApi';
 import { StateContext } from '../context/stateContext';
 import { useContext } from 'react';
+import { InvoiceType } from '../context/stateContext';
 
 export async function getServerSideProps({ query }) {
   const marketData = await getMarketData();
@@ -44,10 +45,11 @@ export async function getServerSideProps({ query }) {
 export default function CreateInvoice({ marketData, invoice }) {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  console.log('masterState', masterState);
-  const invoiceToEdit = invoice[0];
+  const invoiceToEdit: InvoiceType = invoice[0];
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(false);
     if (invoiceToEdit) {
       setMasterState({
         ...masterState,
@@ -81,7 +83,7 @@ export default function CreateInvoice({ marketData, invoice }) {
               <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <AddInvoiceDisplay />
+          {isLoading ? <></> : <AddInvoiceDisplay />}
         </div>
       </div>
     </>

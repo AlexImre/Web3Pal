@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export const getMarketData = async (token) => {
+export const getMarketData = async () => {
   const requestOptions = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
