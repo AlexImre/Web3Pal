@@ -1,17 +1,16 @@
-import { SideBarNavItems } from './SidebarNavItems'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { SideBarNavItems } from './SidebarNavItems';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-const navigation = SideBarNavItems
+const navigation = SideBarNavItems;
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function DashboardDesktopSidebar() {
-  const router = useRouter()
-  const { pathname } = router
-  console.log(pathname)
+  const router = useRouter();
+  const { pathname } = router;
   return (
     <>
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
@@ -52,5 +51,5 @@ export default function DashboardDesktopSidebar() {
         </div>
       </div>
     </>
-  )
+  );
 }

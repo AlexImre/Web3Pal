@@ -55,7 +55,9 @@ export default function MyInvoicesDisplay() {
       (invoice: any) => invoice.invoiceId
     );
     const invoiceToast = () =>
-      toast.success(`Invoice${selectedInvoiceIds > 1 ? 's' : ''} deleted.`);
+      toast.success(
+        `Invoice${selectedInvoiceIds.length > 1 ? 's' : ''} deleted.`
+      );
     const deletedInvoices = await fetch('/api/deleteinvoices', {
       method: 'DELETE',
       headers: {

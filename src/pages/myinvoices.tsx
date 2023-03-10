@@ -44,18 +44,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function MyInvoices(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { invoices } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
-  const [numberOfInvoices, setNumberOfInvoices] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setMasterState({ ...masterState, myInvoices: invoices });
-    setNumberOfInvoices(invoices.length);
-  }, [invoices]);
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+    setIsLoading(false);
+  }, []);
 
   return (
     <>
@@ -68,7 +67,7 @@ export default function MyInvoices(
         <DashboardDesktopSidebar />
 
         <div className="flex flex-1 flex-col lg:pl-64">
-          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
+          <div className="flex flex-shrink-0 border-b border-gray-200 bg-white lg:h-0 lg:border-none">
             {/* Open sidebar on mobile */}
             <button
               type="button"
@@ -78,11 +77,9 @@ export default function MyInvoices(
               <span className="sr-only">Open sidebar</span>
               <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
-
-            <DashboardProfileDropDown />
           </div>
 
-          <div className="px-4 sm:px-6 lg:px-8">
+          <div className="mt-5 px-4 sm:px-6 lg:px-8">
             <div className="sm:flex sm:items-center">
               <div className="sm:flex-auto">
                 <div className="text-2xl font-semibold text-slate-900">
@@ -92,10 +89,12 @@ export default function MyInvoices(
             </div>
           </div>
 
-          {myInvoices.length === 0 ? (
-            <EmptyInvoiceHolder />
-          ) : (
+          {isLoading ? (
+            <></>
+          ) : myInvoices.length > 0 ? (
             <MyInvoicesDisplay />
+          ) : (
+            <EmptyInvoiceHolder />
           )}
         </div>
       </div>

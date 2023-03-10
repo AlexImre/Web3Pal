@@ -1,6 +1,5 @@
 import clientPromise from '../../lib/mongodb';
 import { Request, Response } from 'express';
-import { InvoiceType } from '@/context/stateContext';
 
 export default async (req: Request, res: Response) => {
   try {
@@ -20,6 +19,7 @@ export default async (req: Request, res: Response) => {
       invoiceIds.forEach( async (invoice) => {
         const query = { invoiceID: invoice.invoiceId }
         const deleteInvoices = await db.collection('invoices').deleteOne(query);
+        // res.json here probably not working amending header after sending??!
         res.json(deleteInvoices);
       })
     }
