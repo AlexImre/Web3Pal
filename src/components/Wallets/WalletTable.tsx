@@ -118,14 +118,6 @@ export default function Example() {
           </div>
         </div>
       </div>
-      <div className="mt-4 sm:mt-10 sm:flex-none">
-        <button
-          type="button"
-          className="block rounded-md bg-indigo-600 py-2 px-3 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Add wallet
-        </button>
-      </div>
     </div>
   );
 }

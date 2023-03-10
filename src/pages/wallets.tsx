@@ -33,7 +33,6 @@ export default function Wallets() {
               <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          My Wallets
           <div className="px-10">
             <WalletsDisplay />
           </div>

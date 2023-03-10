@@ -6,7 +6,7 @@ export default function TextFieldRequired(props) {
       <label htmlFor="text" className="block text-sm font-medium text-gray-700">
         {label}
       </label>
-      <div className="relative mt-1 rounded-md shadow-sm">
+      <div className="relative mt-1 rounded-md">
         <input
           type="text"
           name={name}
