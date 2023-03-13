@@ -1,23 +1,30 @@
 import clientPromise from '../../lib/mongodb';
 import { Request, Response } from 'express';
-import { InvoiceType } from '@/context/stateContext';
 
 export default async (req: Request, res: Response) => {
   try {
     const client = await clientPromise;
     const db = client.db('web3pal');
-    const invoice: InvoiceType = req.body;
+    const invoice = req.body;
     const query = { invoiceId: invoice.invoiceId };
 
     const doesInvoiceExist = await db.collection('invoices').findOne(query);
     if (doesInvoiceExist) {
-      console.log('Invoice already exists, replacing...');
-      console.log("replacement invoice: ", invoice)
-      console.log("query", query)
-      const replaceInvoice = await db
+      console.log('Invoice already exists, updating...');
+      const updateInvoice = await db
         .collection('invoices')
-        .replaceOne(query, invoice);
-      res.json(replaceInvoice);
+        .updateOne(query, {
+          $set: {
+            updatedTimestamp: Date.now(),
+            invoiceInformation: invoice.invoiceInformation,
+            personalInformation: invoice.personalInformation,
+            recipientInformation: invoice.recipientInformation,
+            paymentInformation: invoice.paymentInformation,
+            servicesInformation: invoice.servicesInformation,
+            notesInformation: invoice.notesInformation,
+          }
+        });
+      res.json(updateInvoice);
     }
 
     if (!doesInvoiceExist) {

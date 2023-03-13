@@ -72,6 +72,7 @@ export type InvoiceType = {
     _id?: string;
     invoiceId: string;
     createdTimestamp: Number;
+    updatedTimestamp?: Number;
     user: string;
     status?: string;
     txHash?: string;
@@ -89,6 +90,7 @@ export const initialState: MasterStateType = {
         _id: undefined,
         invoiceId: uuidv4(),
         createdTimestamp: Date.now(),
+        updatedTimestamp: undefined,
         user: '',
         status: 'Unpaid',
         txHash: '',

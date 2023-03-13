@@ -29,16 +29,6 @@ export async function getServerSideProps({ query }) {
   };
 }
 
-// TO DO: Give invoice being passed across a TYPE, create a separate CONTEXT for it OR MOVE all invoice properties to its own INVOICE property within masterState?
-/* 
-...masterState {
-  invoice: {
-    invoiceId:
-    invoiceInformation:
-    ...
-  }
-}
-*/
 // MOVE Market data to its own separate context
 // If Invoice is PAID, show PAID on page and don't allow any edits
 
