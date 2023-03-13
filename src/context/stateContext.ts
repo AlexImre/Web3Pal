@@ -25,8 +25,8 @@ export interface RecipientInformationType {
 
 export interface InvoiceInformationType {
     invoiceNumber: string;
-    issueDate: string;
-    dueDate: string;
+    issueDate: Date;
+    dueDate: Date;
 }
 
 export interface PaymentInformationType {
@@ -71,8 +71,8 @@ export type MasterStateType = {
 export type InvoiceType = {
     _id?: string;
     invoiceId: string;
-    createdTimestamp: Number;
-    updatedTimestamp?: Number;
+    createdTimestamp: Date;
+    updatedTimestamp?: Date;
     user: string;
     status?: string;
     txHash?: string;
@@ -89,7 +89,7 @@ export const initialState: MasterStateType = {
     invoice: {
         _id: undefined,
         invoiceId: uuidv4(),
-        createdTimestamp: Date.now(),
+        createdTimestamp: new Date(Date.now()),
         updatedTimestamp: undefined,
         user: '',
         status: 'Unpaid',
@@ -117,8 +117,8 @@ export const initialState: MasterStateType = {
         },
         invoiceInformation: {
             invoiceNumber: '', 
-            issueDate: '', 
-            dueDate: ''
+            issueDate: undefined, 
+            dueDate: undefined
         },
         paymentInformation: {
             invoiceLabelling: '',

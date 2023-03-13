@@ -15,7 +15,6 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-// TO DO: "DELETE SELECTED IS STUCK SHOWING AFTER DELETING INVOICES"
 // TO DO: "Add logic for overdue status"
 
 export default function MyInvoicesDisplay() {
@@ -199,6 +198,33 @@ export default function MyInvoicesDisplay() {
     });
   };
 
+  const getInvoiceStatus = (invoice) => {
+    const status = invoice.status;
+    const dueDate = new Date(invoice.invoiceInformation.dueDate);
+    const currentDate = new Date(Date.now());
+    if (dueDate) {
+      if (status === 'Paid') {
+        return (
+          <div className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium capitalize text-green-800">
+            Paid
+          </div>
+        );
+      } else if (dueDate < currentDate) {
+        return (
+          <div className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium capitalize text-red-800">
+            Overdue
+          </div>
+        );
+      } else {
+        return (
+          <div className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium capitalize text-yellow-800">
+            Unpaid
+          </div>
+        );
+      }
+    }
+  };
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="mt-8 flow-root">
@@ -297,7 +323,7 @@ export default function MyInvoicesDisplay() {
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                       <div className="flex">
-                        Issue Date
+                        Due Date
                         <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
                           {shouldSortDate ? (
                             <ChevronDownIcon
@@ -450,21 +476,16 @@ export default function MyInvoicesDisplay() {
                         {invoice.recipientInformation.clientName}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {invoice.invoiceInformation.issueDate}
+                        {new Date(
+                          invoice.invoiceInformation.dueDate
+                        ).toLocaleDateString('en-US')}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {getServicesTotal(invoice.servicesInformation)}{' '}
                         {invoice.paymentInformation.invoiceLabelling}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        <span
-                          className={classNames(
-                            statusStyles[invoice.status],
-                            'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize'
-                          )}
-                        >
-                          {invoice.status}
-                        </span>
+                        {getInvoiceStatus(invoice)}
                       </td>
                       <td className="whitespace-nowrap py-4 text-right text-sm font-medium">
                         <Link

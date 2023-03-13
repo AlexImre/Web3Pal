@@ -13,8 +13,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { InvoiceType } from '../../context/stateContext';
 import { addDummyData } from './DummyData';
 import SuccessfulPaymentAlert from '../Web3/SuccessfulPaymentAlert';
+import { useRouter } from 'next/router';
 
 export default function AddInvoiceDisplay() {
+  const router = useRouter();
   const { data: session } = useSession();
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
@@ -37,14 +39,13 @@ export default function AddInvoiceDisplay() {
   const email = session?.user?.email;
   const saveInvoice = async () => {
     // TODO add validation, all req fields must be filled
-    // TODO change replacing invoices to updating!
     console.log('saving invoice with id:', invoiceId);
     const invoiceToSave: InvoiceType = {
       invoiceId,
       user: email,
       status: 'Unpaid',
       txHash: '',
-      createdTimestamp: Date.now(),
+      createdTimestamp: new Date(Date.now()),
       paidTimestamp: undefined,
       invoiceInformation,
       personalInformation,
@@ -61,6 +62,18 @@ export default function AddInvoiceDisplay() {
       body: JSON.stringify(invoiceToSave),
     });
     addedInvoice.ok && invoiceToast();
+  };
+
+  const createNewInvoice = () => {
+    setMasterState({
+      ...initialState,
+      invoice: {
+        ...initialState.invoice,
+        invoiceId: uuidv4(),
+        createdTimestamp: new Date(Date.now()),
+      },
+    });
+    router.push({ pathname: '/addinvoice' }, undefined, { shallow: true });
   };
 
   return (
@@ -80,16 +93,7 @@ export default function AddInvoiceDisplay() {
               +Test
             </button>
             <button
-              onClick={() => {
-                setMasterState({
-                  ...initialState,
-                  invoice: {
-                    ...initialState.invoice,
-                    invoiceId: uuidv4(),
-                    createdTimestamp: Date.now(),
-                  },
-                });
-              }}
+              onClick={createNewInvoice}
               className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
             >
               New
@@ -119,6 +123,7 @@ export default function AddInvoiceDisplay() {
             <PersonalInformationSection
               personalInformation={personalInformation}
               invoiceInformation={invoiceInformation}
+              status={status}
             />
 
             <RecipientInformationSection

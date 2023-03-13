@@ -9,7 +9,8 @@ export const addDummyData = async () => {
   dummyInvoiceData.personalInformation.name = name
   dummyInvoiceData.recipientInformation.clientName = name;
   dummyInvoiceData.personalInformation.email = `${name.split(' ')}@hotmail.com`;
-  dummyInvoiceData.invoiceInformation.issueDate = new Date(Math.floor(Math.random() * Date.now())).toLocaleDateString('en-US');
+  dummyInvoiceData.invoiceInformation.issueDate = new Date(Math.floor(Math.random() * Date.now()));
+  dummyInvoiceData.invoiceInformation.dueDate = new Date(Math.floor(Math.random() * Date.now()));
   dummyInvoiceData.servicesInformation = [{
     uuid: uuidv4(),
     serviceId: 0,
@@ -58,8 +59,8 @@ export const dummyInvoiceData = {
     },
     invoiceInformation: {
         invoiceNumber: '1234',
-        issueDate: '2021-01-01',
-        dueDate: '2021-01-31'
+        issueDate: undefined,
+        dueDate: undefined
     },
     paymentInformation: {
         invoiceLabelling: 'ETH',
