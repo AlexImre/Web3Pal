@@ -34,7 +34,6 @@ export async function getServerSideProps(context) {
 }
 
 // NOTE - Need to update database with status of paid invoice, also think about prompting user to connect wallet first? maybe grey out pay invoice button until connected?
-// Pull amount from the invoice itself!
 // Make sure it connects to the right chain
 
 function Invoice(props) {
@@ -104,7 +103,11 @@ function Invoice(props) {
           <SuccessfulPaymentAlert txHash={txHash} />
         ) : (
           <>
-            {' '}
+            <div className="mt-5 w-[600px] text-center text-red-600">
+              Pay using the button below <strong>only</strong>. Do not manually
+              send funds directly to the address, or your invoice may be marked
+              as unpaid.
+            </div>{' '}
             <button
               type="button"
               className="m-5 inline-flex items-center rounded-lg border border-gray-200 bg-white py-2.5 px-5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white"
@@ -154,7 +157,10 @@ function Invoice(props) {
               <RecipientInformationSection
                 recipientInformation={recipientInformation}
               />
-              <PaymentDetailsSection paymentInformation={paymentInformation} />
+              <PaymentDetailsSection
+                paymentInformation={paymentInformation}
+                isForSender={true}
+              />
               <div className="ml-3">
                 <ServicesDisplaySection serviceData={servicesInformation} />
               </div>

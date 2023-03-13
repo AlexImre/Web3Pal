@@ -71,9 +71,10 @@ export default function PersonalInformation(props: any) {
                 </>
               ) : (
                 <>
-                  John Smith <br></br>
-                  John@Smith.com <br></br>
-                  123 Metaverse Lane <br></br>
+                  <em>Example Name</em>
+                  <br></br>
+                  <em>Example Email</em> <br></br>
+                  <em>Example Address</em> <br></br>
                 </>
               )}
             </div>
@@ -91,14 +92,17 @@ export default function PersonalInformation(props: any) {
               {invoiceNumber ? (
                 <>
                   Invoice number: {invoiceNumber} <br></br>
-                  Date of issue: {issueDate} <br></br>
-                  Payment due by: {dueDate}
+                  Date of issue:{' '}
+                  {new Date(issueDate).toLocaleDateString('en-US')}
+                  <br></br>
+                  Payment due by:{' '}
+                  {new Date(dueDate).toLocaleDateString('en-US')}
                 </>
               ) : (
                 <>
-                  Invoice number: 12 <br></br>
-                  Date of Issue: 01/01/2021 <br></br>
-                  Payment due by: 01/31/2021
+                  <em>Invoice number: 1</em> <br></br>
+                  <em>Date of Issue: 01/01/2023</em> <br></br>
+                  <em>Payment due by: 01/02/2023</em>
                 </>
               )}
             </div>
