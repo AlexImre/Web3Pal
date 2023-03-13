@@ -16,6 +16,7 @@ export default function PaymentDetails(props) {
     walletAddress,
     marketPrice,
   } = props.paymentInformation;
+  const { isForSender } = props;
 
   const copyToast = () => toast.success('Wallet address copied to clipboard.');
 
@@ -58,9 +59,14 @@ export default function PaymentDetails(props) {
                         ? `Crytocurrency: ${popularCurrency}`
                         : ''}
                       <br></br>
-                      {walletName ? `Wallet Name: ${walletName}` : ''} <br></br>
-                      {walletAddress ? `Wallet Address: ${walletAddress}` : ''}
-                      <br></br>
+                      {walletName && !isForSender
+                        ? `Wallet Name: ${walletName}`
+                        : ''}{' '}
+                      {!isForSender && <br></br>}
+                      {walletAddress && !isForSender
+                        ? `Wallet Address: ${walletAddress}`
+                        : ''}
+                      {!isForSender && <br></br>}
                     </>
                   ) : (
                     <>
@@ -79,8 +85,8 @@ export default function PaymentDetails(props) {
                 </>
               ) : (
                 <>
-                  MetaExchange Ltd <br></br>
-                  Drury Lane, London <br></br>
+                  <em>Example Crytocurrency</em> <br></br>
+                  <em>Example Wallet Address</em> <br></br>
                 </>
               )}
             </div>

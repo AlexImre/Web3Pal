@@ -43,8 +43,8 @@ export default function RecipientInformation(props: any) {
                 </>
               ) : (
                 <>
-                  MetaExchange Ltd <br></br>
-                  Drury Lane, London <br></br>
+                  <em>Example Client Name</em> <br></br>
+                  <em>Example Client Address</em> <br></br>
                 </>
               )}
             </div>

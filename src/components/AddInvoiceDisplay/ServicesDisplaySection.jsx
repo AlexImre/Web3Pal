@@ -5,8 +5,7 @@ import {
 } from '../InvoiceForm/ServicesUtils';
 
 export default function ServicesDisplay(props) {
-  const { serviceData } = props;
-
+  const { serviceData, invoiceLabelling } = props;
   const tax = getServicesTax(serviceData) || 0;
   const subTotal = getServicesSubtotal(serviceData) || 0;
   const total = getServicesTotal(serviceData) || 0;
@@ -59,30 +58,30 @@ export default function ServicesDisplay(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {serviceData?.map((project) => (
+                  {serviceData?.map((service) => (
                     <tr
-                      key={project.id}
+                      key={service.id}
                       className="break-all border-b border-gray-200"
                     >
                       <td className="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
-                        <div className="font-medium text-gray-900">
-                          {project.description}
+                        <div className="font-medium text-gray-500">
+                          {service.description}
                         </div>
                       </td>
                       <td className="hidden py-4 px-3 text-right text-sm text-gray-500 sm:table-cell">
-                        {Intl.NumberFormat('en-US').format(project.quantity)}
+                        {Intl.NumberFormat('en-US').format(service.quantity)}
                       </td>
                       <td className="hidden py-4 px-3 text-right text-sm text-gray-500 sm:table-cell">
-                        {Intl.NumberFormat('en-US').format(project.price)}
+                        {Intl.NumberFormat('en-US').format(service.price)}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                        {Intl.NumberFormat('en-US').format(project.discount)}
+                        {Intl.NumberFormat('en-US').format(service.discount)}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                        {Intl.NumberFormat('en-US').format(project.tax)}
+                        {Intl.NumberFormat('en-US').format(service.tax)}
                       </td>
                       <td className="py-4 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                        {Intl.NumberFormat('en-US').format(project.amount)}
+                        {Intl.NumberFormat('en-US').format(service.amount)}
                       </td>
                     </tr>
                   ))}
@@ -103,7 +102,7 @@ export default function ServicesDisplay(props) {
                       Subtotal
                     </th>
                     <td className="pl-3 pr-4 pt-6 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                      {Intl.NumberFormat('en-US').format(subTotal)}
+                      {Intl.NumberFormat('en-US').format(subTotal)} ETH
                     </td>
                   </tr>
                   <tr>
@@ -121,7 +120,7 @@ export default function ServicesDisplay(props) {
                       Tax
                     </th>
                     <td className="pl-3 pr-4 pt-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                      {Intl.NumberFormat('en-US').format(tax)}
+                      {Intl.NumberFormat('en-US').format(tax)} ETH
                     </td>
                   </tr>
                   <tr>
@@ -139,7 +138,7 @@ export default function ServicesDisplay(props) {
                       Total
                     </th>
                     <td className="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 sm:pr-6 md:pr-0">
-                      {Intl.NumberFormat('en-US').format(total)}
+                      {Intl.NumberFormat('en-US').format(total)} ETH
                     </td>
                   </tr>
                 </tfoot>

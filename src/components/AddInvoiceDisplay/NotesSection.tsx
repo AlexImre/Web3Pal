@@ -10,7 +10,7 @@ export default function NotesSection(props: any) {
         <div className="ml-3 w-0 flex-1">
           <div className="text-lg font-medium text-slate-900">Notes</div>
           <div className="truncate text-sm font-medium text-gray-700">
-            {notes ? notes : 'Lovely job, thank you!'}
+            {notes ? notes : <em>Example Notes</em>}
           </div>
         </div>
       </div>

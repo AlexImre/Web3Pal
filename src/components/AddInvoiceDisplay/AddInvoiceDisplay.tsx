@@ -133,7 +133,10 @@ export default function AddInvoiceDisplay() {
             <PaymentDetailsSection paymentInformation={paymentInformation} />
 
             <div className="ml-3">
-              <ServicesDisplaySection serviceData={servicesInformation} />
+              <ServicesDisplaySection
+                serviceData={servicesInformation}
+                invoiceLabelling={paymentInformation.invoiceLabelling}
+              />
             </div>
 
             <NotesSection notesInformation={notesInformation} />
