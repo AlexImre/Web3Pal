@@ -12,10 +12,7 @@ export default function PopularCurrenciesDropDown(props: any) {
   const { tempPaymentInfo, setTempPaymentInfo, setCurrentPrice, error } = props;
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
-
   const coins = masterState.marketData;
-  console.log('coins', coins);
-
   const [query, setQuery] = useState('');
 
   const filteredName =

@@ -4,12 +4,17 @@ import TextField from '../InvoiceForm/Fields/TextField';
 import WalletTable from './WalletTable';
 import { ethers } from 'ethers';
 
+type WalletType = {
+  name: string;
+  address: string;
+};
+
 function Wallets() {
   const { address, isConnected } = useAccount();
 
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [walletName, setWalletName] = useState<string | null>(null);
-  const [wallets, setWallets] = useState<any>([]);
+  const [walletAddress, setWalletAddress] = useState<string>('');
+  const [walletName, setWalletName] = useState<string>('');
+  const [wallets, setWallets] = useState<WalletType[]>([]);
 
   const handleChange = (e) => {
     setWalletAddress(e.target.value);
@@ -92,11 +97,10 @@ function Wallets() {
                   Wallets
                 </div>
                 <br></br>
-                {wallets.map((wallet) => (
-                  <>
+                {wallets.map((wallet, index) => (
+                  <div key={index}>
                     {wallet.name} <br></br> {wallet.address}
-                    <br></br>
-                  </>
+                  </div>
                 ))}
               </div>
             </div>
