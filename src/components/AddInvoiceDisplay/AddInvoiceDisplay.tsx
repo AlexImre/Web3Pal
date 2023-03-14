@@ -43,7 +43,7 @@ export default function AddInvoiceDisplay() {
     const invoiceToSave: InvoiceType = {
       invoiceId,
       user: email,
-      status: 'Unpaid',
+      status: 'Draft',
       txHash: '',
       createdTimestamp: new Date(Date.now()),
       paidTimestamp: undefined,

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function PersonalInformation(props: any) {
   const {
@@ -12,51 +12,9 @@ export default function PersonalInformation(props: any) {
     country,
   } = props.personalInformation;
   const { invoiceNumber, issueDate, dueDate } = props.invoiceInformation;
-  const { status } = props;
-
-  useEffect(() => {
-    calculateStatus();
-  }, [dueDate]);
-
-  const calculateStatus = () => {
-    console.log('status: ', status);
-    console.log('dueDate: ', dueDate);
-    const dueDateFormatted = new Date(dueDate);
-    const currentDate = new Date(Date.now());
-    if (status === 'Draft') {
-      return (
-        <div className="w-32 rounded-xl border border-solid border-gray-800 bg-gray-100 p-2 text-center font-bold text-gray-800">
-          Draft
-        </div>
-      );
-    }
-    if (dueDate) {
-      if (status === 'Paid') {
-        return (
-          <div className="my-4 w-32 rounded-xl border border-solid border-green-800 bg-green-100 p-2 text-center font-bold text-green-800">
-            Paid
-          </div>
-        );
-      }
-      if (dueDateFormatted < currentDate) {
-        return (
-          <div className="my-4 w-32 rounded-xl border border-solid border-red-800 bg-red-100 p-2 text-center font-bold text-red-800">
-            Overdue
-          </div>
-        );
-      } else {
-        return (
-          <div className="my-4 w-32 rounded-xl border border-solid border-yellow-800 bg-yellow-100 p-2 text-center font-bold text-yellow-800">
-            Unpaid
-          </div>
-        );
-      }
-    }
-  };
 
   return (
     <>
-      {/* <div className="flex justify-end">{calculateStatus()}</div> */}
       <div className="flex flex-col md:flex-row">
         <div className="w-full py-3">
           <div className="flex items-center">
