@@ -15,8 +15,6 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-// TO DO: "Add logic for overdue status"
-
 export default function MyInvoicesDisplay() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
@@ -25,13 +23,6 @@ export default function MyInvoicesDisplay() {
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState([]);
-
-  const statusStyles = {
-    Paid: 'bg-green-100 text-green-800',
-    Unpaid: 'bg-yellow-100 text-yellow-800',
-    Failed: 'bg-gray-100 text-gray-800',
-    Overdue: 'bg-red-100 text-red-800',
-  };
 
   useEffect(() => {
     const isIndeterminate =
@@ -54,30 +45,36 @@ export default function MyInvoicesDisplay() {
   }
 
   const handleDelete = async (selectedInvoices: any) => {
-    const selectedInvoiceIds = selectedInvoices.map(
-      (invoice: any) => invoice.invoiceId
-    );
-
-    const invoiceToast = () =>
-      toast.success(
-        `Invoice${selectedInvoiceIds.length > 1 ? 's' : ''} deleted.`
+    if (
+      window.confirm(
+        'Deleting an invoice cannot be undone. If you wish to continue with this action, press OK.'
+      )
+    ) {
+      const selectedInvoiceIds = selectedInvoices.map(
+        (invoice: any) => invoice.invoiceId
       );
-    const deletedInvoices = await fetch('/api/deleteinvoices', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(selectedInvoiceIds),
-    });
 
-    setMasterState((prevState) => ({
-      ...prevState,
-      myInvoices: prevState.myInvoices.filter(
-        (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
-      ),
-    }));
-    setSelectedInvoice([]);
-    deletedInvoices.ok && invoiceToast();
+      const invoiceToast = () =>
+        toast.success(
+          `Invoice${selectedInvoiceIds.length > 1 ? 's' : ''} deleted.`
+        );
+      const deletedInvoices = await fetch('/api/deleteinvoices', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedInvoiceIds),
+      });
+
+      setMasterState((prevState) => ({
+        ...prevState,
+        myInvoices: prevState.myInvoices.filter(
+          (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
+        ),
+      }));
+      setSelectedInvoice([]);
+      deletedInvoices.ok && invoiceToast();
+    }
   };
 
   const handleEdit = (invoice) => {
