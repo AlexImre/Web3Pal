@@ -12,7 +12,6 @@ import { useSession } from 'next-auth/react';
 import { v4 as uuidv4 } from 'uuid';
 import { InvoiceType } from '../../context/stateContext';
 import { addDummyData } from './DummyData';
-import SuccessfulPaymentAlert from '../Web3/SuccessfulPaymentAlert';
 import { useRouter } from 'next/router';
 import { getInvoiceStatus } from './GetInvoiceStatus';
 import InvoiceStatusHeader from './InvoiceStatusHeader';
