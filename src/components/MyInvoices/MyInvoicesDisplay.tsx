@@ -199,6 +199,13 @@ export default function MyInvoicesDisplay() {
     const status = invoice.status;
     const dueDate = new Date(invoice.invoiceInformation.dueDate);
     const currentDate = new Date(Date.now());
+    if (status === 'Draft') {
+      return (
+        <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-800">
+          Draft
+        </div>
+      );
+    }
     if (dueDate) {
       if (status === 'Paid') {
         return (
@@ -496,7 +503,7 @@ export default function MyInvoicesDisplay() {
                             className="mr-1 inline-flex w-12 items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             onClick={() => handleEdit(invoice)}
                           >
-                            {invoice.status === 'Paid' ? 'View' : 'Edit'}
+                            {invoice.status === 'Draft' ? 'Edit' : 'View'}
                           </button>
                         </Link>
                       </td>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAccount } from 'wagmi';
 import TextField from '../InvoiceForm/Fields/TextField';
 import WalletTable from './WalletTable';
 import { ethers } from 'ethers';
+import { useSession } from 'next-auth/react';
 
 type WalletType = {
   name: string;
@@ -10,11 +10,12 @@ type WalletType = {
 };
 
 function Wallets() {
-  const { address, isConnected } = useAccount();
-
   const [walletAddress, setWalletAddress] = useState<string>('');
   const [walletName, setWalletName] = useState<string>('');
   const [wallets, setWallets] = useState<WalletType[]>([]);
+
+  const session = useSession();
+  const user = session.data.user.email;
 
   const handleChange = (e) => {
     setWalletAddress(e.target.value);
@@ -24,15 +25,42 @@ function Wallets() {
     setWalletName(e.target.value);
   };
 
-  const handleClick = () => {
-    const isValid = ethers.utils.isAddress(walletAddress);
-    if (isValid) {
-      console.log('valid address');
-    } else {
-      console.log('invalid address');
+  const handleRemoveWallet = (index: number) => {
+    const newWallets = [...wallets];
+    newWallets.splice(index, 1);
+    setWallets(newWallets);
+  };
+
+  const handleAddWallet = async () => {
+    const isValidWallet = ethers.utils.isAddress(walletAddress);
+
+    // TO DO: Add this to validation
+    if (!isValidWallet) {
+      alert('Please enter a valid wallet address');
       return;
     }
-    setWallets([...wallets, { name: walletName, address: walletAddress }]);
+
+    const newWallet: WalletType = {
+      name: walletName,
+      address: walletAddress,
+    };
+
+    const requestBody = {
+      user: user,
+      wallet: newWallet,
+    };
+
+    const addWallet = await fetch('/api/addwallet', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ requestBody }),
+    });
+
+    if (addWallet.ok) {
+      setWallets([...wallets, newWallet]);
+    }
   };
 
   return (
@@ -76,7 +104,7 @@ function Wallets() {
               <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                 <button
                   className="inline-flex w-20 justify-center rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  onClick={handleClick}
+                  onClick={handleAddWallet}
                 >
                   Add
                 </button>
@@ -98,8 +126,20 @@ function Wallets() {
                 </div>
                 <br></br>
                 {wallets.map((wallet, index) => (
-                  <div key={index}>
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
                     {wallet.name} <br></br> {wallet.address}
+                    <div>
+                      <button
+                        type="button"
+                        className="inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        onClick={() => handleRemoveWallet(index)}
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

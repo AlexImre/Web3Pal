@@ -14,6 +14,8 @@ import { InvoiceType } from '../../context/stateContext';
 import { addDummyData } from './DummyData';
 import SuccessfulPaymentAlert from '../Web3/SuccessfulPaymentAlert';
 import { useRouter } from 'next/router';
+import { getInvoiceStatus } from './GetInvoiceStatus';
+import InvoiceStatusHeader from './InvoiceStatusHeader';
 
 export default function AddInvoiceDisplay() {
   const router = useRouter();
@@ -32,8 +34,6 @@ export default function AddInvoiceDisplay() {
     notesInformation,
   } = masterState.invoice;
   const [showModal, setShowModal] = useState(false);
-
-  const hasInvoiceBeenPaid = status === 'Paid';
 
   const invoiceToast = () => toast.success('Invoice saved.');
   const email = session?.user?.email;
@@ -71,10 +71,15 @@ export default function AddInvoiceDisplay() {
         ...initialState.invoice,
         invoiceId: uuidv4(),
         createdTimestamp: new Date(Date.now()),
+        status: 'Draft',
       },
     });
     router.push({ pathname: '/addinvoice' }, undefined, { shallow: true });
   };
+
+  const invoiceStatus = getInvoiceStatus(masterState.invoice);
+
+  const isInvoiceDraft = invoiceStatus === 'Draft';
 
   return (
     <>
@@ -98,7 +103,7 @@ export default function AddInvoiceDisplay() {
             >
               New
             </button>
-            {!hasInvoiceBeenPaid && (
+            {isInvoiceDraft && (
               <button
                 className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
                 onClick={() => setShowModal(true)}
@@ -113,12 +118,8 @@ export default function AddInvoiceDisplay() {
           </div>
         </div>
         <div className="bg-white shadow sm:rounded-lg">
-          {hasInvoiceBeenPaid && (
-            <SuccessfulPaymentAlert
-              txHash={txHash}
-              forRenderingInAddInvoiceDisplay={true}
-            />
-          )}
+          <InvoiceStatusHeader invoiceStatus={invoiceStatus} txHash={txHash} />
+
           <div className="px-4 py-5 sm:px-6">
             <PersonalInformationSection
               personalInformation={personalInformation}
@@ -143,12 +144,12 @@ export default function AddInvoiceDisplay() {
           </div>
         </div>
         <div className="flex justify-end">
-          {!hasInvoiceBeenPaid && (
+          {isInvoiceDraft && (
             <button
-              className="my-4 w-20 rounded bg-green-600 py-2 px-4 text-sm font-medium text-white hover:bg-green-700"
+              className="my-4 w-full rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
               onClick={() => saveInvoice()}
             >
-              Save
+              Publish Invoice
             </button>
           )}
         </div>
