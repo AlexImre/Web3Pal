@@ -2,7 +2,8 @@ import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
 import NumberFieldWithValidation from './Fields/NumberFieldWithValidation';
 import DateFieldWithValidation from './Fields/DateFieldWithValidation';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
+import { hasIssueDateError, hasDueDateError } from './Fields/formValidation';
 
 export default function InvoiceInformationForm() {
   const invoiceToast = () => toast.success('Information updated.');
@@ -11,26 +12,47 @@ export default function InvoiceInformationForm() {
     masterState.invoice.invoiceInformation
   );
   const { invoiceNumber, issueDate, dueDate } = tempInvoiceInfo;
-  const [error, setError] = useState(false);
-
-  const handleChange = (e) => {
-    setTempInvoiceInfo({ ...tempInvoiceInfo, [e.target.name]: e.target.value });
+  const defaultError = {
+    invoiceNumber: false,
+    issueDate: false,
+    dueDate: false,
   };
+  const defaultErrorMessage = {
+    invoiceNumber: '',
+    issueDate: '',
+    dueDate: '',
+  };
+  const [error, setError] = useState(defaultError);
+  const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
+  const handleChange = (e) => {
+    setTempInvoiceInfo({
+      ...tempInvoiceInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // how to generate invoice number?
+  // look at invoices.length?
+  // Every time an invoice is published +1 to some tracking number?
+  // check no duplicates of invoice number
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (tempInvoiceInfo.firstName === '' || tempInvoiceInfo.lastName === '') {
-    //   setError(true)
-    //   return
-    // } else if (
-    //   tempInvoiceInfo.email === '' ||
-    //   !tempInvoiceInfo.email.includes('@')
-    // ) {
-    //   setError(true)
-    //   return
-    // } else {
-    //   setError(false)
-    // }
+
+    const isIssueDateError = hasIssueDateError(issueDate);
+    const isDueDateError = hasDueDateError(issueDate, dueDate);
+    if (isIssueDateError) {
+      setError({ ...error, issueDate: true });
+      setErrorMessage({ ...errorMessage, issueDate: isIssueDateError.message });
+      return;
+    } else if (isDueDateError) {
+      setError({ ...error, dueDate: true });
+      setErrorMessage({ ...errorMessage, dueDate: isDueDateError.message });
+      return;
+    } else {
+      setError(defaultError);
+      setErrorMessage(defaultErrorMessage);
+    }
     setMasterState({
       ...masterState,
       invoice: {
@@ -64,6 +86,8 @@ export default function InvoiceInformationForm() {
                         width="w-full"
                         value={invoiceNumber}
                         onChange={handleChange}
+                        error={error.invoiceNumber}
+                        errorMessage={errorMessage.invoiceNumber}
                       />
                     </div>
                   </div>
@@ -75,6 +99,8 @@ export default function InvoiceInformationForm() {
                         width="w-full"
                         value={issueDate}
                         onChange={handleChange}
+                        error={error.issueDate}
+                        errorMessage={errorMessage.issueDate}
                       />
                     </div>
                   </div>
@@ -86,6 +112,8 @@ export default function InvoiceInformationForm() {
                         width="w-full"
                         value={dueDate}
                         onChange={handleChange}
+                        error={error.dueDate}
+                        errorMessage={errorMessage.dueDate}
                       />
                     </div>
                   </div>

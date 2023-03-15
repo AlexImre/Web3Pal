@@ -1,6 +1,10 @@
-import React from 'react';
+import { StateContext } from '@/context/stateContext';
+import React, { useContext } from 'react';
 
 export default function PersonalInformation(props: any) {
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+  const { invoiceNumber } = masterState.invoice.invoiceInformation;
   const {
     name,
     email,
@@ -11,7 +15,7 @@ export default function PersonalInformation(props: any) {
     postalCode,
     country,
   } = props.personalInformation;
-  const { invoiceNumber, issueDate, dueDate } = props.invoiceInformation;
+  const { issueDate, dueDate } = props.invoiceInformation;
 
   return (
     <>
@@ -58,7 +62,7 @@ export default function PersonalInformation(props: any) {
                 Invoice Information
               </div>
               <div className="font-small truncate text-sm text-gray-500">
-                {invoiceNumber ? (
+                {dueDate ? (
                   <>
                     Invoice number: {invoiceNumber} <br></br>
                     Date of issue:{' '}
@@ -69,7 +73,7 @@ export default function PersonalInformation(props: any) {
                   </>
                 ) : (
                   <>
-                    <em>Invoice number: 1</em> <br></br>
+                    <em>Invoice number: {invoiceNumber}</em> <br></br>
                     <em>Date of Issue: 01/01/2023</em> <br></br>
                     <em>Payment due by: 01/02/2023</em>
                   </>
