@@ -1,7 +1,7 @@
-import { ExclamationCircleIcon } from '@heroicons/react/20/solid'
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
 export default function EmailField(props) {
-  const { label, name, width, value, onChange, error } = props
+  const { label, name, width, value, onChange, error } = props;
 
   return (
     <div>
@@ -46,5 +46,5 @@ export default function EmailField(props) {
         ''
       )}
     </div>
-  )
+  );
 }

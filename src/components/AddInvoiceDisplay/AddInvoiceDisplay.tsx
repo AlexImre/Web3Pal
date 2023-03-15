@@ -15,6 +15,7 @@ import { addDummyData } from './DummyData';
 import { useRouter } from 'next/router';
 import { getInvoiceStatus } from './GetInvoiceStatus';
 import InvoiceStatusHeader from './InvoiceStatusHeader';
+import InvoiceProgressBar from './InvoiceProgressBar';
 
 export default function AddInvoiceDisplay() {
   const router = useRouter();
@@ -61,7 +62,17 @@ export default function AddInvoiceDisplay() {
       },
       body: JSON.stringify(invoiceToSave),
     });
-    addedInvoice.ok && savedToast();
+
+    if (addedInvoice.ok) {
+      setMasterState({
+        ...masterState,
+        invoice: {
+          ...invoice,
+          status: 'Draft',
+        },
+      });
+      savedToast();
+    }
   };
 
   const publishInvoice = async () => {
@@ -110,87 +121,96 @@ export default function AddInvoiceDisplay() {
 
   return (
     <>
-      <div className="m-10 flex max-w-2xl flex-col justify-center">
-        <div className="-mt-5 mb-2 flex items-center justify-between">
-          <div>
-            <button
-              onClick={() => {
-                addDummyData();
-              }}
-              className="my-2 mr-2 w-20 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
-            >
-              +Test
-            </button>
-            <button
-              onClick={createNewInvoice}
-              className="m-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
-            >
-              New
-            </button>
+      <div className="flex items-center">
+        <div className="m-10 flex w-[600px] max-w-2xl flex-col justify-center">
+          <div className="-mt-5 mb-2 flex items-center justify-between">
+            <div>
+              <button
+                onClick={() => {
+                  addDummyData();
+                }}
+                className="my-2 mr-2 w-20 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
+              >
+                +Test
+              </button>
+              <button
+                onClick={createNewInvoice}
+                className="m-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+              >
+                New
+              </button>
+              {isInvoiceDraft && (
+                <button
+                  className="my-2 ml-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                  onClick={() => setShowModal(true)}
+                >
+                  Edit
+                </button>
+              )}
+            </div>
+            <div>
+              {showModal && <InvoiceModal setShowModal={setShowModal} />}
+              {/* <button className="mb-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
+              Export
+            </button> */}
+              {
+                <button className="my-2 ml-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
+                  Send
+                </button>
+              }
+            </div>
+          </div>
+          <div className="mb-4">
+            <InvoiceStatusHeader
+              invoiceStatus={invoiceStatus}
+              txHash={txHash}
+            />
+          </div>
+          <div className="bg-white shadow sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6">
+              <PersonalInformationSection
+                personalInformation={personalInformation}
+                invoiceInformation={invoiceInformation}
+                status={status}
+              />
+
+              <RecipientInformationSection
+                recipientInformation={recipientInformation}
+              />
+
+              <PaymentDetailsSection paymentInformation={paymentInformation} />
+
+              <div className="ml-3">
+                <ServicesDisplaySection
+                  serviceData={servicesInformation}
+                  invoiceLabelling={paymentInformation.invoiceLabelling}
+                />
+              </div>
+
+              <NotesSection notesInformation={notesInformation} />
+            </div>
+          </div>
+          <div className="flex justify-end">
             {isInvoiceDraft && (
               <button
-                className="my-2 ml-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
-                onClick={() => setShowModal(true)}
+                className="my-4 mr-4 w-1/2 rounded bg-slate-600 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700"
+                onClick={() => saveInvoice()}
               >
-                Edit
+                Save progress
+              </button>
+            )}
+            {isInvoiceDraft && (
+              <button
+                className="my-4 w-1/2 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                onClick={() => publishInvoice()}
+              >
+                Publish invoice
               </button>
             )}
           </div>
-          <div>
-            {showModal && <InvoiceModal setShowModal={setShowModal} />}
-            {/* <button className="mb-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
-              Export
-            </button> */}
-            {
-              <button className="my-2 ml-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
-                Send
-              </button>
-            }
-          </div>
         </div>
-        <div className="bg-white shadow sm:rounded-lg">
-          <InvoiceStatusHeader invoiceStatus={invoiceStatus} txHash={txHash} />
-
-          <div className="px-4 py-5 sm:px-6">
-            <PersonalInformationSection
-              personalInformation={personalInformation}
-              invoiceInformation={invoiceInformation}
-              status={status}
-            />
-
-            <RecipientInformationSection
-              recipientInformation={recipientInformation}
-            />
-
-            <PaymentDetailsSection paymentInformation={paymentInformation} />
-
-            <div className="ml-3">
-              <ServicesDisplaySection
-                serviceData={servicesInformation}
-                invoiceLabelling={paymentInformation.invoiceLabelling}
-              />
-            </div>
-
-            <NotesSection notesInformation={notesInformation} />
-          </div>
-        </div>
-        <div className="flex justify-end">
-          {isInvoiceDraft && (
-            <button
-              className="my-4 mr-4 w-1/2 rounded bg-slate-600 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700"
-              onClick={() => saveInvoice()}
-            >
-              Save progress
-            </button>
-          )}
-          {isInvoiceDraft && (
-            <button
-              className="my-4 w-1/2 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
-              onClick={() => publishInvoice()}
-            >
-              Publish invoice
-            </button>
-          )}
+        <div className="hidden md:flex">
+          <InvoiceProgressBar />
         </div>
       </div>
     </>
