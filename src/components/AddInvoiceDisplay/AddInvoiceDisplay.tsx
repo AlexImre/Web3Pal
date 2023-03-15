@@ -210,7 +210,7 @@ export default function AddInvoiceDisplay() {
           </div>
         </div>
         <div className="hidden md:flex">
-          <InvoiceProgressBar />
+          {isInvoiceDraft && <InvoiceProgressBar />}
         </div>
       </div>
     </>

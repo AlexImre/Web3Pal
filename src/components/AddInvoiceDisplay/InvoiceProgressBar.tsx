@@ -63,7 +63,7 @@ export default function InvoiceProgressBar() {
                   aria-hidden="true"
                 />
               ) : null}
-              <div className="group relative flex items-start">
+              <div className="group relative flex items-center">
                 <span className="flex h-9 items-center">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 group-hover:bg-indigo-800">
                     <CheckIcon
@@ -85,7 +85,7 @@ export default function InvoiceProgressBar() {
                   aria-hidden="true"
                 />
               ) : null}
-              <div className="group relative flex items-start">
+              <div className="group relative flex items-center">
                 <span className="flex h-9 items-center" aria-hidden="true">
                   <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white group-hover:border-gray-400">
                     <span className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300" />

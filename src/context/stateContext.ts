@@ -127,7 +127,7 @@ export const initialState: MasterStateType = {
         },
         invoiceInformation: {
             invoiceNumber: '', 
-            issueDate: undefined, 
+            issueDate: new Date(Date.now()), 
             dueDate: undefined
         },
         paymentInformation: {

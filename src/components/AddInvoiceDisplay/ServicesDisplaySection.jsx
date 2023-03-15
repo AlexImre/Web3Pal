@@ -16,6 +16,9 @@ export default function ServicesDisplay(props) {
         <div className="w-0 flex-1">
           <div className="bg-white">
             <div className="flex flex-col sm:-mx-6 md:mx-0">
+              <div className="pt-3 text-lg font-medium text-slate-900">
+                Services
+              </div>
               <table className="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
