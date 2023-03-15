@@ -1,4 +1,4 @@
-import { StateContext } from '@/context/stateContext';
+import { StateContext, initialState } from '@/context/stateContext';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import {
@@ -68,10 +68,12 @@ export default function MyInvoicesDisplay() {
 
       setMasterState((prevState) => ({
         ...prevState,
+        invoice: initialState.invoice,
         myInvoices: prevState.myInvoices.filter(
           (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
         ),
       }));
+
       setSelectedInvoice([]);
       deletedInvoices.ok && invoiceToast();
     }
@@ -201,7 +203,7 @@ export default function MyInvoicesDisplay() {
     const currentDate = new Date(Date.now());
     if (status === 'Draft') {
       return (
-        <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium capitalize text-slate-800">
+        <div className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium capitalize text-blue-800">
           Draft
         </div>
       );

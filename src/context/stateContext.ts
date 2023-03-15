@@ -92,7 +92,7 @@ export const initialState: MasterStateType = {
         createdTimestamp: new Date(Date.now()),
         updatedTimestamp: undefined,
         user: '',
-        status: 'Unpaid',
+        status: 'Example',
         txHash: '',
         paidTimestamp: undefined,
         personalInformation: {

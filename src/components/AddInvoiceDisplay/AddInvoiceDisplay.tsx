@@ -21,6 +21,7 @@ export default function AddInvoiceDisplay() {
   const { data: session } = useSession();
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  const { invoice } = masterState;
   const {
     invoiceId,
     status,
@@ -34,9 +35,9 @@ export default function AddInvoiceDisplay() {
   } = masterState.invoice;
   const [showModal, setShowModal] = useState(false);
 
-  const invoiceToast = () => toast.success('Invoice saved.');
   const email = session?.user?.email;
   const saveInvoice = async () => {
+    const savedToast = () => toast.success('Invoice saved.');
     // TODO add validation, all req fields must be filled
     console.log('saving invoice with id:', invoiceId);
     const invoiceToSave: InvoiceType = {
@@ -60,7 +61,31 @@ export default function AddInvoiceDisplay() {
       },
       body: JSON.stringify(invoiceToSave),
     });
-    addedInvoice.ok && invoiceToast();
+    addedInvoice.ok && savedToast();
+  };
+
+  const publishInvoice = async () => {
+    const publishedToast = () => toast.success('Invoice published.');
+    // TODO add validation, all req fields must be filled
+    console.log('publishing invoice with id:', invoiceId);
+    const publishedInvoice = await fetch('/api/publishinvoice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(invoiceId),
+    });
+
+    if (publishedInvoice.ok) {
+      setMasterState({
+        ...masterState,
+        invoice: {
+          ...invoice,
+          status: 'Unpaid',
+        },
+      });
+      publishedToast();
+    }
   };
 
   const createNewInvoice = () => {
@@ -70,50 +95,57 @@ export default function AddInvoiceDisplay() {
         ...initialState.invoice,
         invoiceId: uuidv4(),
         createdTimestamp: new Date(Date.now()),
-        status: 'Draft',
+        status: 'Example',
       },
     });
     router.push({ pathname: '/addinvoice' }, undefined, { shallow: true });
   };
 
-  const invoiceStatus = getInvoiceStatus(masterState.invoice);
+  const invoiceStatus = getInvoiceStatus(invoice);
+  const isInvoiceDraft =
+    invoiceStatus === 'Draft' || invoiceStatus === 'Example';
 
-  const isInvoiceDraft = invoiceStatus === 'Draft';
+  const isInvoiceUnpaid =
+    invoiceStatus === 'Unpaid' || invoiceStatus === 'Overdue';
 
   return (
     <>
       <div className="m-10 flex max-w-2xl flex-col justify-center">
-        <div className="-mt-5 flex items-baseline justify-between">
-          <div className="text-2xl font-semibold text-slate-900">
-            Invoice template
-          </div>
+        <div className="-mt-5 mb-2 flex items-center justify-between">
           <div>
             <button
               onClick={() => {
                 addDummyData();
               }}
-              className="mb-4 mr-4 w-20 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
+              className="my-2 mr-2 w-20 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
             >
               +Test
             </button>
             <button
               onClick={createNewInvoice}
-              className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+              className="m-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
             >
               New
             </button>
             {isInvoiceDraft && (
               <button
-                className="mb-4 mr-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                className="my-2 ml-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
                 onClick={() => setShowModal(true)}
               >
                 Edit
               </button>
             )}
+          </div>
+          <div>
             {showModal && <InvoiceModal setShowModal={setShowModal} />}
-            <button className="mb-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
+            {/* <button className="mb-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
               Export
-            </button>
+            </button> */}
+            {
+              <button className="my-2 ml-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
+                Send
+              </button>
+            }
           </div>
         </div>
         <div className="bg-white shadow sm:rounded-lg">
@@ -145,10 +177,18 @@ export default function AddInvoiceDisplay() {
         <div className="flex justify-end">
           {isInvoiceDraft && (
             <button
-              className="my-4 w-full rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+              className="my-4 mr-4 w-1/2 rounded bg-slate-600 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700"
               onClick={() => saveInvoice()}
             >
-              Publish Invoice
+              Save progress
+            </button>
+          )}
+          {isInvoiceDraft && (
+            <button
+              className="my-4 w-1/2 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+              onClick={() => publishInvoice()}
+            >
+              Publish invoice
             </button>
           )}
         </div>

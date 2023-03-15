@@ -25,8 +25,10 @@ function InvoiceStatusHeader(props: InvoiceStatusHeaderProps) {
         return <UnpaidInvoiceAlert />;
       case 'Overdue':
         return <OverdueInvoiceAlert />;
-      default:
+      case 'Draft':
         return <DraftInvoiceAlert />;
+      default:
+        return <></>;
     }
   };
 

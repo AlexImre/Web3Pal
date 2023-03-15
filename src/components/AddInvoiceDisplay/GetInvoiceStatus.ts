@@ -6,6 +6,9 @@ export const getInvoiceStatus = (invoice) => {
     if (status === 'Draft') {
       return "Draft";
     }
+    if (status === 'Example') {
+      return "Example"
+    }
     if (dueDate) {
       if (status === 'Paid') {
         return "Paid"
@@ -14,6 +17,8 @@ export const getInvoiceStatus = (invoice) => {
         return "Overdue";
       } else {
         return "Unpaid";
-    }
+      }
+  } else {
+    return "Unpaid";
   }
 }
