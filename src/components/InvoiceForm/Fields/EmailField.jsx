@@ -1,4 +1,5 @@
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
+import { validateEmail } from './formValidation';
 
 export default function EmailField(props) {
   const { label, name, width, value, onChange, error } = props;
@@ -21,12 +22,14 @@ export default function EmailField(props) {
           className={`${width} rounded-md pr-10 focus:outline-none sm:text-sm ${
             (error && value === '') || (error && !value.includes('@'))
               ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500'
-              : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'
+              : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
           }`}
           aria-invalid="true"
           aria-describedby="email-error"
         />
-        {(error && value === '') || (error && !value.includes('@')) ? (
+        {(error && value === '') ||
+        (error && !value.includes('@')) ||
+        (error && validateEmail(value) === false) ? (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <ExclamationCircleIcon
               className="h-5 w-5 text-red-500"
@@ -38,7 +41,9 @@ export default function EmailField(props) {
         )}
       </div>
 
-      {(error && value === '') || (error && !value.includes('@')) ? (
+      {(error && value === '') ||
+      (error && !value.includes('@')) ||
+      (error && validateEmail(value) === false) ? (
         <p className="mt-2 text-sm text-red-600" id="email-error">
           Please enter a valid email address.
         </p>

@@ -1,45 +1,50 @@
 import { CheckIcon } from '@heroicons/react/20/solid';
-
-const steps = [
-  {
-    name: 'Personal information',
-    status: 'complete',
-  },
-  {
-    name: 'Invoice information',
-    status: 'upcoming',
-  },
-  {
-    name: 'Recipient information',
-    status: 'upcoming',
-  },
-  {
-    name: 'Payment details',
-    status: 'upcoming',
-  },
-  {
-    name: 'Services',
-    status: 'upcoming',
-  },
-  {
-    name: 'Notes',
-    status: 'upcoming',
-  },
-  {
-    name: 'Publish',
-    status: 'upcoming',
-  },
-  {
-    name: 'Send',
-    status: 'upcoming',
-  },
-];
+import { StateContext } from '../../context/stateContext';
+import { useContext, useState } from 'react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function InvoiceProgressBar() {
+  const { masterState, setMasterState } = useContext(StateContext);
+  const { formCompletion } = masterState;
+
+  const steps = [
+    {
+      name: 'Personal information',
+      status: formCompletion.personalInformation,
+    },
+    {
+      name: 'Invoice information',
+      status: formCompletion.invoiceInformation,
+    },
+    {
+      name: 'Recipient information',
+      status: formCompletion.recipientInformation,
+    },
+    {
+      name: 'Payment details',
+      status: formCompletion.paymentInformation,
+    },
+    {
+      name: 'Services',
+      status: formCompletion.servicesInformation,
+    },
+    {
+      name: 'Notes',
+      status: formCompletion.notesInformation,
+    },
+    {
+      name: 'Publish',
+      status: 'upcoming',
+    },
+    {
+      name: 'Send',
+      status: 'upcoming',
+    },
+  ];
+
   return (
     <ol role="list" className="overflow-hidden">
       {steps.map((step, stepIdx) => (
@@ -50,7 +55,7 @@ export default function InvoiceProgressBar() {
             'relative'
           )}
         >
-          {step.status === 'complete' ? (
+          {step.status === true ? (
             <>
               {stepIdx !== steps.length - 1 ? (
                 <div
@@ -71,26 +76,6 @@ export default function InvoiceProgressBar() {
                   <span className="text-sm font-medium">{step.name}</span>
                 </span>
               </div>
-            </>
-          ) : step.status === 'current' ? (
-            <>
-              {stepIdx !== steps.length - 1 ? (
-                <div
-                  className="absolute top-4 left-4 -ml-px mt-0.5 h-full w-0.5 bg-gray-300"
-                  aria-hidden="true"
-                />
-              ) : null}
-
-              <span className="flex h-9 items-center" aria-hidden="true">
-                <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white">
-                  <span className="h-2.5 w-2.5 rounded-full bg-indigo-600" />
-                </span>
-              </span>
-              <span className="ml-4 flex min-w-0 flex-col">
-                <span className="text-sm font-medium text-indigo-600">
-                  {step.name}
-                </span>
-              </span>
             </>
           ) : (
             <>

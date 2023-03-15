@@ -5,6 +5,7 @@ import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
 import TextField from './Fields/TextField';
 import toast from 'react-hot-toast';
+import { validateEmail } from './Fields/formValidation';
 
 export default function PersonalInformationForm() {
   const pesonalToast = () => toast.success('Information updated.');
@@ -30,6 +31,9 @@ export default function PersonalInformationForm() {
     } else if (email === '' || !email.includes('@')) {
       setError(true);
       return;
+    } else if (validateEmail(email) === false) {
+      setError(true);
+      return;
     } else {
       setError(false);
     }
@@ -38,6 +42,10 @@ export default function PersonalInformationForm() {
       invoice: {
         ...masterState.invoice,
         personalInformation: tempPersonalInfo,
+      },
+      formCompletion: {
+        ...masterState.formCompletion,
+        personalInformation: true,
       },
     });
     pesonalToast();

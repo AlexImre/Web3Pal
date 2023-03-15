@@ -60,12 +60,22 @@ export type ServiceType = {
     amount: number;
 }
 
+export type FormCompletionType = {
+    personalInformation: boolean;
+    invoiceInformation: boolean;
+    recipientInformation: boolean;
+    paymentInformation: boolean;
+    servicesInformation: boolean;
+    notesInformation: boolean;
+}
+
 export type MasterStateType = {
     invoice: InvoiceType;
     myInvoices: any;
     myServices: any;
     myAmounts: any;
     marketData: any;
+    formCompletion: FormCompletionType;
 }
 
 export type InvoiceType = {
@@ -153,6 +163,14 @@ export const initialState: MasterStateType = {
     myServices: [],
     myAmounts: [],
     marketData: [],
+    formCompletion: {
+        personalInformation: false,
+        invoiceInformation: false,
+        recipientInformation: false,
+        paymentInformation: false,
+        servicesInformation: false,
+        notesInformation: false,
+    }
 }
 
 type MasterStateContextType = {
