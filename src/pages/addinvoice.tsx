@@ -16,7 +16,7 @@ export async function getServerSideProps({ req, query }) {
   const session = await getSession({ req });
 
   const getInvoiceNumber = await fetch(
-    `http://localhost:3000/api/getinvoicenumber/?user=${session.user.email}`,
+    `http://localhost:3000/api/getinvoicenumbercount/?user=${session.user.email}`,
     {
       method: 'GET',
       headers: {

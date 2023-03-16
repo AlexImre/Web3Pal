@@ -41,6 +41,30 @@ export function hasDueDateError(issueDate: string, dueDate: string) {
   return false;
 }
 
-export function validateInvoiceNumber(invoiceNumber: string) {
-  //
+export async function hasInvoiceNumberError(invoiceNumber: string, user: string, invoiceId: string) {
+  if (invoiceNumber === '' || undefined) {
+    return {
+      error: true,
+      message: 'Invoice number cannot be blank',
+    }
+  }
+  
+  const req = await fetch("/api/invoicenumberuniquecheck", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user, invoiceNumber, invoiceId }),
+  })
+
+  const isInvoiceNumberAvailable = await req.json();
+
+  if (!isInvoiceNumberAvailable) {
+    return {
+      error: true,
+      message: 'Invoice number already exists',
+    }
+  } else {
+    return false;
+  }
 }

@@ -3,11 +3,20 @@ import { useContext, useState } from 'react';
 import NumberFieldWithValidation from './Fields/NumberFieldWithValidation';
 import DateFieldWithValidation from './Fields/DateFieldWithValidation';
 import toast from 'react-hot-toast';
-import { hasIssueDateError, hasDueDateError } from './Fields/formValidation';
+import {
+  hasIssueDateError,
+  hasDueDateError,
+  hasInvoiceNumberError,
+} from './Fields/formValidation';
+import { useSession } from 'next-auth/react';
 
 export default function InvoiceInformationForm() {
+  const { data: session } = useSession();
+
   const invoiceToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
+  const { invoice, formCompletion } = masterState;
+  const { invoiceId } = invoice;
   const [tempInvoiceInfo, setTempInvoiceInfo] = useState(
     masterState.invoice.invoiceInformation
   );
@@ -36,11 +45,27 @@ export default function InvoiceInformationForm() {
   // Every time an invoice is published +1 to some tracking number?
   // check no duplicates of invoice number
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const user = session?.user?.email;
+    const isInvoiceNumberError = await hasInvoiceNumberError(
+      invoiceNumber,
+      user,
+      invoiceId
+    );
     const isIssueDateError = hasIssueDateError(issueDate);
     const isDueDateError = hasDueDateError(issueDate, dueDate);
+
+    if (isInvoiceNumberError) {
+      setError({ ...error, invoiceNumber: true });
+      setErrorMessage({
+        ...errorMessage,
+        invoiceNumber: isInvoiceNumberError.message,
+      });
+      return;
+    }
+
     if (isIssueDateError) {
       setError({ ...error, issueDate: true });
       setErrorMessage({ ...errorMessage, issueDate: isIssueDateError.message });
@@ -58,6 +83,10 @@ export default function InvoiceInformationForm() {
       invoice: {
         ...masterState.invoice,
         invoiceInformation: tempInvoiceInfo,
+      },
+      formCompletion: {
+        ...formCompletion,
+        invoiceInformation: true,
       },
     });
     invoiceToast();
