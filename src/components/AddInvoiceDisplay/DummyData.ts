@@ -91,6 +91,14 @@ export const dummyInvoiceData = {
         amount: 210}  ],
     notesInformation: {
         notes: 'This is a test invoice'
+    },
+    formCompletion: {
+      personalInformation: true,
+      recipientInformation: true,
+      invoiceInformation: true,
+      servicesInformation: true,
+      paymentInformation: true,
+      notesInformation: true,
     }
 }
 

@@ -60,10 +60,6 @@ export default function PersonalInformationForm() {
     }
 
     const hasError = !!isNameError || !!isEmailError;
-
-    console.log('isNameError', isNameError);
-    console.log('isEmailError', isEmailError);
-
     if (hasError) {
       return;
     }
