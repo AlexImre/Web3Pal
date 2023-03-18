@@ -1,5 +1,5 @@
 import { StateContext } from '../../context/stateContext';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import NumberFieldWithValidation from './Fields/NumberFieldWithValidation';
 import DateFieldWithValidation from './Fields/DateFieldWithValidation';
 import toast from 'react-hot-toast';
@@ -34,7 +34,6 @@ export default function InvoiceInformationForm() {
   const [error, setError] = useState(defaultError);
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
   const handleChange = async (e) => {
-    console.log('changing: ', issueDate, ' to: ', e.target.value);
     setTempInvoiceInfo({
       ...tempInvoiceInfo,
       [e.target.name]: e.target.value,
@@ -42,7 +41,6 @@ export default function InvoiceInformationForm() {
   };
 
   const handleSubmit = async (e) => {
-    console.log('tempInvoiceInfo: ', tempInvoiceInfo);
     e.preventDefault();
     setError(defaultError);
     setErrorMessage(defaultErrorMessage);
@@ -88,13 +86,9 @@ export default function InvoiceInformationForm() {
     const hasError =
       !!isInvoiceNumberError || !!isIssueDateError || !!isDueDateError;
 
-    console.log('hasError: ', hasError);
-
-    console.log('before return');
     if (hasError) {
       return;
     }
-    console.log('after return');
 
     setMasterState({
       ...masterState,
@@ -169,7 +163,7 @@ export default function InvoiceInformationForm() {
                 </div>
                 <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                   <button
-                    className="inline-flex w-20 justify-center rounded-md border border-transparent bg-slate-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+                    className="inline-flex w-20 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     onClick={(e) => handleSubmit(e)}
                   >
                     Save
