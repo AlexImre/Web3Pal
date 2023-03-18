@@ -8,8 +8,24 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function PopularCurrenciesDropDown(props: any) {
-  const { tempPaymentInfo, setTempPaymentInfo, setCurrentPrice, error } = props;
+type PopularCurrenciesDropDownProps = {
+  tempPaymentInfo: any;
+  setTempPaymentInfo: any;
+  setCurrentPrice: any;
+  error: string;
+  errorMessage: string;
+};
+
+export default function PopularCurrenciesDropDown(
+  props: PopularCurrenciesDropDownProps
+) {
+  const {
+    tempPaymentInfo,
+    setTempPaymentInfo,
+    setCurrentPrice,
+    error,
+    errorMessage,
+  } = props;
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
   const coins = masterState.marketData;
@@ -102,6 +118,7 @@ export default function PopularCurrenciesDropDown(props: any) {
           </Combobox.Options>
         )}
       </div>
+      hello
     </Combobox>
   );
 }

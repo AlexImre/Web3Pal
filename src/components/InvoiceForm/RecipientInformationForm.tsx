@@ -5,6 +5,7 @@ import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
 import TextField from './Fields/TextField';
 import toast from 'react-hot-toast';
+import { validateEmail, validateName } from './Fields/formValidation';
 
 export default function PersonalInformationForm() {
   const recipientToast = () => toast.success('Information updated.');
@@ -25,8 +26,6 @@ export default function PersonalInformationForm() {
   } = tempRecipientInfo;
   const [error, setError] = useState(false);
   const handleChange = (e) => {
-    console.log('e.target.name', e.target.name);
-    console.log('e.target.value', e.target.value);
     setTempRecipientInfo({
       ...tempRecipientInfo,
       [e.target.name]: e.target.value,
@@ -35,10 +34,12 @@ export default function PersonalInformationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (clientName === '') {
+
+    if (!validateName(clientName)) {
       setError(true);
       return;
-    } else if (clientEmail === '' || !clientEmail.includes('@')) {
+    }
+    if (!validateEmail(clientEmail)) {
       setError(true);
       return;
     } else {
@@ -49,6 +50,10 @@ export default function PersonalInformationForm() {
       invoice: {
         ...masterState.invoice,
         recipientInformation: tempRecipientInfo,
+        formCompletion: {
+          ...masterState.invoice.formCompletion,
+          recipientInformation: true,
+        },
       },
     });
     recipientToast();

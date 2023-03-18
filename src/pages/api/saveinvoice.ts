@@ -22,6 +22,7 @@ export default async (req: Request, res: Response) => {
             paymentInformation: invoice.paymentInformation,
             servicesInformation: invoice.servicesInformation,
             notesInformation: invoice.notesInformation,
+            formCompletion: invoice.formCompletion,
           }
         });
       res.json(updateInvoice);

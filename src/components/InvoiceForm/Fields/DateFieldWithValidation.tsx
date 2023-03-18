@@ -1,7 +1,29 @@
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-export default function DateFieldWithValidation(props) {
-  const { label, name, width, value, onChange, error, errorMessage } = props;
+type DateFieldWithValidationProps = {
+  label: string;
+  name: string;
+  width: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error: boolean;
+  errorMessage: string;
+  placeholder: string;
+};
+
+export default function DateFieldWithValidation(
+  props: DateFieldWithValidationProps
+) {
+  const {
+    label,
+    name,
+    width,
+    value,
+    onChange,
+    error,
+    errorMessage,
+    placeholder,
+  } = props;
 
   return (
     <div>
@@ -22,6 +44,7 @@ export default function DateFieldWithValidation(props) {
           }`}
           aria-invalid="true"
           aria-describedby="email-error"
+          placeholder={placeholder}
         />
         {error ? (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">

@@ -42,10 +42,10 @@ export default function PersonalInformationForm() {
       invoice: {
         ...masterState.invoice,
         personalInformation: tempPersonalInfo,
-      },
-      formCompletion: {
-        ...masterState.formCompletion,
-        personalInformation: true,
+        formCompletion: {
+          ...masterState.invoice.formCompletion,
+          personalInformation: true,
+        },
       },
     });
     pesonalToast();

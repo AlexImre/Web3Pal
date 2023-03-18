@@ -3,6 +3,7 @@ import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import TextFieldWithValidation from './Fields/TextFieldWithValidation';
 import PaymentToggle from './PaymentToggle';
+import { validateName } from './Fields/formValidation';
 
 export default function PaymentInformationForm() {
   const paymentToast = () => toast.success('Information updated.');
@@ -21,7 +22,6 @@ export default function PaymentInformationForm() {
     customCurrencyAddress,
     customCurrencyPlatform,
   } = tempPaymentInfo;
-  const [error, setError] = useState(false);
   const handleChange = (e) => {
     setTempPaymentInfo({
       ...tempPaymentInfo,
@@ -29,8 +29,36 @@ export default function PaymentInformationForm() {
     });
   };
 
+  const defaultError = {
+    invoiceLabelling: false,
+    popularCurrency: false,
+    walletName: false,
+    walletAddress: false,
+    customCurrencyName: false,
+    customCurrencySymbol: false,
+    customCurrencyAddress: false,
+    customCurrencyPlatform: false,
+  };
+
+  const defaultErrorMessage = {
+    invoiceLabelling: '',
+    popularCurrency: '',
+    walletName: '',
+    walletAddress: '',
+    customCurrencyName: '',
+    customCurrencySymbol: '',
+    customCurrencyAddress: '',
+    customCurrencyPlatform: '',
+  };
+
+  const [error, setError] = useState(defaultError);
+  const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const isInvoiceLabebellingError = validateName(invoiceLabelling);
+
     if (paymentMethod === 'crypto') {
       if (
         invoiceLabelling === '' ||

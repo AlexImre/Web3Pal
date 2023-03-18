@@ -48,7 +48,6 @@ export async function getServerSideProps({ req, query }) {
 // If Invoice is PAID, show PAID on page and don't allow any edits
 
 export default function CreateInvoice({ marketData, invoice, invoiceNumber }) {
-  console.log('invoiceNumber: ', invoiceNumber);
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const invoiceToEdit: InvoiceType = invoice[0];

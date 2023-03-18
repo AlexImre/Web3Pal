@@ -9,6 +9,12 @@ export function validateName(name: string) {
 }
 
 export function hasIssueDateError(issueDate: string) {
+  if (issueDate === '' || issueDate === undefined) {
+    return {
+      error: true,
+      message: 'Issue date cannot be blank',
+    }
+  }
   const issueDateAsDate = new Date(issueDate);
   const isDate = issueDateAsDate instanceof Date;
   if (!isDate) {
@@ -22,6 +28,12 @@ export function hasIssueDateError(issueDate: string) {
 }
 
 export function hasDueDateError(issueDate: string, dueDate: string) {
+  if (dueDate === '' || dueDate === undefined) {
+    return {
+      error: true,
+      message: 'Issue date cannot be blank',
+    }
+  }
   const dueDateAsDate = new Date(dueDate);
   const isDate = dueDateAsDate instanceof Date;
   if (!isDate) {
@@ -42,7 +54,7 @@ export function hasDueDateError(issueDate: string, dueDate: string) {
 }
 
 export async function hasInvoiceNumberError(invoiceNumber: string, user: string, invoiceId: string) {
-  if (invoiceNumber === '' || undefined) {
+  if (invoiceNumber === '' || invoiceNumber === undefined) {
     return {
       error: true,
       message: 'Invoice number cannot be blank',

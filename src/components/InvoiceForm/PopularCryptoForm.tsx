@@ -7,7 +7,6 @@ import { useContext } from 'react';
 function PopularCryptoForm(props: any) {
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
-  const { marketData } = masterState;
   const { tempPaymentInfo, setTempPaymentInfo, handleChange, error } = props;
   const { walletName, walletAddress } = tempPaymentInfo;
 
@@ -20,9 +19,9 @@ function PopularCryptoForm(props: any) {
           <PopularCurrenciesDropDown
             tempPaymentInfo={tempPaymentInfo}
             setTempPaymentInfo={setTempPaymentInfo}
-            currentPrice={currentPrice}
             setCurrentPrice={setCurrentPrice}
             error={error}
+            errorMessage={''}
           />
         </div>
         <div className="col-span-6 content-center items-center text-indigo-500 sm:col-span-3 sm:text-sm">

@@ -8,21 +8,11 @@ export default async (req: Request, res: Response) => {
     console.log("checking unique invoice number")
 
     // will need to change when moving to org structure    
-    // check for count, if === 1 then match id. IF match then can save, if no match then cant save
-    // if === 0 then can save
     const { user, invoiceNumber, invoiceId } = req.body;
-
-    console.log("user: ", user)
-    console.log("invoiceNumber: ", invoiceNumber)
-    console.log("invoiceId: ", invoiceId)
-
     let isInvoiceNumberAvailable = false;
 
-
     const countQuery = {user: user, "invoiceInformation.invoiceNumber": invoiceNumber};
-    console.log("query: ", countQuery)
     const invoiceNumberCount = await db.collection('invoices').count(countQuery);
-    console.log("doesInvoiceNumberExist: ", invoiceNumberCount)
 
     if (invoiceNumberCount === 0) {
       isInvoiceNumberAvailable = true;

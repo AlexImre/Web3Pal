@@ -1,8 +1,19 @@
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
 
-export default function NumberFieldWithValidation(props) {
+type NumberFieldWithValidationProps = {
+  label: string;
+  name: string;
+  width: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error: boolean;
+  errorMessage: string;
+};
+
+export default function NumberFieldWithValidation(
+  props: NumberFieldWithValidationProps
+) {
   const { label, name, width, value, onChange, error, errorMessage } = props;
-  console.log(props);
 
   return (
     <div>

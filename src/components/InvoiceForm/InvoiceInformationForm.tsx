@@ -1,5 +1,5 @@
 import { StateContext } from '../../context/stateContext';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NumberFieldWithValidation from './Fields/NumberFieldWithValidation';
 import DateFieldWithValidation from './Fields/DateFieldWithValidation';
 import toast from 'react-hot-toast';
@@ -12,10 +12,10 @@ import { useSession } from 'next-auth/react';
 
 export default function InvoiceInformationForm() {
   const { data: session } = useSession();
-
+  const user = session?.user?.email;
   const invoiceToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
-  const { invoice, formCompletion } = masterState;
+  const { invoice } = masterState;
   const { invoiceId } = invoice;
   const [tempInvoiceInfo, setTempInvoiceInfo] = useState(
     masterState.invoice.invoiceInformation
@@ -33,60 +33,78 @@ export default function InvoiceInformationForm() {
   };
   const [error, setError] = useState(defaultError);
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
+    console.log('changing: ', issueDate, ' to: ', e.target.value);
     setTempInvoiceInfo({
       ...tempInvoiceInfo,
       [e.target.name]: e.target.value,
     });
   };
 
-  // how to generate invoice number?
-  // look at invoices.length?
-  // Every time an invoice is published +1 to some tracking number?
-  // check no duplicates of invoice number
-
   const handleSubmit = async (e) => {
+    console.log('tempInvoiceInfo: ', tempInvoiceInfo);
     e.preventDefault();
+    setError(defaultError);
+    setErrorMessage(defaultErrorMessage);
 
-    const user = session?.user?.email;
     const isInvoiceNumberError = await hasInvoiceNumberError(
       invoiceNumber,
       user,
       invoiceId
     );
-    const isIssueDateError = hasIssueDateError(issueDate);
-    const isDueDateError = hasDueDateError(issueDate, dueDate);
 
-    if (isInvoiceNumberError) {
-      setError({ ...error, invoiceNumber: true });
-      setErrorMessage({
-        ...errorMessage,
-        invoiceNumber: isInvoiceNumberError.message,
+    if (!!isInvoiceNumberError) {
+      setError((prevState) => {
+        return { ...prevState, invoiceNumber: true };
       });
-      return;
+      setErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          invoiceNumber: isInvoiceNumberError.message,
+        };
+      });
     }
 
+    const isIssueDateError = hasIssueDateError(issueDate);
     if (isIssueDateError) {
-      setError({ ...error, issueDate: true });
-      setErrorMessage({ ...errorMessage, issueDate: isIssueDateError.message });
-      return;
-    } else if (isDueDateError) {
-      setError({ ...error, dueDate: true });
-      setErrorMessage({ ...errorMessage, dueDate: isDueDateError.message });
-      return;
-    } else {
-      setError(defaultError);
-      setErrorMessage(defaultErrorMessage);
+      setError((prevState) => {
+        return { ...prevState, issueDate: true };
+      });
+      setErrorMessage((prevState) => {
+        return { ...prevState, issueDate: isIssueDateError.message };
+      });
     }
+
+    const isDueDateError = hasDueDateError(issueDate, dueDate);
+    if (isDueDateError) {
+      setError((prevState) => {
+        return { ...prevState, dueDate: true };
+      });
+      setErrorMessage((prevState) => {
+        return { ...prevState, dueDate: isDueDateError.message };
+      });
+    }
+
+    const hasError =
+      !!isInvoiceNumberError || !!isIssueDateError || !!isDueDateError;
+
+    console.log('hasError: ', hasError);
+
+    console.log('before return');
+    if (hasError) {
+      return;
+    }
+    console.log('after return');
+
     setMasterState({
       ...masterState,
       invoice: {
         ...masterState.invoice,
         invoiceInformation: tempInvoiceInfo,
-      },
-      formCompletion: {
-        ...formCompletion,
-        invoiceInformation: true,
+        formCompletion: {
+          ...masterState.invoice.formCompletion,
+          invoiceInformation: true,
+        },
       },
     });
     invoiceToast();
@@ -130,6 +148,7 @@ export default function InvoiceInformationForm() {
                         onChange={handleChange}
                         error={error.issueDate}
                         errorMessage={errorMessage.issueDate}
+                        placeholder="Selected a date"
                       />
                     </div>
                   </div>
@@ -143,6 +162,7 @@ export default function InvoiceInformationForm() {
                         onChange={handleChange}
                         error={error.dueDate}
                         errorMessage={errorMessage.dueDate}
+                        placeholder="Selected a date"
                       />
                     </div>
                   </div>
