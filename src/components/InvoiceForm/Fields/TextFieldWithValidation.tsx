@@ -1,12 +1,19 @@
 import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
-import { validateName } from './formValidation';
 
-export default function TextFieldWithValidation(props) {
-  const { label, name, width, value, onChange, error } = props;
+type TextFieldWithValidationProps = {
+  label: string;
+  name: string;
+  width: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error: boolean;
+  errorMessage: string;
+};
 
-  const isBlankError = error && value === '';
-  const isInvalidError = error && validateName(value) === false;
-  const hasError = isBlankError || isInvalidError;
+export default function TextFieldWithValidation(
+  props: TextFieldWithValidationProps
+) {
+  const { label, name, width, value, onChange, error, errorMessage } = props;
 
   return (
     <div>
@@ -21,14 +28,14 @@ export default function TextFieldWithValidation(props) {
           value={value}
           onChange={(e) => onChange(e)}
           className={`${width} rounded-md pr-10 focus:outline-none sm:text-sm ${
-            hasError
+            error
               ? 'border-red-300 text-red-900 placeholder-red-300 focus:border-red-500 focus:ring-red-500'
               : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
           }`}
           aria-invalid="true"
           aria-describedby="email-error"
         />
-        {hasError ? (
+        {error ? (
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             <ExclamationCircleIcon
               className="h-5 w-5 text-red-500"
@@ -39,13 +46,9 @@ export default function TextFieldWithValidation(props) {
           ''
         )}
       </div>
-      {isBlankError ? (
+      {error ? (
         <p className="mt-2 text-sm text-red-600" id="email-error">
-          Please complete this field.
-        </p>
-      ) : isInvalidError ? (
-        <p className="mt-2 text-sm text-red-600" id="email-error">
-          {'Please only use characters [a - z].'}
+          {errorMessage}
         </p>
       ) : (
         ''

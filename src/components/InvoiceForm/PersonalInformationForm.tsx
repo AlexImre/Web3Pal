@@ -15,7 +15,6 @@ export default function PersonalInformationForm() {
   );
   const { name, email, addressLine1, addressLine2, city, county, postalCode } =
     tempPersonalInfo;
-  const [error, setError] = useState(false);
   const handleChange = (e) => {
     setTempPersonalInfo({
       ...tempPersonalInfo,
@@ -23,20 +22,52 @@ export default function PersonalInformationForm() {
     });
   };
 
+  const defaultError = {
+    name: false,
+    email: false,
+  };
+  const defaultErrorMessage = {
+    name: '',
+    email: '',
+  };
+  const [error, setError] = useState(defaultError);
+  const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (name === '') {
-      setError(true);
-      return;
-    } else if (email === '' || !email.includes('@')) {
-      setError(true);
-      return;
-    } else if (validateEmail(email) === false || validateName(name) === false) {
-      setError(true);
-      return;
-    } else {
-      setError(false);
+    setError(defaultError);
+    setErrorMessage(defaultErrorMessage);
+
+    const isNameError = validateName(name);
+    if (!!isNameError) {
+      setError((prevState) => {
+        return { ...prevState, name: true };
+      });
+      setErrorMessage((prevState) => {
+        return { ...prevState, name: isNameError.message };
+      });
     }
+
+    const isEmailError = validateEmail(email);
+    if (!!isEmailError) {
+      console.log('getting here!');
+      setError((prevState) => {
+        return { ...prevState, email: true };
+      });
+      setErrorMessage((prevState) => {
+        return { ...prevState, email: isEmailError.message };
+      });
+    }
+
+    const hasError = !!isNameError || !!isEmailError;
+
+    console.log('isNameError', isNameError);
+    console.log('isEmailError', isEmailError);
+
+    if (hasError) {
+      return;
+    }
+
     setMasterState({
       ...masterState,
       invoice: {
@@ -74,7 +105,8 @@ export default function PersonalInformationForm() {
                         width="w-full"
                         onChange={handleChange}
                         value={name}
-                        error={error}
+                        error={error.name}
+                        errorMessage={errorMessage.name}
                       />
                     </div>
                     <div className="col-span-6 sm:col-span-3">
@@ -84,7 +116,8 @@ export default function PersonalInformationForm() {
                         width="w-full"
                         onChange={handleChange}
                         value={email}
-                        error={error}
+                        error={error.email}
+                        errorMessage={errorMessage.email}
                       />
                     </div>
 

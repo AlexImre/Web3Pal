@@ -1,11 +1,37 @@
 export function validateEmail(email: string) {
+  if (email === '' || email === undefined) {
+    return {
+      error: true,
+      message: 'Email cannot be blank',
+    }
+  }
   const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return emailRegex.test(email);
+  const doesPassRegexTest = emailRegex.test(email);
+  if (!doesPassRegexTest) {
+    return {
+      error: true,
+      message: 'Email must be a valid email address',
+    }
+  }
+  return false; 
 }
 
 export function validateName(name: string) {
+  if (name === '' || name === undefined) {
+    return {
+      error: true,
+      message: 'Name cannot be blank',
+    }
+  }
   const nameRegex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
-  return nameRegex.test(name);
+  const doesPassRegexTest = nameRegex.test(name);
+  if (!doesPassRegexTest) {
+    return {
+      error: true,
+      message: 'Please only use characters [a - z].',
+    }
+  }
+  return false; 
 }
 
 export function hasIssueDateError(issueDate: string) {

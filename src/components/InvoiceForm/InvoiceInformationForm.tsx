@@ -50,7 +50,6 @@ export default function InvoiceInformationForm() {
       user,
       invoiceId
     );
-
     if (!!isInvoiceNumberError) {
       setError((prevState) => {
         return { ...prevState, invoiceNumber: true };
@@ -64,7 +63,7 @@ export default function InvoiceInformationForm() {
     }
 
     const isIssueDateError = hasIssueDateError(issueDate);
-    if (isIssueDateError) {
+    if (!!isIssueDateError) {
       setError((prevState) => {
         return { ...prevState, issueDate: true };
       });
@@ -74,7 +73,7 @@ export default function InvoiceInformationForm() {
     }
 
     const isDueDateError = hasDueDateError(issueDate, dueDate);
-    if (isDueDateError) {
+    if (!!isDueDateError) {
       setError((prevState) => {
         return { ...prevState, dueDate: true };
       });
