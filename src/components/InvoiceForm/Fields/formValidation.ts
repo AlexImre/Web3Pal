@@ -57,7 +57,7 @@ export function hasDueDateError(issueDate: string, dueDate: string) {
   if (dueDate === '' || dueDate === undefined) {
     return {
       error: true,
-      message: 'Issue date cannot be blank',
+      message: 'Due date cannot be blank',
     }
   }
   const dueDateAsDate = new Date(dueDate);
@@ -105,4 +105,23 @@ export async function hasInvoiceNumberError(invoiceNumber: string, user: string,
   } else {
     return false;
   }
+}
+
+export function validateInvoiceLabelling(invoiceLabel: string) {
+  if (invoiceLabel === '' || invoiceLabel === undefined) {
+    return {
+      error: true,
+      message: 'Invoice label cannot be blank',
+    }
+  }
+
+  const regex = /^[a-zA-Z0-9]+$/;
+  const doesPassRegexTest = regex.test(invoiceLabel);
+  if (!doesPassRegexTest) {
+    return {
+      error: true,
+      message: 'Invoice label must only use characters [a - z, 0 - 9]',
+    }
+  }
+  return false;
 }

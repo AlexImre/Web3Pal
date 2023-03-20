@@ -3,7 +3,10 @@ import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import TextFieldWithValidation from './Fields/TextFieldWithValidation';
 import PaymentToggle from './PaymentToggle';
-import { validateName } from './Fields/formValidation';
+import {
+  validateInvoiceLabelling,
+  validateName,
+} from './Fields/formValidation';
 
 export default function PaymentInformationForm() {
   const paymentToast = () => toast.success('Information updated.');
@@ -56,21 +59,26 @@ export default function PaymentInformationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const isInvoiceLabebellingError = validateName(invoiceLabelling);
+    setError(defaultError);
+    setErrorMessage(defaultErrorMessage);
 
     if (paymentMethod === 'crypto') {
-      if (
-        invoiceLabelling === '' ||
-        popularCurrency === '' ||
-        walletName === '' ||
-        walletAddress === ''
-      ) {
-        setError(true);
+      const hasInvoiceLabellingError =
+        validateInvoiceLabelling(invoiceLabelling);
+
+      if (hasInvoiceLabellingError) {
+        setError((prevState) => {
+          return { ...prevState, invoiceLabelling: true };
+        });
+        setErrorMessage((prevState) => {
+          return {
+            ...prevState,
+            invoiceLabelling: hasInvoiceLabellingError.message,
+          };
+        });
         return;
-      } else {
-        setError(false);
       }
+
       setMasterState({
         ...masterState,
         invoice: {
@@ -135,7 +143,8 @@ export default function PaymentInformationForm() {
                         width="w-full"
                         onChange={handleChange}
                         value={invoiceLabelling}
-                        error={error}
+                        error={error.invoiceLabelling}
+                        errorMessage={errorMessage.invoiceLabelling}
                       />
                     </div>
                   </div>

@@ -8,6 +8,7 @@ type TextFieldWithValidationProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error: boolean;
   errorMessage: string;
+  pattern?: string;
 };
 
 export default function TextFieldWithValidation(
