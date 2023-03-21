@@ -11,6 +11,8 @@ function ServicesTableRow(props: any) {
     setTempServicesInfo,
     handleChange,
     updateServiceAmount,
+    error,
+    errorMessage,
   } = props;
 
   const { uuid, description, quantity, price, tax, discount } = service;
@@ -37,6 +39,8 @@ function ServicesTableRow(props: any) {
           className="block w-full border-0 border-b border-transparent bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm"
           value={description}
           handleChange={(e: any) => handleChange(e, uuid)}
+          error={error}
+          errorMessage={errorMessage}
         />
       </div>
       <div className="col-span-8 overflow-x-auto sm:col-span-1">

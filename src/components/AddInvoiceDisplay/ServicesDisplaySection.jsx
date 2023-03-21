@@ -3,9 +3,14 @@ import {
   getServicesTax,
   getServicesTotal,
 } from '../InvoiceForm/ServicesUtils';
+import { useContext } from 'react';
+import { StateContext } from '../../context/stateContext';
 
 export default function ServicesDisplay(props) {
-  const { serviceData, invoiceLabelling } = props;
+  const { serviceData } = props;
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+  const { invoiceLabelling } = masterState.invoice.paymentInformation;
   const tax = getServicesTax(serviceData) || 0;
   const subTotal = getServicesSubtotal(serviceData) || 0;
   const total = getServicesTotal(serviceData) || 0;
@@ -105,7 +110,8 @@ export default function ServicesDisplay(props) {
                       Subtotal
                     </th>
                     <td className="pl-3 pr-4 pt-6 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                      {Intl.NumberFormat('en-US').format(subTotal)} ETH
+                      {Intl.NumberFormat('en-US').format(subTotal)}{' '}
+                      {invoiceLabelling}
                     </td>
                   </tr>
                   <tr>
@@ -123,7 +129,8 @@ export default function ServicesDisplay(props) {
                       Tax
                     </th>
                     <td className="pl-3 pr-4 pt-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
-                      {Intl.NumberFormat('en-US').format(tax)} ETH
+                      {Intl.NumberFormat('en-US').format(tax)}{' '}
+                      {invoiceLabelling}
                     </td>
                   </tr>
                   <tr>
@@ -141,7 +148,8 @@ export default function ServicesDisplay(props) {
                       Total
                     </th>
                     <td className="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 sm:pr-6 md:pr-0">
-                      {Intl.NumberFormat('en-US').format(total)} ETH
+                      {Intl.NumberFormat('en-US').format(total)}{' '}
+                      {invoiceLabelling}
                     </td>
                   </tr>
                 </tfoot>

@@ -487,7 +487,10 @@ export default function MyInvoicesDisplay() {
                         ).toLocaleDateString('en-US')}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {getServicesTotal(invoice.servicesInformation)}{' '}
+                        {/* TO DO FIX NUMBER FORMATING*/}
+                        {Intl.NumberFormat('en-US').format(
+                          getServicesTotal(invoice.servicesInformation)
+                        )}{' '}
                         {invoice.paymentInformation.invoiceLabelling}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">

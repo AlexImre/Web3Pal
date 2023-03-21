@@ -10,7 +10,6 @@ export default function NotesForm() {
     masterState.invoice.notesInformation
   );
   const { notes } = tempNotesInfo;
-  const [error, setError] = useState(false);
   const handleChange = (e) => {
     setTempNotesInfo({
       ...tempNotesInfo,
@@ -30,7 +29,6 @@ export default function NotesForm() {
       },
     });
     notesToast();
-    console.log('tempNotesInfo: ', tempNotesInfo);
   };
 
   return (

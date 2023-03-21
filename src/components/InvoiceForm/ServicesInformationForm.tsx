@@ -2,6 +2,7 @@ import { StateContext } from '../../context/stateContext';
 import { useContext, useState } from 'react';
 import ServicesModal from './ServicesModal';
 import ServicesDisplaySection from '../AddInvoiceDisplay/ServicesDisplaySection';
+import toast from 'react-hot-toast';
 
 export default function PersonalInformationForm() {
   const [showServicesModal, setServicesShowModal] = useState(false);
@@ -10,7 +11,6 @@ export default function PersonalInformationForm() {
   const servicesInformation =
     stateContext.masterState.invoice.servicesInformation;
   const [tempServicesInfo, setTempServicesInfo] = useState(servicesInformation);
-  const [error, setError] = useState(false);
 
   const handleChange = (e: any, uuid: string) => {
     setTempServicesInfo(
@@ -46,28 +46,40 @@ export default function PersonalInformationForm() {
     );
   };
 
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const servicesToast = () => toast.success('Information updated.');
   const handleSave = (e) => {
     e.preventDefault();
-    // if (clientName === '') {
-    //   setError(true);
-    //   return;
-    // } else if (clientEmail === '' || !clientEmail.includes('@')) {
-    //   setError(true);
-    //   return;
-    // } else {
-    //   setError(false);
-    // }
+    setError(false);
+    setErrorMessage('');
+
+    const hasMissingDescription = tempServicesInfo.some(
+      (service: any) =>
+        service.description === '' ||
+        service.description === null ||
+        service.description === undefined
+    );
+
+    if (hasMissingDescription) {
+      setError(true);
+      setErrorMessage('Description required');
+      return;
+    }
+
     setMasterState({
       ...masterState,
       invoice: {
         ...masterState.invoice,
         servicesInformation: tempServicesInfo,
+        formCompletion: {
+          ...masterState.invoice.formCompletion,
+          servicesInformation: true,
+        },
       },
     });
-    console.log(
-      'masterState.servicesInformation',
-      masterState.invoice.servicesInformation[0]
-    );
+    servicesToast();
   };
 
   return (
@@ -83,7 +95,7 @@ export default function PersonalInformationForm() {
                 <p className="mt-1 mb-5 text-sm text-gray-500">
                   Enter information about services provided.
                 </p>
-                <ServicesDisplaySection serviceData={tempServicesInfo} />
+                <ServicesDisplaySection serviceData={servicesInformation} />
                 {showServicesModal && (
                   <ServicesModal
                     setShowModal={setServicesShowModal}
@@ -92,6 +104,8 @@ export default function PersonalInformationForm() {
                     tempServicesInfo={tempServicesInfo}
                     setTempServicesInfo={setTempServicesInfo}
                     updateServiceAmount={updateServiceAmount}
+                    error={error}
+                    errorMessage={errorMessage}
                   />
                 )}
               </div>

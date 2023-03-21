@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import { getInvoiceStatus } from './GetInvoiceStatus';
 import InvoiceStatusHeader from './InvoiceStatusHeader';
 import InvoiceProgressBar from './InvoiceProgressBar';
+import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 export default function AddInvoiceDisplay() {
   const router = useRouter();
@@ -216,25 +217,32 @@ export default function AddInvoiceDisplay() {
                 />
               </div>
 
-              <NotesSection notesInformation={notesInformation} />
+              {notesInformation.notes && (
+                <NotesSection notesInformation={notesInformation} />
+              )}
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex">
             {isInvoiceDraft && (
-              <button
-                className="my-4 mr-4 w-1/2 rounded bg-slate-600 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700"
-                onClick={() => saveInvoice()}
-              >
-                Save progress
-              </button>
+              <div className="mr-2 w-full">
+                <button
+                  className="my-4 mr-4 w-full rounded bg-slate-600 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700"
+                  onClick={() => saveInvoice()}
+                >
+                  Save progress
+                </button>
+              </div>
             )}
             {isInvoiceDraft && (
-              <button
-                className="my-4 w-1/2 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
-                onClick={() => publishInvoice()}
-              >
-                Publish invoice
-              </button>
+              <div className="ml-2 w-full justify-center">
+                <button
+                  className="my-4 flex w-full items-center justify-center rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                  onClick={() => publishInvoice()}
+                >
+                  <PaperAirplaneIcon className="curs mr-2 h-5 w-5 text-white hover:cursor-pointer hover:text-slate-700" />
+                  Publish and send invoice
+                </button>
+              </div>
             )}
           </div>
         </div>

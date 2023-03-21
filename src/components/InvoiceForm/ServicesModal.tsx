@@ -1,12 +1,10 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import toast, { Toaster } from 'react-hot-toast';
 import ServicesTableRow from './ServicesTableRow';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function ServicesModal(props) {
   const [showServicesModal, setServicesShowModal] = useState(false);
-  const servicesToast = () => toast.success('Information updated.');
   const [open, setOpen] = useState(true);
 
   let startingId = 1;
@@ -20,6 +18,8 @@ export default function ServicesModal(props) {
     tempServicesInfo,
     setTempServicesInfo,
     updateServiceAmount,
+    error,
+    errorMessage,
   } = props;
 
   const setShowModal = props.setShowModal;
@@ -79,7 +79,7 @@ export default function ServicesModal(props) {
                           </p>
                           <div className="grid grid-cols-8 gap-2">
                             <div className="col-span-8 text-sm font-medium text-gray-700 sm:col-span-2">
-                              Description
+                              Description*
                             </div>
                             <div className="col-span-8 text-sm font-medium text-gray-700 sm:col-span-1">
                               Quantity
@@ -108,6 +108,8 @@ export default function ServicesModal(props) {
                                     setTempServicesInfo={setTempServicesInfo}
                                     handleChange={handleChange}
                                     updateServiceAmount={updateServiceAmount}
+                                    error={error}
+                                    errorMessage={errorMessage}
                                   />
                                 );
                               }
@@ -124,11 +126,8 @@ export default function ServicesModal(props) {
                         </div>
                         <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                           <button
-                            className="inline-flex justify-center rounded-md border border-transparent bg-slate-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
-                            onClick={(e) => {
-                              servicesToast();
-                              handleSave(e);
-                            }}
+                            className="inline-flex justify-center rounded-md border border-transparent bg-indigo-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            onClick={(e) => handleSave(e)}
                           >
                             Save
                           </button>

@@ -38,7 +38,7 @@ export default function PersonalInformationForm() {
     setError(defaultError);
     setErrorMessage(defaultErrorMessage);
 
-    const isNameError = validateName(name);
+    const isNameError = validateName(name, 'name', 'Name');
     if (!!isNameError) {
       setError((prevState) => {
         return { ...prevState, name: true };
