@@ -59,6 +59,20 @@ export default function PaymentInformationForm() {
   const [error, setError] = useState(defaultError);
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
 
+  const setErrorAndErrorMessages = (formItem) => {
+    if (formItem.error === true) {
+      setError((prevState) => {
+        return { ...prevState, [formItem.property]: true };
+      });
+      setErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          [formItem.property]: formItem.message,
+        };
+      });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setError(defaultError);
@@ -67,57 +81,9 @@ export default function PaymentInformationForm() {
     if (paymentMethod === 'crypto') {
       const hasInvoiceLabellingError =
         validateInvoiceLabelling(invoiceLabelling);
-      // if (hasInvoiceLabellingError) {
-      //   setError((prevState) => {
-      //     return { ...prevState, invoiceLabelling: true };
-      //   });
-      // setErrorMessage((prevState) => {
-      //   return {
-      //     ...prevState,
-      //     invoiceLabelling: hasInvoiceLabellingError.message,
-      //   };
-      // });
-      // }
-
       const hasPopularCurrencyError = validatePopularCurrency(popularCurrency);
-      // if (hasPopularCurrencyError) {
-      //   setError((prevState) => {
-      //     return { ...prevState, popularCurrency: true };
-      //   });
-      // setErrorMessage((prevState) => {
-      //   return {
-      //     ...prevState,
-      //     popularCurrency: hasPopularCurrencyError.message,
-      //   };
-      // });
-      // }
-
       const hasWalletNameError = validateName(walletName, 'walletName');
-      // if (hasWalletNameError) {
-      //   setError((prevState) => {
-      //     return { ...prevState, walletName: true };
-      //   });
-      // setErrorMessage((prevState) => {
-      //   return {
-      //     ...prevState,
-      //     walletName: hasWalletNameError.message,
-      //   };
-      // });
-      // }
-
       const hasWalletAddressError = validateWalletAddress(walletAddress);
-      // if (hasWalletAddressError) {
-      //   setError((prevState) => {
-      //     return { ...prevState, walletAddress: true };
-      //   });
-      // setErrorMessage((prevState) => {
-      //   return {
-      //     ...prevState,
-      //     walletAddress: hasWalletAddressError.message,
-      //   };
-      // });
-      // }
-
       const validationArray = [
         hasInvoiceLabellingError,
         hasPopularCurrencyError,
@@ -125,31 +91,13 @@ export default function PaymentInformationForm() {
         hasWalletAddressError,
       ];
 
-      const checkIfError = (validationArray) => {
-        validationArray.forEach(ErrorFunction);
-      };
-
-      const ErrorFunction = (thingToCheck) => {
-        if (thingToCheck.error === true) {
-          setError((prevState) => {
-            return { ...prevState, [thingToCheck.property]: true };
-          });
-          setErrorMessage((prevState) => {
-            return {
-              ...prevState,
-              [thingToCheck.property]: thingToCheck.message,
-            };
-          });
-        }
-      };
-
-      checkIfError(validationArray);
+      validationArray.forEach(setErrorAndErrorMessages);
 
       const hasError =
-        hasInvoiceLabellingError ||
-        hasPopularCurrencyError ||
-        hasWalletNameError ||
-        hasWalletAddressError;
+        !!hasInvoiceLabellingError ||
+        !!hasPopularCurrencyError ||
+        !!hasWalletNameError ||
+        !!hasWalletAddressError;
       if (hasError) {
         return;
       }
@@ -165,23 +113,13 @@ export default function PaymentInformationForm() {
             customCurrencyAddress: '',
             customCurrencyPlatform: '',
           },
+          formCompletion: {
+            ...masterState.invoice.formCompletion,
+            paymentInformation: true,
+          },
         },
       });
     } else if (paymentMethod === 'custom') {
-      if (
-        invoiceLabelling === '' ||
-        customCurrencyName === '' ||
-        customCurrencySymbol === '' ||
-        customCurrencyAddress === '' ||
-        customCurrencyPlatform === '' ||
-        walletName === '' ||
-        walletAddress === ''
-      ) {
-        setError(true);
-        return;
-      } else {
-        setError(false);
-      }
       setMasterState({
         ...masterState,
         invoice: {
@@ -189,6 +127,10 @@ export default function PaymentInformationForm() {
           paymentInformation: {
             ...tempPaymentInfo,
             popularCurrency: '',
+          },
+          formCompletion: {
+            ...masterState.invoice.formCompletion,
+            paymentInformation: true,
           },
         },
       });

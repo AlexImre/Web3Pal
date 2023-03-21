@@ -29,6 +29,7 @@ export default function PopularCurrenciesDropDown(
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
   const coins = masterState.marketData;
+
   const [query, setQuery] = useState('');
 
   const filteredName =
