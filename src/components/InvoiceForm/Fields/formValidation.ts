@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 export function validateEmail(email: string) {
   if (email === '' || email === undefined) {
     return {
@@ -16,9 +18,10 @@ export function validateEmail(email: string) {
   return false; 
 }
 
-export function validateName(name: string) {
+export function validateName(name: string, property: string) {
   if (name === '' || name === undefined) {
     return {
+      property,
       error: true,
       message: 'Name cannot be blank',
     }
@@ -27,8 +30,9 @@ export function validateName(name: string) {
   const doesPassRegexTest = nameRegex.test(name);
   if (!doesPassRegexTest) {
     return {
+      property,
       error: true,
-      message: 'Please only use characters [a - z].',
+      message: 'Please only use characters [a - z]',
     }
   }
   return false; 
@@ -110,6 +114,7 @@ export async function hasInvoiceNumberError(invoiceNumber: string, user: string,
 export function validateInvoiceLabelling(invoiceLabel: string) {
   if (invoiceLabel === '' || invoiceLabel === undefined) {
     return {
+      property: 'invoiceLabelling',
       error: true,
       message: 'Invoice label cannot be blank',
     }
@@ -119,8 +124,40 @@ export function validateInvoiceLabelling(invoiceLabel: string) {
   const doesPassRegexTest = regex.test(invoiceLabel);
   if (!doesPassRegexTest) {
     return {
+      property: 'invoiceLabelling',
       error: true,
       message: 'Invoice label must only use characters [a - z, 0 - 9]',
+    }
+  }
+  return false;
+}
+
+export function validatePopularCurrency(popularCurrency: string) {
+  if (popularCurrency === '' || popularCurrency === undefined) {
+    return {
+      property: 'popularCurrency',
+      error: true,
+      message: 'Currency cannot be blank',
+    }
+  }
+  return false;
+}
+
+export function validateWalletAddress(walletAddress: string) {
+  if (walletAddress === '' || walletAddress === undefined) {
+    return {
+      property: 'walletAddress',
+      error: true,
+      message: 'Wallet address cannot be blank',
+    }
+  }
+
+  const isValidWallet = ethers.utils.isAddress(walletAddress);
+  if (!isValidWallet) {
+    return {
+      property: 'walletAddress',
+      error: true,
+      message: 'Wallet address is not valid',
     }
   }
   return false;

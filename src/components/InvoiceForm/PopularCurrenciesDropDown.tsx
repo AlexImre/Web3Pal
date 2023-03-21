@@ -118,7 +118,11 @@ export default function PopularCurrenciesDropDown(
           </Combobox.Options>
         )}
       </div>
-      hello
+      {error && (
+        <p className="mt-2 text-sm text-red-600" id="email-error">
+          {errorMessage}
+        </p>
+      )}
     </Combobox>
   );
 }

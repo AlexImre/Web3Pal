@@ -6,6 +6,8 @@ import PaymentToggle from './PaymentToggle';
 import {
   validateInvoiceLabelling,
   validateName,
+  validatePopularCurrency,
+  validateWalletAddress,
 } from './Fields/formValidation';
 
 export default function PaymentInformationForm() {
@@ -65,17 +67,90 @@ export default function PaymentInformationForm() {
     if (paymentMethod === 'crypto') {
       const hasInvoiceLabellingError =
         validateInvoiceLabelling(invoiceLabelling);
+      // if (hasInvoiceLabellingError) {
+      //   setError((prevState) => {
+      //     return { ...prevState, invoiceLabelling: true };
+      //   });
+      // setErrorMessage((prevState) => {
+      //   return {
+      //     ...prevState,
+      //     invoiceLabelling: hasInvoiceLabellingError.message,
+      //   };
+      // });
+      // }
 
-      if (hasInvoiceLabellingError) {
-        setError((prevState) => {
-          return { ...prevState, invoiceLabelling: true };
-        });
-        setErrorMessage((prevState) => {
-          return {
-            ...prevState,
-            invoiceLabelling: hasInvoiceLabellingError.message,
-          };
-        });
+      const hasPopularCurrencyError = validatePopularCurrency(popularCurrency);
+      // if (hasPopularCurrencyError) {
+      //   setError((prevState) => {
+      //     return { ...prevState, popularCurrency: true };
+      //   });
+      // setErrorMessage((prevState) => {
+      //   return {
+      //     ...prevState,
+      //     popularCurrency: hasPopularCurrencyError.message,
+      //   };
+      // });
+      // }
+
+      const hasWalletNameError = validateName(walletName, 'walletName');
+      // if (hasWalletNameError) {
+      //   setError((prevState) => {
+      //     return { ...prevState, walletName: true };
+      //   });
+      // setErrorMessage((prevState) => {
+      //   return {
+      //     ...prevState,
+      //     walletName: hasWalletNameError.message,
+      //   };
+      // });
+      // }
+
+      const hasWalletAddressError = validateWalletAddress(walletAddress);
+      // if (hasWalletAddressError) {
+      //   setError((prevState) => {
+      //     return { ...prevState, walletAddress: true };
+      //   });
+      // setErrorMessage((prevState) => {
+      //   return {
+      //     ...prevState,
+      //     walletAddress: hasWalletAddressError.message,
+      //   };
+      // });
+      // }
+
+      const validationArray = [
+        hasInvoiceLabellingError,
+        hasPopularCurrencyError,
+        hasWalletNameError,
+        hasWalletAddressError,
+      ];
+
+      const checkIfError = (validationArray) => {
+        validationArray.forEach(ErrorFunction);
+      };
+
+      const ErrorFunction = (thingToCheck) => {
+        if (thingToCheck.error === true) {
+          setError((prevState) => {
+            return { ...prevState, [thingToCheck.property]: true };
+          });
+          setErrorMessage((prevState) => {
+            return {
+              ...prevState,
+              [thingToCheck.property]: thingToCheck.message,
+            };
+          });
+        }
+      };
+
+      checkIfError(validationArray);
+
+      const hasError =
+        hasInvoiceLabellingError ||
+        hasPopularCurrencyError ||
+        hasWalletNameError ||
+        hasWalletAddressError;
+      if (hasError) {
         return;
       }
 
@@ -153,6 +228,7 @@ export default function PaymentInformationForm() {
                     setTempPaymentInfo={setTempPaymentInfo}
                     handleChange={handleChange}
                     error={error}
+                    errorMessage={errorMessage}
                   />
                 </div>
                 <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">

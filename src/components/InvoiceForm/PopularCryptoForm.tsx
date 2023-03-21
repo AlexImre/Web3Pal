@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import PopularCurrenciesDropDown from './PopularCurrenciesDropDown';
 import TextFieldWithValidation from './Fields/TextFieldWithValidation';
-import { StateContext } from '../../context/stateContext';
-import { useContext } from 'react';
 
 function PopularCryptoForm(props: any) {
-  const stateContext = useContext(StateContext);
-  const { masterState } = stateContext;
-  const { tempPaymentInfo, setTempPaymentInfo, handleChange, error } = props;
+  const {
+    tempPaymentInfo,
+    setTempPaymentInfo,
+    handleChange,
+    error,
+    errorMessage,
+  } = props;
   const { walletName, walletAddress } = tempPaymentInfo;
 
   const [currentPrice, setCurrentPrice] = useState(0);
@@ -20,8 +22,8 @@ function PopularCryptoForm(props: any) {
             tempPaymentInfo={tempPaymentInfo}
             setTempPaymentInfo={setTempPaymentInfo}
             setCurrentPrice={setCurrentPrice}
-            error={error}
-            errorMessage={''}
+            error={error.popularCurrency}
+            errorMessage={errorMessage.popularCurrency}
           />
         </div>
         <div className="col-span-6 content-center items-center text-indigo-500 sm:col-span-3 sm:text-sm">
@@ -42,7 +44,8 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={walletName}
             onChange={handleChange}
-            error={error}
+            error={error.walletName}
+            errorMessage={errorMessage.walletName}
           />
         </div>
       </div>
@@ -54,7 +57,8 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={walletAddress}
             onChange={handleChange}
-            error={error}
+            error={error.walletAddress}
+            errorMessage={errorMessage.walletAddress}
           />
         </div>
       </div>
