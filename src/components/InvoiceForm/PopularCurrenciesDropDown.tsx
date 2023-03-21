@@ -12,7 +12,7 @@ type PopularCurrenciesDropDownProps = {
   tempPaymentInfo: any;
   setTempPaymentInfo: any;
   setCurrentPrice: any;
-  error: string;
+  error: boolean;
   errorMessage: string;
 };
 

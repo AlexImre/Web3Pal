@@ -1,8 +1,15 @@
 import React from 'react';
 import TextFieldWithValidation from './Fields/TextFieldWithValidation';
 
-function PopularCryptoForm(props: any) {
-  const { tempPaymentInfo, handleChange, error } = props;
+type PopularCryptoFormProps = {
+  tempPaymentInfo: any;
+  handleChange: any;
+  error: any;
+  errorMessage: any;
+};
+
+function PopularCryptoForm(props: PopularCryptoFormProps) {
+  const { tempPaymentInfo, handleChange, error, errorMessage } = props;
   const {
     customCurrencyName,
     customCurrencySymbol,
@@ -22,7 +29,8 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={customCurrencyName}
             onChange={handleChange}
-            error={error}
+            error={error.customCurrencyName}
+            errorMessage={errorMessage.customCurrencyName}
           />
         </div>
         <div className="col-span-6 sm:col-span-3">
@@ -32,7 +40,8 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={customCurrencySymbol}
             onChange={handleChange}
-            error={error}
+            error={error.customCurrencySymbol}
+            errorMessage={errorMessage.customCurrencySymbol}
           />
         </div>
       </div>
@@ -44,7 +53,8 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={customCurrencyPlatform}
             onChange={handleChange}
-            error={error}
+            error={error.customCurrencyPlatform}
+            errorMessage={errorMessage.customCurrencyPlatform}
           />
         </div>
         <div className="col-span-6 sm:col-span-3">
@@ -54,7 +64,8 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={customCurrencyAddress}
             onChange={handleChange}
-            error={error}
+            error={error.customCurrencyAddress}
+            errorMessage={errorMessage.customCurrencyAddress}
           />
         </div>
       </div>
@@ -66,7 +77,8 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={walletName}
             onChange={handleChange}
-            error={error}
+            error={error.walletName}
+            errorMessage={errorMessage.walletName}
           />
         </div>
       </div>
@@ -78,7 +90,8 @@ function PopularCryptoForm(props: any) {
             width="w-full"
             value={walletAddress}
             onChange={handleChange}
-            error={error}
+            error={error.walletAddress}
+            errorMessage={errorMessage.walletAddress}
           />
         </div>
       </div>

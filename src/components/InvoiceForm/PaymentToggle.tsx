@@ -67,6 +67,7 @@ export default function PaymentToggle(props: any) {
           tempPaymentInfo={tempPaymentInfo}
           handleChange={handleChange}
           error={error}
+          errorMessage={errorMessage}
         />
       )}
     </div>

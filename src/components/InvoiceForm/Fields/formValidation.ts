@@ -18,12 +18,12 @@ export function validateEmail(email: string) {
   return false; 
 }
 
-export function validateName(name: string, property: string) {
+export function validateName(name: string, property: string, label: string) {
   if (name === '' || name === undefined) {
     return {
       property,
       error: true,
-      message: 'Name cannot be blank',
+      message: `${label || "Field"} cannot be blank`,
     }
   }
   const nameRegex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
@@ -144,6 +144,7 @@ export function validatePopularCurrency(popularCurrency: string) {
 }
 
 export function validateWalletAddress(walletAddress: string) {
+  console.log("validate wallet address: ", walletAddress)
   if (walletAddress === '' || walletAddress === undefined) {
     return {
       property: 'walletAddress',
@@ -158,6 +159,28 @@ export function validateWalletAddress(walletAddress: string) {
       property: 'walletAddress',
       error: true,
       message: 'Wallet address is not valid',
+    }
+  }
+  return false;
+}
+
+export function validateCustomCurrencySymbol(customCurrencySymbol: string) {
+  if (customCurrencySymbol === '' || customCurrencySymbol === undefined) {
+    return {
+      property: 'customCurrencySymbol',
+      error: true,
+      message: 'Token symbol cannot be blank',
+    }
+  }
+  return false;
+}
+
+export function validateCustomCurrencyAddress(customCurrencyAddress: string) {
+  if (customCurrencyAddress === '' || customCurrencyAddress === undefined) {
+    return {
+      property: 'customCurrencyAddress',
+      error: true,
+      message: 'Token contract address cannot be blank',
     }
   }
   return false;

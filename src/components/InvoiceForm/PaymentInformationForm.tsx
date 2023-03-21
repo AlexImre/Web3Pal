@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import TextFieldWithValidation from './Fields/TextFieldWithValidation';
 import PaymentToggle from './PaymentToggle';
 import {
+  validateCustomCurrencyAddress,
+  validateCustomCurrencySymbol,
   validateInvoiceLabelling,
   validateName,
   validatePopularCurrency,
@@ -78,11 +80,17 @@ export default function PaymentInformationForm() {
     setError(defaultError);
     setErrorMessage(defaultErrorMessage);
 
+    console.log('tempPaymentInfo', tempPaymentInfo);
+
     if (paymentMethod === 'crypto') {
       const hasInvoiceLabellingError =
         validateInvoiceLabelling(invoiceLabelling);
       const hasPopularCurrencyError = validatePopularCurrency(popularCurrency);
-      const hasWalletNameError = validateName(walletName, 'walletName');
+      const hasWalletNameError = validateName(
+        walletName,
+        'walletName',
+        'Wallet name'
+      );
       const hasWalletAddressError = validateWalletAddress(walletAddress);
       const validationArray = [
         hasInvoiceLabellingError,
@@ -94,7 +102,6 @@ export default function PaymentInformationForm() {
       validationArray.forEach(setErrorAndErrorMessages);
 
       const hasError =
-        !!hasInvoiceLabellingError ||
         !!hasPopularCurrencyError ||
         !!hasWalletNameError ||
         !!hasWalletAddressError;
@@ -120,6 +127,56 @@ export default function PaymentInformationForm() {
         },
       });
     } else if (paymentMethod === 'custom') {
+      const hasInvoiceLabellingError =
+        validateInvoiceLabelling(invoiceLabelling);
+      const hasCustomCurrencyNameError = validateName(
+        customCurrencyName,
+        'customCurrencyName',
+        'Token name'
+      );
+      const hasCustomCurrencySymbolError =
+        validateCustomCurrencySymbol(customCurrencySymbol);
+      const hasCustomCurrencyAddressError = validateCustomCurrencyAddress(
+        customCurrencyAddress
+      );
+      const hasCustomCurrencyPlatformError = validateName(
+        customCurrencyPlatform,
+        'customCurrencyPlatform',
+        'Token platform'
+      );
+      const hasWalletNameError = validateName(
+        walletName,
+        'walletName',
+        'Wallet name'
+      );
+      const hasWalletAddressError = validateWalletAddress(walletAddress);
+
+      const validationArray = [
+        hasInvoiceLabellingError,
+        hasCustomCurrencyNameError,
+        hasCustomCurrencySymbolError,
+        hasCustomCurrencyAddressError,
+        hasCustomCurrencyPlatformError,
+        hasWalletNameError,
+        hasWalletAddressError,
+      ];
+
+      validationArray.forEach(setErrorAndErrorMessages);
+
+      console.log('error', error);
+      console.log('errorMessage', errorMessage);
+
+      const hasError =
+        !!hasCustomCurrencyNameError ||
+        !!hasCustomCurrencySymbolError ||
+        !!hasCustomCurrencyAddressError ||
+        !!hasCustomCurrencyPlatformError ||
+        !!hasWalletNameError ||
+        !!hasWalletAddressError;
+      if (hasError) {
+        return;
+      }
+
       setMasterState({
         ...masterState,
         invoice: {
