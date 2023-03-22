@@ -132,6 +132,27 @@ export function validateInvoiceLabelling(invoiceLabel: string) {
   return false;
 }
 
+export function validateOrganisationName(name: string) {
+  if (name === '' || name === undefined) {
+    return {
+      property: 'name',
+      error: true,
+      message: 'Company name cannot be blank',
+    }
+  }
+
+  const regex = /^[a-zA-Z0-9 ]+$/;
+  const doesPassRegexTest = regex.test(name);
+  if (!doesPassRegexTest) {
+    return {
+      property: 'name',
+      error: true,
+      message: 'Company name must only use characters [a - z, 0 - 9]',
+    }
+  }
+  return false;
+}
+
 export function validatePopularCurrency(popularCurrency: string) {
   if (popularCurrency === '' || popularCurrency === undefined) {
     return {

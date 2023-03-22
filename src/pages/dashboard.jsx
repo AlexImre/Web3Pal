@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline'
-import DashboardProfileDropDown from '../components/Dashboard/DashboardProfileDropDown'
-import DashboardDesktopSidebar from '../components/Dashboard/DashboardDesktopSidebar'
-import DashboardMobileSidebar from '../components/Dashboard/DashboardMobileSidebar'
-import HomeCard from '../components/Dashboard/HomeCard'
+import { useState } from 'react';
+import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline';
+import DashboardProfileDropDown from '../components/Dashboard/DashboardProfileDropDown';
+import DashboardDesktopSidebar from '../components/Dashboard/DashboardDesktopSidebar';
+import DashboardMobileSidebar from '../components/Dashboard/DashboardMobileSidebar';
+import HomeCard from '../components/Dashboard/HomeCard';
+import CreateCompanyPanel from '../components/Dashboard/CreateCompanyPanel';
 
 export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <>
@@ -32,9 +33,10 @@ export default function Dashboard() {
 
             <DashboardProfileDropDown />
           </div>
+          <CreateCompanyPanel />
           <HomeCard />
         </div>
       </div>
     </>
-  )
+  );
 }

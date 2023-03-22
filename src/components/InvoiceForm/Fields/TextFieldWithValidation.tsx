@@ -8,20 +8,29 @@ type TextFieldWithValidationProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error: boolean;
   errorMessage: string;
-  pattern?: string;
+  helperText?: string;
 };
 
 export default function TextFieldWithValidation(
   props: TextFieldWithValidationProps
 ) {
-  const { label, name, width, value, onChange, error, errorMessage } = props;
+  const {
+    label,
+    name,
+    width,
+    value,
+    onChange,
+    error,
+    errorMessage,
+    helperText,
+  } = props;
 
   return (
     <div>
       <label htmlFor="text" className="block text-sm font-medium text-gray-700">
         {label}*
       </label>
-      <div className="relative mt-1 rounded-md shadow-sm">
+      <div className="relative mt-1 rounded-md">
         <input
           type="text"
           name={name}
@@ -53,6 +62,9 @@ export default function TextFieldWithValidation(
         </p>
       ) : (
         ''
+      )}
+      {!error && helperText && (
+        <p className="mt-2 text-sm text-gray-500">{helperText}</p>
       )}
     </div>
   );
