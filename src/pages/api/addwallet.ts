@@ -8,12 +8,17 @@ export default async (req: Request, res: Response) => {
     const request = req.body;
     const user = request.user;
     const wallet = request.wallet;
+    const query = { email: user, wallets: { $elemMatch: {address: wallet.address}} };
+    const doesWalletExist = await db.collection('users').findOne(query);
 
-
-    const query = { user: user, wallets: {walletAdress: wallet.walletAddress } };
-
-    const doesWalletExist = await db.collection('users').find(query);
-
+    if (!doesWalletExist) {
+      console.log("wallet does not exist, creating...")
+      const saveWallet = await db.collection('users').updateOne({ email: user }, {$push: { wallets: wallet }});
+      res.status(201).json(saveWallet);
+    } else {
+      console.log("wallet exists, doing nothing!...")
+      res.status(200).json("wallet already exists")
+    }
   } catch (e) {
     console.error(e);
     throw new Error(e).message;

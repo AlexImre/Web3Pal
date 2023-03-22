@@ -3,6 +3,7 @@ import TextField from '../InvoiceForm/Fields/TextField';
 import WalletTable from './WalletTable';
 import { ethers } from 'ethers';
 import { useSession } from 'next-auth/react';
+import toast from 'react-hot-toast';
 
 type WalletType = {
   name: string;
@@ -31,6 +32,9 @@ function Wallets() {
     setWallets(newWallets);
   };
 
+  const savedToast = () => toast.success('Wallet saved.');
+  const errorToast = () => toast.error('Wallet already exists.');
+
   const handleAddWallet = async () => {
     const isValidWallet = ethers.utils.isAddress(walletAddress);
 
@@ -55,11 +59,15 @@ function Wallets() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ requestBody }),
+      body: JSON.stringify(requestBody),
     });
 
-    if (addWallet.ok) {
+    const data = await addWallet.json();
+    if (addWallet.status === 201) {
       setWallets([...wallets, newWallet]);
+      savedToast();
+    } else {
+      errorToast();
     }
   };
 
