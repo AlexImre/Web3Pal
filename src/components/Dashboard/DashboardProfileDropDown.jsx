@@ -11,12 +11,12 @@ function classNames(...classes) {
 export default function DashboardProfileDropDown() {
   return (
     <>
-      <div className="flex flex-1 justify-between px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
+      <div className="flex flex-1 justify-between bg-slate-100 px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
         <div className="flex flex-1"></div>
         <div className="ml-4 flex items-center md:ml-6">
           <Menu as="div" className="relative ml-3">
             <div>
-              <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
+              <Menu.Button className="flex max-w-xs items-center rounded-full bg-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
                 <Image
                   src={'/pixelselfie3.png'}
                   width={50}
