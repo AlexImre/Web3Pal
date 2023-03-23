@@ -87,7 +87,7 @@ export default function CreateCompanyPanel() {
   };
 
   return (
-    <div className="m-10 bg-white shadow sm:rounded-lg">
+    <div className="m-10 max-w-4xl bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:p-6">
         <h3 className="text-base font-semibold leading-6 text-gray-900">
           Let's get you started!
@@ -115,7 +115,7 @@ export default function CreateCompanyPanel() {
           />
         </div>
       </div>
-      <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+      <div className="bg-gray-50 px-4 py-3 text-right sm:rounded-lg sm:px-6">
         <button
           className="w-50 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={(e) => handleSubmit(e)}

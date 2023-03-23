@@ -11,7 +11,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="min-h-full">
+      <div className="min-h-full bg-slate-100">
         <DashboardMobileSidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -33,7 +33,9 @@ export default function Dashboard() {
 
             <DashboardProfileDropDown />
           </div>
-          <CreateCompanyPanel />
+          <div className="flex flex-col items-center">
+            <CreateCompanyPanel />
+          </div>
           <HomeCard />
         </div>
       </div>
