@@ -6,8 +6,13 @@ export default async (req: Request, res: Response) => {
     const client = await clientPromise;
     const db = client.db('web3pal');
     const organisation = req.body;
+    console.log("organisation", organisation)
     const userDocument = await db.collection('users').findOne({ email: organisation.createdBy });
+    console.log("userDocument", userDocument)
     const isUserPartOfAnOrganisation = userDocument.organisationId;
+    console.log("isUserPartOfAnOrganisation", isUserPartOfAnOrganisation)
+
+
 
     if (!isUserPartOfAnOrganisation) {
       console.log("user is not part of an organisation, creating...")

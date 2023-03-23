@@ -3,7 +3,6 @@ import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline';
 import DashboardProfileDropDown from '@/components/Dashboard/DashboardProfileDropDown';
 import DashboardDesktopSidebar from '@/components/Dashboard/DashboardDesktopSidebar';
 import DashboardMobileSidebar from '@/components/Dashboard/DashboardMobileSidebar';
-import MyInvoicesDisplay from '../components/MyInvoices/MyInvoicesDisplay';
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
@@ -11,9 +10,9 @@ import type {
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { StateContext } from '@/context/stateContext';
-import EmptyInvoiceHolder from '@/components/MyInvoices/EmptyInvoiceHolder';
 import MyOrganisationTable from '@/components/MyOrganisation/MyOrganisationTable';
 import OrganisationInformationForm from '@/components/MyOrganisation/OrganisationInformationForm';
+import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -55,6 +54,7 @@ export default function MyOrganisation(
   const { organisation } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  const organisationMasterState = masterState.organisation;
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function MyOrganisation(
 
   return (
     <>
-      <div className="min-h-full">
+      <div className="min-h-full bg-slate-100">
         <DashboardMobileSidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -72,7 +72,7 @@ export default function MyOrganisation(
 
         <DashboardDesktopSidebar />
 
-        <div className="flex flex-1 flex-col bg-slate-100 lg:pl-64">
+        <div className="flex flex-1 flex-col lg:pl-64">
           <div className="flex flex-shrink-0 border-b border-gray-200 bg-white lg:h-0 lg:border-none">
             {/* Open sidebar on mobile */}
             <button
@@ -85,25 +85,15 @@ export default function MyOrganisation(
             </button>
           </div>
 
-          {/* <div className="mt-5 px-4 sm:px-6 lg:px-8">
-            <div className="sm:flex sm:items-center">
-              <div className="sm:flex-auto">
-                <div className="text-2xl font-semibold text-slate-900">
-                  {organisation.organisationName}
-                </div>
-              </div>
-            </div>
-          </div> */}
-
           {isLoading ? (
             <></>
-          ) : organisation ? (
+          ) : organisationMasterState ? (
             <>
               <OrganisationInformationForm />
               <MyOrganisationTable />
             </>
           ) : (
-            <EmptyInvoiceHolder />
+            <CreateCompanyPanel />
           )}
         </div>
       </div>

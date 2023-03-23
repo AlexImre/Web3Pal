@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import TextFieldWithValidation from '../InvoiceForm/Fields/TextFieldWithValidation';
 import { StateContext } from '@/context/stateContext';
 import { validateOrganisationName } from '../InvoiceForm/Fields/formValidation';
@@ -9,12 +9,12 @@ import { useSession } from 'next-auth/react';
 export default function CreateCompanyPanel() {
   const { data: session } = useSession();
   const { masterState, setMasterState } = useContext(StateContext);
-  const { organisation } = masterState;
   const user = session?.user?.email;
 
   const defaultOrganisation: OrganisationType = {
     organisation_id: '',
     organisationName: '',
+    organisationEmail: '',
     createdBy: '',
     createdTimestamp: undefined,
     updatedBy: '',
@@ -23,20 +23,52 @@ export default function CreateCompanyPanel() {
     admins: [],
   };
   const [tempOrganisation, setTempOrganisation] = useState(defaultOrganisation);
+  const [readyToSave, setReadyToSave] = useState(false);
 
   const handleChange = (e) => {
     const newOrganisation = {
-      ...organisation,
+      ...tempOrganisation,
       organisationName: e.target.value,
     };
 
     setTempOrganisation(newOrganisation);
   };
 
+  useEffect(() => {
+    if (!readyToSave) {
+      return;
+    }
+
+    const saveOrg = async () => {
+      console.log('saving org');
+      const saveOrganisation = await fetch('/api/saveorganisation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tempOrganisation),
+      });
+      const data = await saveOrganisation.json();
+      if (saveOrganisation.status === 201) {
+        setMasterState({
+          ...masterState,
+          organisation: {
+            ...tempOrganisation,
+            organisation_id: data.insertedId,
+          },
+        });
+        savedToast();
+      }
+    };
+
+    saveOrg();
+  }, [readyToSave]);
+
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const savedToast = () => toast.success('Company created.');
   const handleSubmit = async (e) => {
+    console.log('submitting');
     e.preventDefault();
     setError(false);
     setErrorMessage('');
@@ -48,6 +80,8 @@ export default function CreateCompanyPanel() {
     if (hasOrganizationError) {
       setError(true);
       setErrorMessage(hasOrganizationError.message);
+      console.log('error', error);
+      console.log('errorMessage', errorMessage);
       return;
     }
 
@@ -61,29 +95,7 @@ export default function CreateCompanyPanel() {
       };
     });
 
-    // save to db
-    // check in DB if company name exists, but only for the same user??!
-
-    console.log('organisation', tempOrganisation);
-
-    const saveOrganisation = await fetch('/api/saveorganisation', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(tempOrganisation),
-    });
-
-    const data = await saveOrganisation.json();
-    console.log('data', data);
-
-    if (saveOrganisation.status === 201) {
-      setMasterState({
-        ...masterState,
-        organisation: tempOrganisation,
-      });
-      savedToast();
-    }
+    setReadyToSave(true);
   };
 
   return (
@@ -94,7 +106,7 @@ export default function CreateCompanyPanel() {
         </h3>
         <div className="mt-2 w-full text-sm text-gray-500">
           <p>
-            To use this app, you need to create a organisation. Your invoices
+            To use this app, you need to create an organisation. Your invoices
             and payments will be associated with this organisation. You can only
             be a member of one organisation at a time.
           </p>

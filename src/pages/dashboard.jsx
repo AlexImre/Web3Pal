@@ -1,13 +1,59 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline';
 import DashboardProfileDropDown from '../components/Dashboard/DashboardProfileDropDown';
 import DashboardDesktopSidebar from '../components/Dashboard/DashboardDesktopSidebar';
 import DashboardMobileSidebar from '../components/Dashboard/DashboardMobileSidebar';
 import HomeCard from '../components/Dashboard/HomeCard';
 import CreateCompanyPanel from '../components/Dashboard/CreateCompanyPanel';
+import { StateContext } from '@/context/stateContext';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './api/auth/[...nextauth]';
 
-export default function Dashboard() {
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  // If the user is already logged in, redirect.
+  // Note: Make sure not to redirect to the same page
+  // To avoid an infinite loop!
+
+  if (!session) {
+    return { redirect: { destination: '/login' } };
+  }
+
+  const organisation = await fetch(
+    `http://localhost:3000/api/getorganisation/?email=${session.user.email}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const response = await organisation.json();
+  if (organisation.status === 200) {
+    return {
+      props: { organisation: response },
+    };
+  } else {
+    return {
+      props: { organisation: false },
+    };
+  }
+}
+
+export default function Dashboard(props) {
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+  const { organisation } = props;
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const organisationMasterState = masterState.organisation;
+
+  useEffect(() => {
+    setMasterState({ ...masterState, organisation: organisation });
+    setIsLoading(false);
+  }, []);
 
   return (
     <>
@@ -33,10 +79,17 @@ export default function Dashboard() {
 
             <DashboardProfileDropDown />
           </div>
-          <div className="flex flex-col items-center">
-            <CreateCompanyPanel />
-          </div>
-          <HomeCard />
+          {isLoading ? (
+            <></>
+          ) : organisationMasterState ? (
+            <>
+              <HomeCard />
+            </>
+          ) : (
+            <div className="flex flex-col items-center">
+              <CreateCompanyPanel />
+            </div>
+          )}
         </div>
       </div>
     </>

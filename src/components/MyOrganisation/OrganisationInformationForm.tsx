@@ -14,52 +14,56 @@ export default function OrganisationInformationForm() {
   const pesonalToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const { organisation } = masterState;
-  const [tempPersonalInfo, setTempPersonalInfo] = useState(
-    masterState.invoice.personalInformation
-  );
-  const { name, email, addressLine1, addressLine2, city, county, postalCode } =
-    tempPersonalInfo;
+  const [tempOrgInfo, setTempOrgInfo] = useState(organisation);
+  const {
+    organisationName,
+    organisationEmail,
+    organisationAddressLine1,
+    organisationAddressLine2,
+    organisationCity,
+    organisationCounty,
+    organisationPostalCode,
+  } = tempOrgInfo;
   const handleChange = (e) => {
-    setTempPersonalInfo({
-      ...tempPersonalInfo,
+    setTempOrgInfo({
+      ...tempOrgInfo,
       [e.target.name]: e.target.value,
     });
   };
 
   const defaultError = {
-    name: false,
-    email: false,
+    organisationName: false,
+    organisationEmail: false,
   };
   const defaultErrorMessage = {
-    name: '',
-    email: '',
+    organisationName: '',
+    organisationEmail: '',
   };
   const [error, setError] = useState(defaultError);
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError(defaultError);
     setErrorMessage(defaultErrorMessage);
 
-    const isNameError = validateName(name, 'name', 'Name');
+    const isNameError = validateName(organisationName, 'name', 'Name');
     if (!!isNameError) {
       setError((prevState) => {
-        return { ...prevState, name: true };
+        return { ...prevState, organisationName: true };
       });
       setErrorMessage((prevState) => {
-        return { ...prevState, name: isNameError.message };
+        return { ...prevState, organisationName: isNameError.message };
       });
     }
 
-    const isEmailError = validateEmail(email);
+    const isEmailError = validateEmail(organisationEmail);
     if (!!isEmailError) {
-      console.log('getting here!');
       setError((prevState) => {
-        return { ...prevState, email: true };
+        return { ...prevState, organisationEmail: true };
       });
       setErrorMessage((prevState) => {
-        return { ...prevState, email: isEmailError.message };
+        return { ...prevState, organisationEmail: isEmailError.message };
       });
     }
 
@@ -68,18 +72,22 @@ export default function OrganisationInformationForm() {
       return;
     }
 
-    setMasterState({
-      ...masterState,
-      invoice: {
-        ...masterState.invoice,
-        personalInformation: tempPersonalInfo,
-        formCompletion: {
-          ...masterState.invoice.formCompletion,
-          personalInformation: true,
-        },
+    // update org in db
+    const updateOrganisation = await fetch('/api/updateorganisation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify(tempOrgInfo),
     });
-    pesonalToast();
+    const response = await updateOrganisation.json();
+    if (updateOrganisation.status === 201) {
+      setMasterState({
+        ...masterState,
+        organisation: tempOrgInfo,
+      });
+      pesonalToast();
+    }
   };
 
   return (
@@ -100,79 +108,79 @@ export default function OrganisationInformationForm() {
                   <div className="col-span-6 sm:col-span-3">
                     <TextFieldRequired
                       label="Name"
-                      name="name"
+                      name="organisationName"
                       width="w-full"
                       onChange={handleChange}
-                      value={organisation.organisationName}
-                      error={error.name}
-                      errorMessage={errorMessage.name}
+                      value={organisationName}
+                      error={error.organisationName}
+                      errorMessage={errorMessage.organisationName}
                     />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
                     <EmailField
                       label="Email address"
-                      name="email"
+                      name="organisationEmail"
                       width="w-full"
                       onChange={handleChange}
-                      value={email}
-                      error={error.email}
-                      errorMessage={errorMessage.email}
+                      value={organisationEmail}
+                      error={error.organisationEmail}
+                      errorMessage={errorMessage.organisationEmail}
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-3">
                     <CountriesField
-                      tempInfo={tempPersonalInfo}
-                      setTempInfo={setTempPersonalInfo}
+                      tempInfo={tempOrgInfo}
+                      setTempInfo={setTempOrgInfo}
                     />
                   </div>
 
                   <div className="col-span-6">
                     <TextField
                       label="Address line 1"
-                      name="addressLine1"
+                      name="organisationAddressLine1"
                       width="w-full"
                       onChange={handleChange}
-                      value={addressLine1}
+                      value={organisationAddressLine1}
                     />
                   </div>
                   <div className="col-span-6">
                     <TextField
                       label="Address line 2"
-                      name="addressLine2"
+                      name="organisationAddressLine2"
                       width="w-full"
                       onChange={handleChange}
-                      value={addressLine2}
+                      value={organisationAddressLine2}
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                     <TextField
                       label="City"
-                      name="city"
+                      name="organisationCity"
                       width="w-full"
                       onChange={handleChange}
-                      value={city}
+                      value={organisationCity}
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                     <TextField
                       label="State / Province"
-                      name="county"
+                      name="organisationCounty"
                       width="w-full"
                       onChange={handleChange}
-                      value={county}
+                      value={organisationCounty}
                     />
                   </div>
 
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                     <TextField
                       label="ZIP / Postal code"
-                      name="postalCode"
+                      name="organisationPostalCode"
                       width="w-full"
                       onChange={handleChange}
-                      value={postalCode}
+                      value={organisationPostalCode}
                     />
                   </div>
                 </div>
