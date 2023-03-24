@@ -9,7 +9,7 @@ import {
 
 export const navigation = [
   {
-    name: 'Personal Information',
+    name: 'Your Information',
     icon: UserCircleIcon,
   },
   {
