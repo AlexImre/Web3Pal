@@ -22,7 +22,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // To avoid an infinite loop!
 
   if (!session) {
-    return { redirect: { destination: '/login' } };
+    return { redirect: { destination: '/auth/signin' } };
   }
 
   const organisation = await fetch(

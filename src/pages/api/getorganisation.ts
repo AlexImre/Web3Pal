@@ -1,7 +1,5 @@
 import clientPromise from '../../lib/mongodb';
 import { Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
-
 
 export default async (req: Request, res: Response) => {
   try {
