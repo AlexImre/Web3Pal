@@ -32,11 +32,17 @@ export async function getServerSideProps(context) {
     }
   );
 
-  const response = await organisation.json();
-  if (organisation.status === 200) {
-    return {
-      props: { organisation: response },
-    };
+  if (organisation) {
+    const response = await organisation.json();
+    if (organisation.status === 200) {
+      return {
+        props: { organisation: response },
+      };
+    } else {
+      return {
+        props: { organisation: false },
+      };
+    }
   } else {
     return {
       props: { organisation: false },

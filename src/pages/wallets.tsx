@@ -9,6 +9,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { useSession } from 'next-auth/react';
+import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -52,6 +53,7 @@ export default function Wallets(
   const { masterState, setMasterState } = stateContext;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const organisationMasterState = masterState.organisation;
 
   useEffect(() => {
     setMasterState({ ...masterState, organisation, session });
@@ -85,9 +87,15 @@ export default function Wallets(
                 <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
-            <div className="px-10">
-              <WalletsDisplay />
-            </div>
+            {organisationMasterState ? (
+              <div className="px-10">
+                <WalletsDisplay />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center">
+                <CreateCompanyPanel />
+              </div>
+            )}
           </div>
         </div>
       )}

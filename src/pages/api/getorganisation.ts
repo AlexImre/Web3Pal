@@ -10,8 +10,14 @@ export default async (req: Request, res: Response) => {
     const db = client.db('web3pal');
     const { email } = req.query;
 
+    console.log("email", email)
+
     const userData = await db.collection('users').findOne({ email: email });
-    const organisationId = userData.organisationId;
+
+    console.log("userData", userData)
+
+    const organisationId = userData?.organisationId;
+    console.log("organisationId", organisationId)
 
     if (organisationId) {
       const organisationData = await db.collection('organisations').findOne({ _id: organisationId });

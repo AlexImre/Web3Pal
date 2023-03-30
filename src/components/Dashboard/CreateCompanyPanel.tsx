@@ -12,7 +12,6 @@ export default function CreateCompanyPanel() {
   const user = session?.user?.email;
 
   const defaultOrganisation: OrganisationType = {
-    _id: '',
     organisationName: '',
     organisationEmail: '',
     createdBy: '',
