@@ -33,6 +33,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     }
   );
 
+  console.log('organisation: ', organisation);
+
   if (organisation) {
     const response = await organisation.json();
     if (organisation.status === 200) {
