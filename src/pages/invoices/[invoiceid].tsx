@@ -1,4 +1,4 @@
-import NotesSection from '@/components/AddInvoiceDisplay/NotesSection';
+/*import NotesSection from '@/components/AddInvoiceDisplay/NotesSection';
 import PaymentDetailsSection from '@/components/AddInvoiceDisplay/PaymentDetailsSection';
 import PersonalInformationSection from '@/components/AddInvoiceDisplay/PersonalInformationSection';
 import RecipientInformationSection from '@/components/AddInvoiceDisplay/RecipientInformationSection';
@@ -174,3 +174,5 @@ function Invoice(props) {
 }
 
 export default Invoice;
+
+*/
