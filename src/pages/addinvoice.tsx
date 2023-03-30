@@ -14,7 +14,7 @@ export async function getServerSideProps({ req, query }) {
   const marketData = await getMarketData();
   const session = await getSession({ req });
   const getInvoiceNumber = await fetch(
-    `http://localhost:3000/api/getinvoicenumbercount/?user=${session.user.email}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getinvoicenumbercount/?user=${session.user.email}`,
     {
       method: 'GET',
       headers: {
@@ -26,7 +26,7 @@ export async function getServerSideProps({ req, query }) {
   const invoiceNumber = await getInvoiceNumber.json();
   const invoiceId = query.invoiceId;
   const fetchInvoice = await fetch(
-    `http://localhost:3000/api/view/${invoiceId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/view/${invoiceId}`,
     {
       method: 'GET',
       headers: {
@@ -37,7 +37,7 @@ export async function getServerSideProps({ req, query }) {
   const invoice = await fetchInvoice.json();
 
   const fetchOrganisation = await fetch(
-    `http://localhost:3000/api/getorganisation/?email=${session.user.email}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation/?email=${session.user.email}`,
     {
       method: 'GET',
       headers: {

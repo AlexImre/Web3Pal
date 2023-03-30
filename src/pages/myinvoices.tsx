@@ -26,7 +26,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const invoices = await fetch(
-    `http://localhost:3000/api/invoices/${session.user.email}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/invoices/${session.user.email}`,
     {
       method: 'GET',
       headers: {

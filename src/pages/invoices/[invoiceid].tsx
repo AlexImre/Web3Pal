@@ -17,7 +17,7 @@ import FailedPaymentAlert from '@/components/Web3/FailedPaymentAlert';
 export async function getServerSideProps(context) {
   const { invoiceid } = context.params;
   const invoiceData = await fetch(
-    `http://localhost:3000/api/view/${invoiceid}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/view/${invoiceid}`,
     {
       method: 'GET',
       headers: {

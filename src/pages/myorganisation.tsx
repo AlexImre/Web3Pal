@@ -26,7 +26,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const organisation = await fetch(
-    `http://localhost:3000/api/getorganisation/?email=${session.user.email}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation/?email=${session.user.email}`,
     {
       method: 'GET',
       headers: {
