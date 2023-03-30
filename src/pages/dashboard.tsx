@@ -12,13 +12,6 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
-
-  // If the user is already logged in, redirect.
-  // Note: Make sure not to redirect to the same page
-  // To avoid an infinite loop!
-
-  console.log('session', session);
-
   if (!session) {
     return { redirect: { destination: '/auth/signin' } };
   }
@@ -33,8 +26,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       body: JSON.stringify({ email: session.user.email }),
     }
   );
-
-  console.log('organisation: ', organisation);
 
   if (organisation) {
     const response = await organisation.json();
