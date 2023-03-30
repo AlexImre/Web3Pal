@@ -8,8 +8,9 @@ import CreateCompanyPanel from '../components/Dashboard/CreateCompanyPanel';
 import { StateContext } from '@/context/stateContext';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
 
   // If the user is already logged in, redirect.
@@ -50,7 +51,9 @@ export async function getServerSideProps(context) {
   }
 }
 
-export default function Dashboard(props) {
+export default function Dashboard(
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { organisation } = props;
