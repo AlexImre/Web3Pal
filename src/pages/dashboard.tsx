@@ -24,7 +24,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const organisation = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation2`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation`,
     {
       method: 'POST',
       headers: {

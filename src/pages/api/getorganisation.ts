@@ -6,12 +6,11 @@ export default async (req: Request, res: Response) => {
     console.log("made it to fetching org")
     const client = await clientPromise;
     const db = client.db('web3pal');
-    const { email } = req.query;
-
+    
+    const { email } = req.body
     console.log("email", email)
 
     const userData = await db.collection('users').findOne({ email: email });
-
     console.log("userData", userData)
 
     const organisationId = userData?.organisationId;
