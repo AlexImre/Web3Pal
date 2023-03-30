@@ -24,12 +24,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const organisation = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation/?email=${session.user.email}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation2`,
     {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ email: session.user.email }),
     }
   );
 
