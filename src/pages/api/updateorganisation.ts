@@ -7,7 +7,7 @@ export default async (req: Request, res: Response) => {
     const client = await clientPromise;
     const db = client.db('web3pal');
     const organisation = req.body;
-    const { 
+    const {
       organisation_id,
       organisationName, 
       organisationEmail, 

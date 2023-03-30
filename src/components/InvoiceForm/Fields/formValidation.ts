@@ -153,6 +153,27 @@ export function validateOrganisationName(name: string) {
   return false;
 }
 
+export function validateWalletName(walletName: string) {
+  if (walletName === '' || walletName === undefined) {
+    return {
+      property: 'walletName',
+      error: true,
+      message: 'Wallet name cannot be blank',
+    }
+  }
+
+  const regex = /^[a-zA-Z0-9 ]+$/;
+  const doesPassRegexTest = regex.test(walletName);
+  if (!doesPassRegexTest) {
+    return {
+      property: 'walletName',
+      error: true,
+      message: 'Wallet name must only use characters [a - z, 0 - 9]',
+    }
+  }
+  return false;
+}
+
 export function validatePopularCurrency(popularCurrency: string) {
   if (popularCurrency === '' || popularCurrency === undefined) {
     return {

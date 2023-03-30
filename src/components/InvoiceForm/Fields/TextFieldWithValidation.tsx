@@ -64,7 +64,7 @@ export default function TextFieldWithValidation(
         ''
       )}
       {!error && helperText && (
-        <p className="mt-2 text-sm text-gray-500">{helperText}</p>
+        <p className="mt-2 text-xs text-gray-500">{helperText}</p>
       )}
     </div>
   );
