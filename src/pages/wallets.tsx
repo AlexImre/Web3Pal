@@ -14,7 +14,7 @@ import { fetchOrganisation } from '@/utils/fetchData';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  const email = session.user.email;
+  const email = session?.user?.email;
   if (!session) {
     return { redirect: { destination: '/auth/signin' } };
   }

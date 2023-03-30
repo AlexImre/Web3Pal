@@ -18,7 +18,9 @@ export default function DashboardDesktopSidebar() {
         <div className="flex flex-grow flex-col overflow-y-auto bg-gradient-to-br from-indigo-800 to-indigo-500 pt-5 pb-4">
           <div className="flex flex-shrink-0 items-center px-4">
             <div className="text-xl font-bold text-blue-100">
-              Web3<span className="text-slate-900">Pal</span>
+              <Link href="/dashboard">
+                Web3<span className="text-slate-900">Pal</span>
+              </Link>
             </div>
             <div className="flex flex-shrink-0 items-center px-4"></div>
           </div>

@@ -17,8 +17,12 @@ import {
 
 export async function getServerSideProps({ req, query }) {
   const session = await getSession({ req });
-  const email = session.user.email;
+  const email = session?.user?.email;
   const invoiceId = query.invoiceId;
+
+  if (!session) {
+    return { redirect: { destination: '/auth/signin' } };
+  }
 
   const marketData = await getMarketData();
   const invoice = await fetchInvoice(invoiceId);
