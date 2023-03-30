@@ -9,40 +9,21 @@ import { StateContext } from '@/context/stateContext';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { fetchOrganisation } from '@/utils/fetchData';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  const email = session.user.email;
+
   if (!session) {
     return { redirect: { destination: '/auth/signin' } };
   }
 
-  const organisation = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: session.user.email }),
-    }
-  );
+  const organisation = await fetchOrganisation(email);
 
-  if (organisation) {
-    const response = await organisation.json();
-    if (organisation.status === 200) {
-      return {
-        props: { organisation: response },
-      };
-    } else {
-      return {
-        props: { organisation: false },
-      };
-    }
-  } else {
-    return {
-      props: { organisation: false },
-    };
-  }
+  return {
+    props: { organisation },
+  };
 }
 
 export default function Dashboard(
@@ -56,7 +37,7 @@ export default function Dashboard(
   const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
-    setMasterState({ ...masterState, organisation: organisation });
+    setMasterState({ ...masterState, organisation });
     setIsLoading(false);
   }, []);
 
@@ -71,7 +52,7 @@ export default function Dashboard(
         <DashboardDesktopSidebar />
 
         <div className="flex flex-1 flex-col lg:pl-64">
-          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
+          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-slate-100 lg:border-none">
             {/* Open sidebar on mobile */}
             <button
               type="button"

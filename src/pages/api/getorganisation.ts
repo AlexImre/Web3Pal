@@ -20,7 +20,7 @@ export default async (req: Request, res: Response) => {
       const organisationData = await db.collection('organisations').findOne({ _id: organisationId });
       res.status(200).json(organisationData);
     } else {
-      res.status(404).json("user is not part of an organisation");
+      res.status(404).json(false);
     }
   } catch (e) {
     console.error(e);

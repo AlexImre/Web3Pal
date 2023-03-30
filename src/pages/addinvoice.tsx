@@ -9,43 +9,21 @@ import { useContext } from 'react';
 import { InvoiceType } from '../context/stateContext';
 import { getSession } from 'next-auth/react';
 import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
+import {
+  fetchInvoice,
+  fetchInvoiceNumber,
+  fetchOrganisation,
+} from '@/utils/fetchData';
 
 export async function getServerSideProps({ req, query }) {
-  const marketData = await getMarketData();
   const session = await getSession({ req });
-  const getInvoiceNumber = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getinvoicenumbercount/?user=${session.user.email}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-
-  const invoiceNumber = await getInvoiceNumber.json();
+  const email = session.user.email;
   const invoiceId = query.invoiceId;
-  const fetchInvoice = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/view/${invoiceId}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  const invoice = await fetchInvoice.json();
 
-  const fetchOrganisation = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation/?email=${session.user.email}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  const organisation = await fetchOrganisation.json();
+  const marketData = await getMarketData();
+  const invoice = await fetchInvoice(invoiceId);
+  const invoiceNumber = await fetchInvoiceNumber(email);
+  const organisation = await fetchOrganisation(email);
 
   return {
     props: { marketData, invoice, invoiceNumber, organisation },
@@ -66,6 +44,9 @@ export default function CreateInvoice({
   const invoiceToEdit: InvoiceType = invoice[0];
   const [isLoading, setIsLoading] = useState(true);
   const organisationMasterState = masterState.organisation._id;
+
+  console.log('master state', masterState);
+  console.log('organisationMasterState', organisationMasterState);
 
   useEffect(() => {
     setIsLoading(false);

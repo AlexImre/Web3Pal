@@ -13,27 +13,20 @@ import { authOptions } from './api/auth/[...nextauth]';
 import { StateContext } from '@/context/stateContext';
 import EmptyInvoiceHolder from '@/components/MyInvoices/EmptyInvoiceHolder';
 import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
+import { fetchInvoices, fetchOrganisation } from '@/utils/fetchData';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  const email = session.user.email;
   if (!session) {
     return { redirect: { destination: '/auth/signin' } };
   }
 
-  const invoices = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/invoices/${session.user.email}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-
-  const response = await invoices.json();
+  const invoices = await fetchInvoices(email);
+  const organisation = await fetchOrganisation(email);
 
   return {
-    props: { invoices: response },
+    props: { invoices, organisation },
   };
 }
 
@@ -41,7 +34,7 @@ export default function MyInvoices(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { invoices } = props;
+  const { invoices, organisation } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
@@ -49,7 +42,7 @@ export default function MyInvoices(
   const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
-    setMasterState({ ...masterState, myInvoices: invoices });
+    setMasterState({ ...masterState, myInvoices: invoices, organisation });
     setIsLoading(false);
   }, []);
 

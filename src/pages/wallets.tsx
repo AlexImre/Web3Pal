@@ -10,34 +10,20 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { useSession } from 'next-auth/react';
 import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
+import { fetchOrganisation } from '@/utils/fetchData';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  const email = session.user.email;
   if (!session) {
     return { redirect: { destination: '/auth/signin' } };
   }
 
-  const organisation = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/getorganisation/`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email: session.user.email }),
-    }
-  );
+  const organisation = await fetchOrganisation(email);
 
-  const response = await organisation.json();
-  if (organisation.status === 200) {
-    return {
-      props: { organisation: response, session: session },
-    };
-  } else {
-    return {
-      props: { organisation: false, session: session },
-    };
-  }
+  return {
+    props: { organisation, session },
+  };
 }
 
 export default function Wallets(

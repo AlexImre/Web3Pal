@@ -8,7 +8,7 @@ export default async (req: Request, res: Response) => {
     console.log("generating invoice number")
 
     // will need to change when moving to org structure    
-    const { user } = req.query;
+    const { user } = req.body;
     const query = { user: user };
     
     const count = await db.collection('invoices').count(query);
