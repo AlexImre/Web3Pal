@@ -102,7 +102,7 @@ export default function CreateCompanyPanel() {
     <div className="m-10 max-w-4xl bg-white shadow sm:rounded-lg">
       <div className="px-4 py-5 sm:p-6">
         <h3 className="text-base font-semibold leading-6 text-gray-900">
-          Let's get you started!
+          Let&apos;s get you started!
         </h3>
         <div className="mt-2 w-full text-sm text-gray-500">
           <p>
