@@ -16,8 +16,10 @@ export async function getServerSideProps(context) {
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
 
+  console.log('session', session);
+
   if (!session) {
-    return { redirect: { destination: '/login' } };
+    return { redirect: { destination: '/auth/signin' } };
   }
 
   const organisation = await fetch(

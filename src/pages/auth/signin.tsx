@@ -88,33 +88,7 @@ export default function SignIn({
               <span className="bg-white px-2 text-gray-500">Or</span>
             </div>
           </div>
-          <div onClick={() => signIn('google')}>
-            <GoogleLogin />
-          </div>
-          {/* <div onClick={() => signIn()}>
-            <Button
-              type="submit"
-              variant="solid"
-              color="blue"
-              className="w-full"
-            >
-              <span>
-                Sign in <span aria-hidden="true">&rarr;</span>
-              </span>
-            </Button>
-          </div>
-          <div onClick={() => signOut()}>
-            <Button
-              type="submit"
-              variant="solid"
-              color="blue"
-              className="w-full"
-            >
-              <span>
-                Sign Out <span aria-hidden="true">&rarr;</span>
-              </span>
-            </Button>
-          </div> */}
+          <GoogleLogin />
         </form>
       </AuthLayout>
       {Object.values(providers).map((provider) => (

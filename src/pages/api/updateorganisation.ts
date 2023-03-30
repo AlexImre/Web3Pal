@@ -8,7 +8,7 @@ export default async (req: Request, res: Response) => {
     const db = client.db('web3pal');
     const organisation = req.body;
     const {
-      organisation_id,
+      _id,
       organisationName, 
       organisationEmail, 
       organisationAddressLine1, 
@@ -20,7 +20,7 @@ export default async (req: Request, res: Response) => {
       updatedBy, 
       updatedTimestamp } = organisation;
     
-    const o_id = new ObjectId(organisation_id);
+    const o_id = new ObjectId(_id);
     const findOrg = await db.collection('organisations').findOne({ _id: o_id });
     const setParameters = { 
       $set: { 

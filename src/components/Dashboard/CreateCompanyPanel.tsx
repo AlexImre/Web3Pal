@@ -12,7 +12,7 @@ export default function CreateCompanyPanel() {
   const user = session?.user?.email;
 
   const defaultOrganisation: OrganisationType = {
-    organisation_id: '',
+    _id: '',
     organisationName: '',
     organisationEmail: '',
     createdBy: '',
@@ -55,7 +55,7 @@ export default function CreateCompanyPanel() {
           ...masterState,
           organisation: {
             ...tempOrganisation,
-            organisation_id: data.insertedId,
+            _id: data.insertedId,
           },
         });
         savedToast();

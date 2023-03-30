@@ -1,4 +1,5 @@
 import React from 'react';
+import { signIn } from 'next-auth/react';
 
 function GoogleLogin() {
   return (
@@ -6,6 +7,7 @@ function GoogleLogin() {
       <button
         type="button"
         className="font-small inline-flex w-full items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base text-gray-700 shadow-sm hover:bg-gray-50"
+        onClick={() => signIn('google')}
       >
         <svg
           version="1.1"
