@@ -16,6 +16,7 @@ export const authOptions = {
       from: process.env.EMAIL_FROM
   }),
   ],
+  secret: process.env.NEXT_PUBLIC_SECRET,
   pages: {
     signIn: '/auth/signin',
   }
