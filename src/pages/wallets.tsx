@@ -53,7 +53,7 @@ export default function Wallets(
   const { masterState, setMasterState } = stateContext;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const organisationMasterState = masterState.organisation;
+  const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
     setMasterState({ ...masterState, organisation, session });

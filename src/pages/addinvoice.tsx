@@ -8,6 +8,7 @@ import { StateContext } from '../context/stateContext';
 import { useContext } from 'react';
 import { InvoiceType } from '../context/stateContext';
 import { getSession } from 'next-auth/react';
+import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
 
 export async function getServerSideProps({ req, query }) {
   const marketData = await getMarketData();
@@ -64,6 +65,7 @@ export default function CreateInvoice({
   const { masterState, setMasterState } = stateContext;
   const invoiceToEdit: InvoiceType = invoice[0];
   const [isLoading, setIsLoading] = useState(true);
+  const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
     setIsLoading(false);
@@ -107,7 +109,15 @@ export default function CreateInvoice({
               <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          {isLoading ? <></> : <AddInvoiceDisplay />}
+          {isLoading ? (
+            <></>
+          ) : !organisationMasterState ? (
+            <div className="flex flex-col items-center">
+              <CreateCompanyPanel />
+            </div>
+          ) : (
+            <AddInvoiceDisplay />
+          )}
         </div>
       </div>
     </>

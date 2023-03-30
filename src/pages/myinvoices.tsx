@@ -12,6 +12,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { StateContext } from '@/context/stateContext';
 import EmptyInvoiceHolder from '@/components/MyInvoices/EmptyInvoiceHolder';
+import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -50,6 +51,7 @@ export default function MyInvoices(
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
   const [isLoading, setIsLoading] = useState(true);
+  const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
     setMasterState({ ...masterState, myInvoices: invoices });
@@ -79,18 +81,12 @@ export default function MyInvoices(
             </button>
           </div>
 
-          <div className="mt-5 px-4 sm:px-6 lg:px-8">
-            <div className="sm:flex sm:items-center">
-              <div className="sm:flex-auto">
-                <div className="text-2xl font-semibold text-slate-900">
-                  My Invoices
-                </div>
-              </div>
-            </div>
-          </div>
-
           {isLoading ? (
             <></>
+          ) : !organisationMasterState ? (
+            <div className="flex flex-col items-center">
+              <CreateCompanyPanel />
+            </div>
           ) : myInvoices.length > 0 ? (
             <MyInvoicesDisplay />
           ) : (
