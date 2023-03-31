@@ -116,6 +116,7 @@ export default function AddInvoiceDisplay() {
     setMasterState({
       ...initialState,
       organisation: masterState.organisation,
+      marketData: masterState.marketData,
       invoice: {
         ...initialState.invoice,
         invoiceId: uuidv4(),

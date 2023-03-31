@@ -49,8 +49,6 @@ export default function CreateInvoice({
   const [isLoading, setIsLoading] = useState(true);
   const organisationMasterState = masterState.organisation._id;
 
-  console.log('organisation', organisation);
-
   useEffect(() => {
     setIsLoading(false);
     if (invoiceToEdit) {
