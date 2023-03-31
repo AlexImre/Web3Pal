@@ -76,7 +76,9 @@ export default function MyOrganisation(
               <MyOrganisationTable />
             </>
           ) : (
-            <CreateCompanyPanel />
+            <div className="flex flex-col items-center">
+              <CreateCompanyPanel />
+            </div>
           )}
         </div>
       </div>

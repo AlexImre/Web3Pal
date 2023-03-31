@@ -58,7 +58,7 @@ export default function Wallets(
           <DashboardDesktopSidebar />
 
           <div className="flex flex-1 flex-col lg:pl-64">
-            <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-slate-100 lg:border-none">
+            <div className="flex h-0 flex-shrink-0 border-b border-gray-200 bg-slate-100 lg:border-none">
               {/* Open sidebar on mobile */}
               <button
                 type="button"
