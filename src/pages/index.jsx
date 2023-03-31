@@ -23,7 +23,7 @@ export default function Home() {
         <Header />
         <Hero />
       </div>
-      <main>
+      {/* <main>
         <PrimaryFeatures />
         <SecondaryFeatures />
         <CallToAction />
@@ -31,7 +31,7 @@ export default function Home() {
         <Pricing />
         <Faqs />
       </main>
-      <Footer />
+      <Footer /> */}
     </>
   );
 }

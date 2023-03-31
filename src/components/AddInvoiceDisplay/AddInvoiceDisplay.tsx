@@ -148,23 +148,23 @@ export default function AddInvoiceDisplay() {
         <div className="m-10 flex w-[600px] max-w-2xl flex-col justify-center">
           <div className="-mt-5 mb-2 flex items-center justify-between">
             <div>
-              <button
+              {/* <button
                 onClick={() => {
                   addDummyData();
                 }}
                 className="my-2 mr-2 w-20 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
               >
                 +Test
-              </button>
+              </button> */}
               <button
                 onClick={createNewInvoice}
-                className="m-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                className="mr-2 w-24 rounded border border-gray-400 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
               >
                 New
               </button>
               {isInvoiceDraft && (
                 <button
-                  className="my-2 ml-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                  className="ml-2 w-24 rounded border border-gray-400 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
                   onClick={() => setShowModal(true)}
                 >
                   Edit
@@ -173,14 +173,6 @@ export default function AddInvoiceDisplay() {
             </div>
             <div>
               {showModal && <InvoiceModal setShowModal={setShowModal} />}
-              {/* <button className="mb-4 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
-              Export
-            </button> */}
-              {
-                <button className="my-2 ml-2 w-20 rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700">
-                  Send
-                </button>
-              }
             </div>
           </div>
           <div className="mb-4">
@@ -219,7 +211,7 @@ export default function AddInvoiceDisplay() {
             {isInvoiceDraft && (
               <div className="mr-2 w-full">
                 <button
-                  className="my-4 mr-4 w-full rounded bg-slate-600 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700"
+                  className="my-4 w-full rounded border border-gray-400 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
                   onClick={() => saveInvoice()}
                 >
                   Save progress
@@ -229,10 +221,10 @@ export default function AddInvoiceDisplay() {
             {isInvoiceDraft && (
               <div className="ml-2 w-full justify-center">
                 <button
-                  className="my-4 flex w-full items-center justify-center rounded bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700"
+                  className="my-4 flex w-full items-center justify-center rounded border border-indigo-600 bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow hover:bg-indigo-700"
                   onClick={() => publishInvoice()}
                 >
-                  <PaperAirplaneIcon className="curs mr-2 h-5 w-5 text-white hover:cursor-pointer hover:text-slate-700" />
+                  <PaperAirplaneIcon className="curs mr-2 h-5 w-5 text-white hover:cursor-pointer" />
                   Publish and send invoice
                 </button>
               </div>
