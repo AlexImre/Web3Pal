@@ -1,7 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
-export const addDummyData = async () => {
-  dummyInvoiceData.invoiceId = uuidv4();  
+export const addDummyData = async (organisationId: string) => {
+  dummyInvoiceData.invoiceId = uuidv4();
+  dummyInvoiceData.organisationId = organisationId;
   dummyInvoiceData.invoiceInformation.invoiceNumber = String(Math.floor(
       Math.random() * 100
     ));
@@ -33,6 +34,7 @@ export const addDummyData = async () => {
 
 export const dummyInvoiceData = {
     invoiceId: uuidv4(),
+    organisationId: '',
     user: `alexandre.imre@gmail.com`,
     status: 'Unpaid',
     txHash: '',

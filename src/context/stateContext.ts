@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createContext } from 'react';
-
+import { ObjectId } from 'mongodb';
 export interface PersonalInformationType {
     name: string;
     email: string;
@@ -83,6 +83,7 @@ export type MasterStateType = {
 export type InvoiceType = {
     _id?: string;
     invoiceId: string;
+    organisationId: string;
     createdTimestamp: Date;
     updatedTimestamp?: Date;
     user: string;
@@ -132,6 +133,7 @@ export const initialState: MasterStateType = {
     invoice: {
         _id: undefined,
         invoiceId: uuidv4(),
+        organisationId: undefined,
         createdTimestamp: new Date(Date.now()),
         updatedTimestamp: undefined,
         user: '',

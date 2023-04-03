@@ -24,7 +24,7 @@ export default function AddInvoiceDisplay() {
   const { data: session } = useSession();
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const { invoice } = masterState;
+  const { invoice, organisation } = masterState;
   const {
     invoiceId,
     status,
@@ -37,6 +37,7 @@ export default function AddInvoiceDisplay() {
     notesInformation,
     formCompletion,
   } = masterState.invoice;
+  const organisationId = organisation._id;
   const [showModal, setShowModal] = useState(false);
 
   const email = session?.user?.email;
@@ -46,6 +47,7 @@ export default function AddInvoiceDisplay() {
     console.log('saving invoice with id:', invoiceId);
     const invoiceToSave: InvoiceType = {
       invoiceId,
+      organisationId,
       user: email,
       status: 'Draft',
       txHash: '',
@@ -120,6 +122,7 @@ export default function AddInvoiceDisplay() {
       invoice: {
         ...initialState.invoice,
         invoiceId: uuidv4(),
+        organisationId,
         createdTimestamp: new Date(Date.now()),
         status: 'Example',
         invoiceInformation: {
@@ -150,9 +153,9 @@ export default function AddInvoiceDisplay() {
             <div>
               <button
                 onClick={() => {
-                  addDummyData();
+                  addDummyData(organisationId);
                 }}
-                className="my-2 mr-2 w-20 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
+                className="my-2 mr-4 w-24 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
               >
                 +Test
               </button>

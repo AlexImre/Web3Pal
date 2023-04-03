@@ -27,9 +27,10 @@ export const fetchInvoice = async ( invoiceId: string) => {
   return invoiceData;
 }
 
-export const fetchInvoices = async ( email: string ) => {
+// does this not need to be encoded?!
+export const fetchInvoices = async ( organisationId: string ) => {
   const fetchData = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/invoices/${email}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/invoices/${encodeURIComponent(organisationId)}`,
     {
       method: 'GET',
       headers: {

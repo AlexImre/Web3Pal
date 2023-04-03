@@ -23,8 +23,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return { redirect: { destination: '/auth/signin' } };
   }
 
-  const invoices = await fetchInvoices(email);
   const organisation = await fetchOrganisation(email);
+  const organisationId = organisation._id;
+  const invoices = await fetchInvoices(organisationId);
 
   return {
     props: { invoices, organisation },
