@@ -148,14 +148,14 @@ export default function AddInvoiceDisplay() {
         <div className="m-10 flex w-[600px] max-w-2xl flex-col justify-center">
           <div className="-mt-5 mb-2 flex items-center justify-between">
             <div>
-              {/* <button
+              <button
                 onClick={() => {
                   addDummyData();
                 }}
                 className="my-2 mr-2 w-20 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
               >
                 +Test
-              </button> */}
+              </button>
               <button
                 onClick={createNewInvoice}
                 className="mr-2 w-24 rounded border border-gray-400 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"

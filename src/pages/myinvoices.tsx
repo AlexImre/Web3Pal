@@ -14,6 +14,7 @@ import { StateContext } from '@/context/stateContext';
 import EmptyInvoiceHolder from '@/components/MyInvoices/EmptyInvoiceHolder';
 import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
 import { fetchInvoices, fetchOrganisation } from '@/utils/fetchData';
+import { useSession } from 'next-auth/react';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -34,6 +35,7 @@ export default function MyInvoices(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { data: session } = useSession();
   const { invoices, organisation } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
@@ -42,7 +44,12 @@ export default function MyInvoices(
   const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
-    setMasterState({ ...masterState, myInvoices: invoices, organisation });
+    setMasterState({
+      ...masterState,
+      myInvoices: invoices,
+      organisation,
+      session,
+    });
     setIsLoading(false);
   }, []);
 

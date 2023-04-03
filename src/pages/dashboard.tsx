@@ -10,6 +10,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { fetchOrganisation } from '@/utils/fetchData';
+import { useSession } from 'next-auth/react';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -31,13 +32,14 @@ export default function Dashboard(
 ) {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  const { data: session } = useSession();
   const { organisation } = props;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
-    setMasterState({ ...masterState, organisation });
+    setMasterState({ ...masterState, organisation, session });
     setIsLoading(false);
   }, []);
 

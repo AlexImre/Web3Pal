@@ -14,6 +14,7 @@ import MyOrganisationTable from '@/components/MyOrganisation/MyOrganisationTable
 import OrganisationInformationForm from '@/components/MyOrganisation/OrganisationInformationForm';
 import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
 import { fetchOrganisation } from '@/utils/fetchData';
+import { useSession } from 'next-auth/react';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -34,6 +35,7 @@ export default function MyOrganisation(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { data: session } = useSession();
   const { organisation } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
@@ -41,7 +43,7 @@ export default function MyOrganisation(
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setMasterState({ ...masterState, organisation });
+    setMasterState({ ...masterState, organisation, session });
     setIsLoading(false);
   }, []);
 

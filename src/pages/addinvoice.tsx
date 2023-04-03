@@ -7,7 +7,7 @@ import { getMarketData } from '../utils/coinGeckoApi';
 import { StateContext } from '../context/stateContext';
 import { useContext } from 'react';
 import { InvoiceType } from '../context/stateContext';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
 import {
   fetchInvoice,
@@ -44,6 +44,7 @@ export default function CreateInvoice({
   organisation,
 }) {
   const stateContext = useContext(StateContext);
+  const { data: session } = useSession();
   const { masterState, setMasterState } = stateContext;
   const invoiceToEdit: InvoiceType = invoice[0];
   const [isLoading, setIsLoading] = useState(true);
@@ -57,6 +58,7 @@ export default function CreateInvoice({
         invoice: invoiceToEdit,
         marketData,
         organisation,
+        session,
       });
     } else {
       setMasterState({
