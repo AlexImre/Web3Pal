@@ -106,7 +106,7 @@ export default function AddInvoiceDisplay() {
   };
 
   const createNewInvoice = async () => {
-    const invoiceNumber = await fetchInvoiceNumber(email);
+    const invoiceNumber = await fetchInvoiceNumber(organisationId);
     const convertDateStringToInputFormat = (date: string) => {
       const dateArray = date.split('/');
       const year = dateArray[2];

@@ -26,8 +26,9 @@ export async function getServerSideProps({ req, query }) {
 
   const marketData = await getMarketData();
   const invoice = await fetchInvoice(invoiceId);
-  const invoiceNumber = await fetchInvoiceNumber(email);
   const organisation = await fetchOrganisation(email);
+  const organisationId = organisation._id;
+  const invoiceNumber = await fetchInvoiceNumber(organisationId);
 
   return {
     props: { marketData, invoice, invoiceNumber, organisation },
