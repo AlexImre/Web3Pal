@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
 import InvoiceActions from './InvoiceActions';
 import { getInvoiceStatusChip } from './myInvoicesUtils';
+import InvoiceNumberSorting from './InvoiceNumberSorting';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -183,28 +184,6 @@ export default function MyInvoicesDisplay() {
   };
   const [activeSort, setActiveSort] = useState(defaultSortState);
 
-  const [shouldSortInvoiceNumber, setShouldSortInvoiceNumber] = useState(true);
-  const handleInvoiceNumberSorting = () => {
-    if (myInvoices.length === 0) return;
-    myInvoices.sort((a, b) => {
-      setActiveSort({ ...defaultSortState, invoiceNumber: true });
-      shouldSortInvoiceNumber
-        ? setShouldSortInvoiceNumber(false)
-        : setShouldSortInvoiceNumber(true);
-      if (shouldSortInvoiceNumber) {
-        return (
-          a.invoiceInformation.invoiceNumber -
-          b.invoiceInformation.invoiceNumber
-        );
-      } else {
-        return (
-          b.invoiceInformation.invoiceNumber -
-          a.invoiceInformation.invoiceNumber
-        );
-      }
-    });
-  };
-
   const [shouldSortAmount, setShouldSortAmount] = useState(true);
   const handleAmountSorting = () => {
     if (myInvoices.length === 0) return;
@@ -339,31 +318,11 @@ export default function MyInvoicesDisplay() {
                         className="flex min-w-[8rem] py-3.5 pr-3 text-left text-sm font-medium text-white"
                       >
                         Invoice Number
-                        <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
-                          {shouldSortInvoiceNumber ? (
-                            <ChevronDownIcon
-                              className={classNames(
-                                'h-5 w-5',
-                                activeSort.invoiceNumber
-                                  ? 'rounded bg-gray-200 text-gray-600'
-                                  : ''
-                              )}
-                              aria-hidden="true"
-                              onClick={handleInvoiceNumberSorting}
-                            />
-                          ) : (
-                            <ChevronUpIcon
-                              className={classNames(
-                                'h-5 w-5',
-                                activeSort.invoiceNumber
-                                  ? 'rounded bg-gray-200 text-gray-600'
-                                  : ''
-                              )}
-                              aria-hidden="true"
-                              onClick={handleInvoiceNumberSorting}
-                            />
-                          )}
-                        </span>
+                        <InvoiceNumberSorting
+                          activeSort={activeSort}
+                          setActiveSort={setActiveSort}
+                          defaultSortState={defaultSortState}
+                        />
                       </th>
                       <th
                         scope="col"
