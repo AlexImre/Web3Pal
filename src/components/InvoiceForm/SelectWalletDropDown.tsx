@@ -52,7 +52,7 @@ export default function SelectWalletDropDown(
       className="mt-4 w-full"
     >
       <label htmlFor="text" className="block text-sm font-medium text-gray-700">
-        Wallet*
+        Wallet
       </label>
       <div className="relative mt-1">
         <Combobox.Input

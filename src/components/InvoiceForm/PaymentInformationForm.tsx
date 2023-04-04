@@ -210,7 +210,7 @@ export default function PaymentInformationForm() {
                     Enter currency and payment information.
                   </p>
                   <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
+                    <div className="col-span-6 sm:col-span-6">
                       <TextFieldWithValidation
                         label="Invoice Labelling"
                         name="invoiceLabelling"
@@ -219,6 +219,7 @@ export default function PaymentInformationForm() {
                         value={invoiceLabelling}
                         error={error.invoiceLabelling}
                         errorMessage={errorMessage.invoiceLabelling}
+                        helperText='Specify the currency your invoice will be denominated in. E.g. "ETH"'
                       />
                     </div>
                   </div>

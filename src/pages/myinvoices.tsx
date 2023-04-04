@@ -40,7 +40,7 @@ export default function MyInvoices(
   const { invoices, organisation } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const { myInvoices } = masterState;
+  const { myInvoices, myInvoicesView } = masterState;
   const [isLoading, setIsLoading] = useState(true);
   const organisationMasterState = masterState.organisation._id;
 
@@ -84,7 +84,9 @@ export default function MyInvoices(
               <CreateCompanyPanel />
             </div>
           ) : myInvoices.length > 0 ? (
-            <MyInvoicesDisplay />
+            <div className="flex flex-col justify-end">
+              <MyInvoicesDisplay />
+            </div>
           ) : (
             <EmptyInvoiceHolder />
           )}
