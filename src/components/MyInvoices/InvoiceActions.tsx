@@ -55,7 +55,7 @@ export default function InvoiceActions(props: any) {
       {isInvoiceUnpaid && (
         <button
           type="button"
-          className="mr-2 inline-flex items-center rounded border border-transparent bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="mr-2 inline-flex items-center rounded border border-transparent bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2"
         >
           Void
         </button>

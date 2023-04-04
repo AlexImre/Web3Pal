@@ -1,6 +1,5 @@
 import { StateContext, initialState } from '@/context/stateContext';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
-import Link from 'next/link';
 import {
   useLayoutEffect,
   useRef,
@@ -11,6 +10,7 @@ import {
 import toast from 'react-hot-toast';
 import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
 import InvoiceActions from './InvoiceActions';
+import { getInvoiceStatusChip } from './myInvoicesUtils';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -86,40 +86,50 @@ export default function MyInvoicesDisplay() {
     setIndeterminate(false);
   }
 
-  // const handleDelete = async (selectedInvoices: any) => {
-  //   if (
-  //     window.confirm(
-  //       'Deleting an invoice cannot be undone. If you wish to continue with this action, press OK.'
-  //     )
-  //   ) {
-  //     const selectedInvoiceIds = selectedInvoices.map(
-  //       (invoice: any) => invoice.invoiceId
-  //     );
+  const handleBulkAction = (view: string, selectedInvoices: any) => {
+    switch (view) {
+      case 'Draft':
+        handleDelete(selectedInvoices);
+        break;
+      default:
+        handleArchive(selectedInvoices);
+    }
+  };
 
-  //     const invoiceToast = () =>
-  //       toast.success(
-  //         `Invoice${selectedInvoiceIds.length > 1 ? 's' : ''} deleted.`
-  //       );
-  //     const deletedInvoices = await fetch('/api/deleteinvoices', {
-  //       method: 'DELETE',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(selectedInvoiceIds),
-  //     });
+  const handleDelete = async (selectedInvoices: any) => {
+    if (
+      window.confirm(
+        'Deleting an invoice cannot be undone. If you wish to continue with this action, press OK.'
+      )
+    ) {
+      const selectedInvoiceIds = selectedInvoices.map(
+        (invoice: any) => invoice.invoiceId
+      );
 
-  //     setMasterState((prevState) => ({
-  //       ...prevState,
-  //       invoice: initialState.invoice,
-  //       myInvoices: prevState.myInvoices.filter(
-  //         (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
-  //       ),
-  //     }));
+      const invoiceToast = () =>
+        toast.success(
+          `Invoice${selectedInvoiceIds.length > 1 ? 's' : ''} deleted.`
+        );
+      const deletedInvoices = await fetch('/api/deleteinvoices', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedInvoiceIds),
+      });
 
-  //     setSelectedInvoice([]);
-  //     deletedInvoices.ok && invoiceToast();
-  //   }
-  // };
+      setMasterState((prevState) => ({
+        ...prevState,
+        invoice: initialState.invoice,
+        myInvoices: prevState.myInvoices.filter(
+          (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
+        ),
+      }));
+
+      setSelectedInvoice([]);
+      deletedInvoices.ok && invoiceToast();
+    }
+  };
 
   const handleArchive = async (selectedInvoices: any) => {
     if (
@@ -269,40 +279,6 @@ export default function MyInvoicesDisplay() {
     });
   };
 
-  const getInvoiceStatus = (invoice) => {
-    const status = invoice.status;
-    const dueDate = new Date(invoice.invoiceInformation.dueDate);
-    const currentDate = new Date(Date.now());
-    if (status === 'Draft') {
-      return (
-        <div className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium capitalize text-blue-800">
-          Draft
-        </div>
-      );
-    }
-    if (dueDate) {
-      if (status === 'Paid') {
-        return (
-          <div className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium capitalize text-green-800">
-            Paid
-          </div>
-        );
-      } else if (dueDate < currentDate) {
-        return (
-          <div className="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium capitalize text-red-800">
-            Overdue
-          </div>
-        );
-      } else {
-        return (
-          <div className="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium capitalize text-yellow-800">
-            Unpaid
-          </div>
-        );
-      }
-    }
-  };
-
   const views = ['Unpaid', 'Paid', 'Draft', 'Void', 'Archived'];
 
   return (
@@ -311,6 +287,7 @@ export default function MyInvoicesDisplay() {
         {views.map((view) => {
           return (
             <button
+              key={view}
               className={`mr-2 w-32 rounded border ${
                 myInvoicesView === view
                   ? 'cursor-auto border border-indigo-700 bg-indigo-700 text-white'
@@ -333,9 +310,13 @@ export default function MyInvoicesDisplay() {
                     <button
                       type="button"
                       className="inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30"
-                      onClick={() => handleArchive(selectedInvoice)}
+                      onClick={() =>
+                        handleBulkAction(myInvoicesView, selectedInvoice)
+                      }
                     >
-                      Archive selected {`(${selectedInvoice.length})`}
+                      {`${
+                        myInvoicesView === 'Draft' ? 'Delete' : 'Archive'
+                      } selected (${selectedInvoice.length})`}
                     </button>
                   </div>
                 )}
@@ -581,7 +562,7 @@ export default function MyInvoicesDisplay() {
                           {invoice.paymentInformation.invoiceLabelling}
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {getInvoiceStatus(invoice)}
+                          {getInvoiceStatusChip(invoice)}
                         </td>
                         <td className="whitespace-nowrap py-4 text-right text-sm font-medium">
                           <InvoiceActions
