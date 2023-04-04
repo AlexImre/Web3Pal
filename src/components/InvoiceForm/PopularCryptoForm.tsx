@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import PopularCurrenciesDropDown from './PopularCurrenciesDropDown';
 import TextFieldWithValidation from './Fields/TextFieldWithValidation';
+import SelectWalletDropDown from './SelectWalletDropDown';
+import { StateContext } from '@/context/stateContext';
 
 function PopularCryptoForm(props: any) {
+  const stateContext = useContext(StateContext);
+  const { masterState } = stateContext;
+  const { wallets } = masterState.organisation;
   const {
     tempPaymentInfo,
     setTempPaymentInfo,
@@ -36,6 +41,14 @@ function PopularCryptoForm(props: any) {
           <div className="text-slate-600 sm:text-xs">Powered by CoinGecko</div>
         </div>
       </div>
+
+      {wallets.length > 0 && (
+        <SelectWalletDropDown
+          tempPaymentInfo={tempPaymentInfo}
+          setTempPaymentInfo={setTempPaymentInfo}
+        />
+      )}
+
       <div className="my-5 grid grid-cols-6 gap-6">
         <div className="col-span-6 sm:col-span-6">
           <TextFieldWithValidation
