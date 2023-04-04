@@ -1,4 +1,5 @@
 import { ethers } from "ethers";
+import { blockChainData } from "@/components/Wallets/blockchainData";
 
 export function validateEmail(email: string) {
   if (email === '' || email === undefined) {
@@ -225,5 +226,34 @@ export function validateCustomCurrencyAddress(customCurrencyAddress: string) {
       message: 'Token contract address cannot be blank',
     }
   }
+  return false;
+}
+
+export function validateBlockchain(blockchain: any) {
+  if (blockchain === '' || blockchain === undefined) {
+    return {
+      property: 'walletBlockchain',
+      error: true,
+      message: 'Blockchain cannot be blank',
+    }
+  }
+
+  const { name } = blockchain;
+  if (name === '' || name === undefined) {
+    return {
+      property: 'walletBlockchain',
+      error: true,
+      message: 'Blockchain cannot be blank',
+    }
+  }
+
+  const isAllowedBlockchain = blockChainData.some((blockchain) => blockchain.name === name);
+  if (!isAllowedBlockchain) {
+    return {
+      property: 'walletBlockchain',
+      error: true,
+      message: 'Select a supported blockchain from the drop-down menu',
+    }
+}
   return false;
 }

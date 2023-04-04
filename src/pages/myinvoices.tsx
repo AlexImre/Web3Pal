@@ -56,7 +56,7 @@ export default function MyInvoices(
 
   return (
     <>
-      <div className="min-h-full">
+      <div className="min-h-full bg-slate-100">
         <DashboardMobileSidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}

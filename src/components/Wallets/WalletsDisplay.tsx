@@ -3,6 +3,7 @@ import TextField from '../InvoiceForm/Fields/TextField';
 import toast from 'react-hot-toast';
 import { StateContext, WalletType } from '@/context/stateContext';
 import {
+  validateBlockchain,
   validateName,
   validateOrganisationName,
   validateWalletAddress,
@@ -10,6 +11,7 @@ import {
 } from '../InvoiceForm/Fields/formValidation';
 import MyWalletsTable from './MyWalletsTable';
 import TextFieldWithValidation from '../InvoiceForm/Fields/TextFieldWithValidation';
+import BlockchainsDropDown from './BlockchainsDropDown';
 
 export default function WalletsDisplay() {
   const stateContext = useContext(StateContext);
@@ -18,9 +20,10 @@ export default function WalletsDisplay() {
   const { wallets } = masterState.organisation;
   const [tempWallet, setTempWallet] = useState({
     walletName: '',
+    walletBlockchain: '',
     walletAddress: '',
   });
-  const { walletName, walletAddress } = tempWallet;
+  const { walletName, walletAddress, walletBlockchain } = tempWallet;
 
   const handleChange = (e) => {
     setTempWallet({
@@ -31,11 +34,13 @@ export default function WalletsDisplay() {
 
   const defaultError = {
     walletName: false,
+    walletBlockchain: false,
     walletAddress: false,
   };
 
   const defaultErrorMessage = {
     walletName: '',
+    walletBlockchain: '',
     walletAddress: '',
   };
 
@@ -64,12 +69,18 @@ export default function WalletsDisplay() {
     setError(defaultError);
     setErrorMessage(defaultErrorMessage);
     const hasWalletNameError = validateWalletName(walletName);
+    const hasBlockchainError = validateBlockchain(walletBlockchain);
     const hasWalletAddressError = validateWalletAddress(walletAddress);
-    const validationArray = [hasWalletNameError, hasWalletAddressError];
+    const validationArray = [
+      hasWalletNameError,
+      hasBlockchainError,
+      hasWalletAddressError,
+    ];
 
     validationArray.forEach(setErrorAndErrorMessages);
 
-    const hasError = !!hasWalletNameError || !!hasWalletAddressError;
+    const hasError =
+      !!hasWalletNameError || !!hasWalletAddressError || !!hasBlockchainError;
     if (hasError) {
       return;
     }
@@ -78,6 +89,7 @@ export default function WalletsDisplay() {
       organisation_id: masterState.organisation._id,
       walletName: walletName,
       walletAddress: walletAddress,
+      walletBlockchain: walletBlockchain,
       createdBy: email,
       createdTimestamp: new Date(Date.now()),
     };
@@ -129,18 +141,12 @@ export default function WalletsDisplay() {
                       error={error.walletName}
                       errorMessage={errorMessage.walletName}
                     />
-                    {/* <div className="mt-5">
-                      <TextFieldWithValidation
-                        label="Blockchain"
-                        name="blockchain"
-                        width="w-full"
-                        value={walletName}
-                        onChange={(e) => handleChange(e)}
-                        error={error.walletName}
-                        errorMessage={errorMessage.walletName}
-                        helperText="We currently only support EVM chains"
-                      />
-                    </div> */}
+                    <BlockchainsDropDown
+                      tempWallet={tempWallet}
+                      setTempWallet={setTempWallet}
+                      error={error.walletBlockchain}
+                      errorMessage={errorMessage.walletBlockchain}
+                    />
                     <div className="mt-5">
                       <TextFieldWithValidation
                         label="Wallet Address"

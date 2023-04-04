@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createContext } from 'react';
-import { ObjectId } from 'mongodb';
+import { AnyBulkWriteOperation, ObjectId } from 'mongodb';
 export interface PersonalInformationType {
     name: string;
     email: string;
@@ -121,6 +121,7 @@ export type OrganisationType = {
 export type WalletType = {
     organisation_id: string;
     walletName: string;
+    walletBlockchain: any;
     walletAddress: string;
     walletChainId?: string;
     createdBy: string;

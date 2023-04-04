@@ -234,7 +234,7 @@ export default function MyInvoicesDisplay() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="mt-8 flow-root">
-        <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="-my-2 -mx-4 overflow-x-auto bg-red-500 sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <div className="relative">
               {selectedInvoice.length > 0 && (
@@ -248,8 +248,8 @@ export default function MyInvoicesDisplay() {
                   </button>
                 </div>
               )}
-              <table className="min-w-full table-fixed divide-y divide-gray-300">
-                <thead>
+              <table className="min-w-full table-fixed divide-y divide-gray-300 rounded">
+                <thead className="bg-white">
                   <tr>
                     <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
                       <input
@@ -516,7 +516,7 @@ export default function MyInvoicesDisplay() {
                         <Link href={`/invoices/${invoice.invoiceId}`}>
                           <button
                             type="button"
-                            className="inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="mr-2 inline-flex items-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                           >
                             Share
                           </button>

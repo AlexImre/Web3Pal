@@ -7,11 +7,12 @@ export default async (req: Request, res: Response) => {
     const client = await clientPromise;
     const db = client.db('web3pal');
     const body = req.body;
-    const { organisation_id, walletName, walletAddress, createdBy } = body;
+    const { organisation_id, walletName, walletBlockchain, walletAddress, createdBy } = body;
 
     const newWallet = {
       walletName,
       walletAddress,
+      walletBlockchain,
       createdBy,
       createdTimestamp: new Date(Date.now()),
     }

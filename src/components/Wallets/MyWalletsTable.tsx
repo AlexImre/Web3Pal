@@ -83,7 +83,14 @@ export default function MyOrganisationTable() {
                                 {wallet.walletName}
                               </td>
                               <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                Chain
+                                <div className="flex">
+                                  <img
+                                    src={wallet.walletBlockchain.logo}
+                                    alt=""
+                                    className="mr-3 h-6 w-6 flex-shrink-0 rounded-full"
+                                  />
+                                  {wallet.walletBlockchain.chain}
+                                </div>
                               </td>
                               <td className="flex whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                 {wallet.walletAddress}
