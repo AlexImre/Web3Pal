@@ -1,21 +1,20 @@
-import { StateContext } from '@/context/stateContext';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
 function InvoiceNumberSorting(props: any) {
-  const stateContext = useContext(StateContext);
-  const { masterState } = stateContext;
-  const { myInvoices } = masterState;
+  const { invoices } = props;
   const { activeSort, setActiveSort, defaultSortState } = props;
   const [shouldSortInvoiceNumber, setShouldSortInvoiceNumber] = useState(true);
   const handleInvoiceNumberSorting = () => {
-    if (myInvoices.length === 0) return;
-    myInvoices.sort((a, b) => {
-      setActiveSort({ ...defaultSortState, invoiceNumber: true });
+    if (invoices.length === 0) return;
+
+    setActiveSort({ ...defaultSortState, invoiceNumber: true });
+
+    invoices.sort((a, b) => {
       shouldSortInvoiceNumber
         ? setShouldSortInvoiceNumber(false)
         : setShouldSortInvoiceNumber(true);

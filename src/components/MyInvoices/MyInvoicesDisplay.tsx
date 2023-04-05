@@ -1,5 +1,4 @@
 import { StateContext, initialState } from '@/context/stateContext';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import {
   useLayoutEffect,
   useRef,
@@ -12,10 +11,16 @@ import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
 import InvoiceActions from './InvoiceActions';
 import { getInvoiceStatusChip } from './myInvoicesUtils';
 import InvoiceNumberSorting from './InvoiceNumberSorting';
+import AmountSorting from './AmountSorting';
+import DateSorting from './DateSorting';
+import NameSorting from './NameSorting';
+import StatusSorting from './StatusSorting';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
+
+const views = ['Unpaid', 'Paid', 'Draft', 'Void', 'Archived'];
 
 export default function MyInvoicesDisplay() {
   const stateContext = useContext(StateContext);
@@ -25,12 +30,14 @@ export default function MyInvoicesDisplay() {
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState([]);
+  const [invoices, setInvoices] = useState([]);
 
   const setView = (myInvoicesView: string) => {
     setMasterState({
       ...masterState,
       myInvoicesView,
     });
+    setInvoices(selectInvoicesGivenView(myInvoicesView));
   };
 
   const selectInvoicesGivenView = (view: string) => {
@@ -65,8 +72,6 @@ export default function MyInvoicesDisplay() {
     }
   };
 
-  const invoices = selectInvoicesGivenView(myInvoicesView);
-
   useEffect(() => {
     const isIndeterminate =
       selectedInvoice.length > 0 && selectedInvoice.length < myInvoices.length;
@@ -76,6 +81,7 @@ export default function MyInvoicesDisplay() {
       setChecked(selectedInvoice.length === myInvoices.length);
     }
     setIndeterminate(isIndeterminate);
+    setInvoices(selectInvoicesGivenView(myInvoicesView));
     // if (checkbox.current) {
     //   checkbox.current.indeterminate = isIndeterminate;
     // }
@@ -184,82 +190,6 @@ export default function MyInvoicesDisplay() {
   };
   const [activeSort, setActiveSort] = useState(defaultSortState);
 
-  const [shouldSortAmount, setShouldSortAmount] = useState(true);
-  const handleAmountSorting = () => {
-    if (myInvoices.length === 0) return;
-    myInvoices.sort((a, b) => {
-      setActiveSort({ ...defaultSortState, amount: true });
-      shouldSortAmount ? setShouldSortAmount(false) : setShouldSortAmount(true);
-      if (shouldSortAmount) {
-        return (
-          getServicesTotal(a.servicesInformation) -
-          getServicesTotal(b.servicesInformation)
-        );
-      } else {
-        return (
-          getServicesTotal(b.servicesInformation) -
-          getServicesTotal(a.servicesInformation)
-        );
-      }
-    });
-  };
-
-  const [shouldSortDate, setShouldSortDate] = useState(true);
-  const handleDateSorting = () => {
-    if (myInvoices.length === 0) return;
-    myInvoices.sort((a: any, b: any) => {
-      setActiveSort({ ...defaultSortState, issueDate: true });
-      const convertDateStringToNumber1 = Number(
-        new Date(a.invoiceInformation.issueDate)
-      );
-      const convertDateStringToNumber2 = Number(
-        new Date(b.invoiceInformation.issueDate)
-      );
-      shouldSortDate ? setShouldSortDate(false) : setShouldSortDate(true);
-      if (shouldSortDate) {
-        return convertDateStringToNumber1 - convertDateStringToNumber2;
-      } else {
-        return convertDateStringToNumber2 - convertDateStringToNumber1;
-      }
-    });
-  };
-
-  const [shouldSortClientName, setShouldSortClientName] = useState(false);
-  const handleClientNameSorting = () => {
-    setActiveSort({ ...defaultSortState, clientName: true });
-    if (myInvoices.length === 0) return;
-    myInvoices.sort((a, b) => {
-      shouldSortClientName
-        ? setShouldSortClientName(false)
-        : setShouldSortClientName(true);
-      if (shouldSortClientName) {
-        return a.recipientInformation.clientName.localeCompare(
-          b.recipientInformation.clientName
-        );
-      } else {
-        return b.recipientInformation.clientName.localeCompare(
-          a.recipientInformation.clientName
-        );
-      }
-    });
-  };
-
-  const [shouldSortStatus, setShouldSortStatus] = useState(false);
-  const handleStatusSorting = () => {
-    setActiveSort({ ...defaultSortState, status: true });
-    if (myInvoices.length === 0) return;
-    myInvoices.sort((a, b) => {
-      shouldSortStatus ? setShouldSortStatus(false) : setShouldSortStatus(true);
-      if (shouldSortStatus) {
-        return a.status.localeCompare(b.status);
-      } else {
-        return b.status.localeCompare(a.status);
-      }
-    });
-  };
-
-  const views = ['Unpaid', 'Paid', 'Draft', 'Void', 'Archived'];
-
   return (
     <>
       <div className="ml-8 mt-5 flex items-center">
@@ -322,6 +252,7 @@ export default function MyInvoicesDisplay() {
                           activeSort={activeSort}
                           setActiveSort={setActiveSort}
                           defaultSortState={defaultSortState}
+                          invoices={invoices}
                         />
                       </th>
                       <th
@@ -330,31 +261,12 @@ export default function MyInvoicesDisplay() {
                       >
                         <div className="flex">
                           To
-                          <span className="ml-2 flex-none cursor-pointer cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
-                            {shouldSortClientName ? (
-                              <ChevronDownIcon
-                                className={classNames(
-                                  'h-5 w-5',
-                                  activeSort.clientName
-                                    ? 'rounded bg-gray-200 text-gray-600'
-                                    : ''
-                                )}
-                                aria-hidden="true"
-                                onClick={handleClientNameSorting}
-                              />
-                            ) : (
-                              <ChevronUpIcon
-                                className={classNames(
-                                  'h-5 w-5',
-                                  activeSort.clientName
-                                    ? 'rounded bg-gray-200 text-gray-600'
-                                    : ''
-                                )}
-                                aria-hidden="true"
-                                onClick={handleClientNameSorting}
-                              />
-                            )}
-                          </span>
+                          <NameSorting
+                            activeSort={activeSort}
+                            setActiveSort={setActiveSort}
+                            defaultSortState={defaultSortState}
+                            invoices={invoices}
+                          />
                         </div>
                       </th>
                       <th
@@ -363,31 +275,12 @@ export default function MyInvoicesDisplay() {
                       >
                         <div className="flex">
                           Due Date
-                          <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
-                            {shouldSortDate ? (
-                              <ChevronDownIcon
-                                className={classNames(
-                                  'h-5 w-5',
-                                  activeSort.issueDate
-                                    ? 'rounded bg-gray-200 text-gray-600'
-                                    : ''
-                                )}
-                                aria-hidden="true"
-                                onClick={handleDateSorting}
-                              />
-                            ) : (
-                              <ChevronUpIcon
-                                className={classNames(
-                                  'h-5 w-5',
-                                  activeSort.issueDate
-                                    ? 'rounded bg-gray-200 text-gray-600'
-                                    : ''
-                                )}
-                                aria-hidden="true"
-                                onClick={handleDateSorting}
-                              />
-                            )}
-                          </span>
+                          <DateSorting
+                            activeSort={activeSort}
+                            setActiveSort={setActiveSort}
+                            defaultSortState={defaultSortState}
+                            invoices={invoices}
+                          />
                         </div>
                       </th>
                       <th
@@ -396,31 +289,12 @@ export default function MyInvoicesDisplay() {
                       >
                         <div className="flex">
                           Amount
-                          <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
-                            {shouldSortAmount ? (
-                              <ChevronDownIcon
-                                className={classNames(
-                                  'h-5 w-5',
-                                  activeSort.amount
-                                    ? 'rounded bg-gray-200 text-gray-600'
-                                    : ''
-                                )}
-                                aria-hidden="true"
-                                onClick={handleAmountSorting}
-                              />
-                            ) : (
-                              <ChevronUpIcon
-                                className={classNames(
-                                  'h-5 w-5',
-                                  activeSort.amount
-                                    ? 'rounded bg-gray-200 text-gray-600'
-                                    : ''
-                                )}
-                                aria-hidden="true"
-                                onClick={handleAmountSorting}
-                              />
-                            )}
-                          </span>
+                          <AmountSorting
+                            activeSort={activeSort}
+                            setActiveSort={setActiveSort}
+                            defaultSortState={defaultSortState}
+                            invoices={invoices}
+                          />
                         </div>
                       </th>
                       <th
@@ -429,31 +303,12 @@ export default function MyInvoicesDisplay() {
                       >
                         <div className="flex">
                           Status
-                          <span className="ml-2 flex-none cursor-pointer rounded text-gray-400 group-hover:visible group-focus:visible">
-                            {shouldSortStatus ? (
-                              <ChevronDownIcon
-                                className={classNames(
-                                  'h-5 w-5',
-                                  activeSort.status
-                                    ? 'rounded bg-gray-200 text-gray-600'
-                                    : ''
-                                )}
-                                aria-hidden="true"
-                                onClick={handleStatusSorting}
-                              />
-                            ) : (
-                              <ChevronUpIcon
-                                className={classNames(
-                                  'h-5 w-5',
-                                  activeSort.status
-                                    ? 'rounded bg-gray-200 text-gray-600'
-                                    : ''
-                                )}
-                                aria-hidden="true"
-                                onClick={handleStatusSorting}
-                              />
-                            )}
-                          </span>
+                          <StatusSorting
+                            activeSort={activeSort}
+                            setActiveSort={setActiveSort}
+                            defaultSortState={defaultSortState}
+                            invoices={invoices}
+                          />
                         </div>
                       </th>
                       <th
