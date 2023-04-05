@@ -1,5 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import React, { useState } from 'react';
+import { getInvoiceStatus } from '../AddInvoiceDisplay/GetInvoiceStatus';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -9,6 +10,7 @@ function NameSorting(props: any) {
   const { invoices } = props;
   const { activeSort, setActiveSort, defaultSortState } = props;
   const [shouldSortStatus, setShouldSortStatus] = useState(false);
+
   const handleStatusSorting = () => {
     if (invoices.length === 0) return;
 
@@ -16,10 +18,14 @@ function NameSorting(props: any) {
 
     invoices.sort((a, b) => {
       shouldSortStatus ? setShouldSortStatus(false) : setShouldSortStatus(true);
+
+      const invoiceStatusA = getInvoiceStatus(a);
+      const invoiceStatusB = getInvoiceStatus(b);
+
       if (shouldSortStatus) {
-        return a.status.localeCompare(b.status);
+        return invoiceStatusA.localeCompare(invoiceStatusB);
       } else {
-        return b.status.localeCompare(a.status);
+        return invoiceStatusB.localeCompare(invoiceStatusA);
       }
     });
   };

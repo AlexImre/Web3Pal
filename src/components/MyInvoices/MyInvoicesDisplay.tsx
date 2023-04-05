@@ -200,7 +200,7 @@ export default function MyInvoicesDisplay() {
               className={`mr-2 w-32 rounded border ${
                 myInvoicesView === view
                   ? 'cursor-auto border border-indigo-700 bg-indigo-700 text-white'
-                  : 'border-gray-400 text-gray-700 hover:bg-gray-100'
+                  : 'border-gray-400 bg-white text-gray-700 hover:bg-gray-100'
               } py-2 px-4 text-sm font-medium shadow`}
               onClick={() => setView(view)}
             >
@@ -232,7 +232,7 @@ export default function MyInvoicesDisplay() {
               </div>
               <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-300">
-                  <thead className="bg-indigo-700">
+                  <thead className="bg-slate-900">
                     <tr>
                       <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
                         <input
