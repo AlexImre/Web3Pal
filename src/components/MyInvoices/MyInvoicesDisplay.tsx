@@ -105,9 +105,6 @@ export default function MyInvoicesDisplay() {
       case 'Draft':
         handleDelete(selectedInvoices);
         break;
-      case 'Void':
-        handleVoid(selectedInvoices);
-        break;
       case 'Archived':
         handleRestore(selectedInvoices);
         break;
@@ -155,49 +152,6 @@ export default function MyInvoicesDisplay() {
           selectedInvoices: [],
         }));
         restoreToast();
-      }
-    }
-  };
-
-  const handleVoid = async (selectedInvoices: any) => {
-    if (
-      window.confirm(
-        'Are you sure you wish to void? If you wish to continue with this action, press OK.'
-      )
-    ) {
-      const selectedInvoiceIds = selectedInvoices.map(
-        (invoice: any) => invoice.invoiceId
-      );
-
-      const voidToast = () =>
-        toast.success(
-          `Invoice${selectedInvoiceIds.length > 1 ? 's' : ''} voided.`
-        );
-      const voidedInvoices = await fetch('/api/voidinvoices', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedInvoiceIds),
-      });
-
-      if (voidedInvoices.ok) {
-        setMasterState((prevState) => ({
-          ...prevState,
-          invoice: initialState.invoice,
-          myInvoices: prevState.myInvoices.map((invoice) => {
-            if (selectedInvoiceIds.includes(invoice.invoiceId)) {
-              return {
-                ...invoice,
-                status: 'Void',
-              };
-            } else {
-              return invoice;
-            }
-          }),
-          selectedInvoices: [],
-        }));
-        voidToast();
       }
     }
   };
@@ -424,7 +378,7 @@ export default function MyInvoicesDisplay() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {invoices.map((invoice) => (
+                    {invoices.map((invoice, index) => (
                       <tr
                         key={invoice._id}
                         className={
@@ -488,8 +442,11 @@ export default function MyInvoicesDisplay() {
                         <td className="whitespace-nowrap py-4 text-right text-sm font-medium">
                           <InvoiceActions
                             invoice={invoice}
+                            invoices={invoices}
+                            setInvoices={setInvoices}
                             handleArchive={handleArchive}
                             selectedInvoice={selectedInvoices}
+                            index={index}
                           />
                         </td>
                       </tr>

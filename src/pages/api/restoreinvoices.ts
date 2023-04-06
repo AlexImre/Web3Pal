@@ -9,7 +9,7 @@ export default async (req: Request, res: Response) => {
 
     if (invoiceIds.length === 1) {
       console.log("restoring one invoice")
-      const archiveInvoice = await db.collection('invoices').updateOne({ invoiceId: invoiceIds[0] }, { $set: { isArchived: true }});
+      const archiveInvoice = await db.collection('invoices').updateOne({ invoiceId: invoiceIds[0] }, { $set: { isArchived: false }});
       res.status(200).json(archiveInvoice);
     } 
     

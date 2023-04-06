@@ -1,9 +1,17 @@
 import { StateContext } from '@/context/stateContext';
 import Link from 'next/link';
 import React, { useContext } from 'react';
+import toast from 'react-hot-toast';
 
 export default function InvoiceActions(props: any) {
-  const { invoice, handleArchive, selectedInvoice } = props;
+  const {
+    invoice,
+    handleArchive,
+    selectedInvoice,
+    invoices,
+    setInvoices,
+    index,
+  } = props;
   const stateContext = useContext(StateContext);
   const { setMasterState } = stateContext;
 
@@ -18,6 +26,48 @@ export default function InvoiceActions(props: any) {
       servicesInformation: invoice.servicesInformation,
       notesInformation: invoice.notesInformation,
     }));
+  };
+
+  const handleVoid = async (invoiceId: string) => {
+    console.log('index', index);
+    if (
+      window.confirm(
+        'Are you sure you wish to void? If you wish to continue with this action, press OK.'
+      )
+    ) {
+      const voidToast = () => toast.success(`Invoice voided.`);
+
+      const voidInvoice = await fetch('/api/voidinvoice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(invoiceId),
+      });
+
+      const newArray = invoices.filter(
+        (item) => item.invoiceId !== invoice.invoiceId
+      );
+
+      if (voidInvoice.ok) {
+        // QQ This feels extremely inefficient!? Would it be faster to refetch data from db?
+        setMasterState((prevState) => ({
+          ...prevState,
+          myInvoices: prevState.myInvoices.map((item) => {
+            if (item.invoiceId === invoice.invoiceId) {
+              return {
+                ...invoice,
+                status: 'Void',
+              };
+            } else {
+              return item;
+            }
+          }),
+        })),
+          setInvoices(newArray),
+          voidToast();
+      }
+    }
   };
 
   const isInvoicePaid = invoice.status === 'Paid';
@@ -57,6 +107,7 @@ export default function InvoiceActions(props: any) {
         <button
           type="button"
           className="mr-2 inline-flex items-center rounded border border-transparent bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-800 focus:ring-offset-2"
+          onClick={() => handleVoid(invoice.invoiceId)}
         >
           Void
         </button>
