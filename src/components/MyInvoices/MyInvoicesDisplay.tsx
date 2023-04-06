@@ -64,7 +64,7 @@ export default function MyInvoicesDisplay() {
         return voidInvoices;
       case 'Archived':
         const archivedInvoices = myInvoices.filter(
-          (invoice) => invoice.status === 'Archived'
+          (invoice) => invoice.isArchived === true
         );
         return archivedInvoices;
       default:
@@ -168,7 +168,7 @@ export default function MyInvoicesDisplay() {
             if (selectedInvoiceIds.includes(invoice.invoiceId)) {
               return {
                 ...invoice,
-                status: 'Archived',
+                isArchived: true,
               };
             } else {
               return invoice;

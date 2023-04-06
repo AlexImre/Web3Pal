@@ -89,6 +89,7 @@ export type InvoiceType = {
     updatedTimestamp?: Date;
     user: string;
     status?: string;
+    isArchived?: boolean;
     txHash?: string;
     paidTimestamp?: Date;
     invoiceInformation: InvoiceInformationType;
@@ -140,6 +141,7 @@ export const initialState: MasterStateType = {
         updatedTimestamp: undefined,
         user: '',
         status: 'Example',
+        isArchived: false,
         txHash: '',
         paidTimestamp: undefined,
         personalInformation: {
