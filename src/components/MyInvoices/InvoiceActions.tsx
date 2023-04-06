@@ -25,6 +25,7 @@ export default function InvoiceActions(props: any) {
   const isInvoiceUnpaid =
     invoice.status === 'Unpaid' || invoice.status === 'Overdue';
   const isInvoicePublished = isInvoiceUnpaid || isInvoicePaid;
+  const isInvoiceArchived = invoice.isArchived === true;
 
   return (
     <div className="flex">
@@ -42,7 +43,7 @@ export default function InvoiceActions(props: any) {
           {isInvoiceDraft ? 'Edit' : 'View'}
         </button>
       </Link>
-      {isInvoiceUnpaid && (
+      {isInvoiceUnpaid && !isInvoiceArchived && (
         <Link href={`/invoices/${invoice.invoiceId}`}>
           <button
             type="button"

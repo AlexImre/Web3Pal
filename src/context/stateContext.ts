@@ -72,7 +72,8 @@ export type FormCompletionType = {
 export type MasterStateType = {
     invoice: InvoiceType;
     myInvoicesView: string;
-    myInvoices: any;
+    myInvoices: Array<InvoiceType>;
+    selectedInvoices: any;
     myServices: any;
     myAmounts: any;
     marketData: any;
@@ -208,6 +209,7 @@ export const initialState: MasterStateType = {
     },
     myInvoicesView: 'Unpaid',
     myInvoices: [],
+    selectedInvoices: [],
     myServices: [],
     myAmounts: [],
     marketData: [],
