@@ -9,7 +9,7 @@ import { StateContext } from '@/context/stateContext';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import { fetchOrganisation } from '@/utils/fetchData';
+import { fetchInvoices, fetchOrganisation } from '@/utils/fetchData';
 import { useSession } from 'next-auth/react';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -21,9 +21,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const organisation = await fetchOrganisation(email);
+  const organisationId = organisation._id;
+  const myInvoices = await fetchInvoices(organisationId);
 
   return {
-    props: { organisation },
+    props: { organisation, myInvoices },
   };
 }
 
@@ -33,13 +35,13 @@ export default function Dashboard(
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { data: session } = useSession();
-  const { organisation } = props;
+  const { organisation, myInvoices } = props;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
-    setMasterState({ ...masterState, organisation, session });
+    setMasterState({ ...masterState, organisation, myInvoices, session });
     setIsLoading(false);
   }, []);
 

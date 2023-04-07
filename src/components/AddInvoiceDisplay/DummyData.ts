@@ -7,6 +7,7 @@ export const addDummyData = async (organisationId: string) => {
       Math.random() * 100
     ));
   let name = names[Math.floor(Math.random() * 50)];
+  dummyInvoiceData.createdTimestamp = new Date(Date.now());
   dummyInvoiceData.personalInformation.name = name
   dummyInvoiceData.recipientInformation.clientName = name;
   dummyInvoiceData.personalInformation.email = `${name.split(' ')}@hotmail.com`;
@@ -37,6 +38,7 @@ export const dummyInvoiceData = {
     organisationId: '',
     user: `alexandre.imre@gmail.com`,
     status: 'Unpaid',
+    createdTimestamp: undefined,
     txHash: '',
     paidTimestamp: undefined,
     personalInformation: {
