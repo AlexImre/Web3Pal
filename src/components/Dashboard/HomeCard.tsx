@@ -6,35 +6,7 @@ import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
 import { getInvoiceStatus } from '../AddInvoiceDisplay/GetInvoiceStatus';
 import { getInvoiceStatusChip } from '../MyInvoices/myInvoicesUtils';
 import RecentInvoices from './RecentInvoices';
-
-const cards = [
-  { name: 'Balance overdue', href: '#', icon: ScaleIcon, amount: '$30,659.45' },
-  {
-    name: 'Invoices paid',
-    href: '#',
-    icon: ScaleIcon,
-    amount: '$50,129.57',
-  },
-  // More items...
-];
-const transactions = [
-  {
-    id: 1,
-    name: 'Payment to Saxon Advisors',
-    href: '#',
-    amount: '2.25',
-    currency: 'ETH',
-    status: 'success',
-    date: 'January 16, 2023',
-    datetime: '2023-16-01',
-  },
-  // More transactions...
-];
-const statusStyles = {
-  success: 'bg-green-100 text-green-800',
-  processing: 'bg-yellow-100 text-yellow-800',
-  failed: 'bg-gray-100 text-gray-800',
-};
+import StatusCountTable from './StatusCountTable';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -69,6 +41,38 @@ export default function HomeCard() {
 
   console.log('recentInvoices', recentPublishedInvoices);
 
+  const totalOrgBalanceOverdue = myInvoices.reduce((acc, invoice) => {
+    if (invoice.status === 'Overdue' || invoice.status === 'Unpaid') {
+      return acc + getServicesTotal(invoice.servicesInformation);
+    } else {
+      return acc;
+    }
+  }, 0);
+
+  const totalOrgBalancePaid = myInvoices.reduce((acc, invoice) => {
+    if (invoice.status === 'Paid') {
+      return acc + getServicesTotal(invoice.servicesInformation);
+    } else {
+      return acc;
+    }
+  }, 0);
+
+  const cards = [
+    {
+      name: 'Balance outstanding',
+      href: '#',
+      icon: ScaleIcon,
+      amount: totalOrgBalanceOverdue,
+    },
+    {
+      name: 'Invoices paid',
+      href: '#',
+      icon: ScaleIcon,
+      amount: totalOrgBalancePaid,
+    },
+    // More items...
+  ];
+
   return (
     <>
       <main className="flex-1 pb-8">
@@ -100,14 +104,14 @@ export default function HomeCard() {
                           </dt>
                           <dd>
                             <div className="text-lg font-medium text-gray-900">
-                              {card.amount}
+                              {card.amount} ETH
                             </div>
                           </dd>
                         </dl>
                       </div>
                     </div>
                   </div>
-                  <div className="bg-gray-50 px-5 py-3">
+                  {/* <div className="bg-gray-50 px-5 py-3">
                     <div className="text-sm">
                       <a
                         href={card.href}
@@ -116,9 +120,10 @@ export default function HomeCard() {
                         View all
                       </a>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               ))}
+              <StatusCountTable myInvoices={myInvoices} />
             </div>
           </div>
 
