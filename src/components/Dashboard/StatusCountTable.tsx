@@ -1,25 +1,21 @@
-import { StateContext } from '@/context/stateContext';
-import { useContext } from 'react';
-import {
-  getDashboardStatusChips,
-  getInvoiceStatusChip,
-} from '../MyInvoices/myInvoicesUtils';
+import { getDashboardStatusChips } from '../MyInvoices/myInvoicesUtils';
+import { getInvoiceStatus } from '../AddInvoiceDisplay/GetInvoiceStatus';
 
 export default function StatusCountTable(props: any) {
-  const stateContext = useContext(StateContext);
-  const { masterState, setMasterState } = stateContext;
-  const { organisation } = masterState;
   const { myInvoices } = props;
 
-  const statuses = ['Paid', 'Overdue', 'Unpaid', 'Draft', 'Void'];
-  const statusCounts = statuses.map((status) => {
-    return {
-      status: status,
-      count: myInvoices.filter((invoice) => {
-        return invoice.status === status;
-      }).length,
-    };
-  });
+  const statusCounts = myInvoices.reduce((acc, invoice) => {
+    const status = getInvoiceStatus(invoice);
+    const statusCount = acc.find(
+      (statusCount) => statusCount.status === status
+    );
+    if (statusCount) {
+      statusCount.count++;
+    } else {
+      acc.push({ status: status, count: 1 });
+    }
+    return acc;
+  }, []);
 
   return (
     <div className="hidden sm:block">
@@ -27,16 +23,16 @@ export default function StatusCountTable(props: any) {
         <div className="flex flex-col">
           <div className="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
             <table className="min-h-full min-w-full divide-y divide-gray-200">
-              <thead>
+              <thead className="bg-slate-900">
                 <tr>
                   <th
-                    className="bg-gray-50 px-6 py-3 text-center text-sm font-semibold text-gray-900"
+                    className="px-6 py-3 text-center text-sm font-semibold text-white"
                     scope="col"
                   >
                     Status
                   </th>
                   <th
-                    className="bg-gray-50 px-6 py-3 text-center text-sm font-semibold text-gray-900"
+                    className="px-6 py-3 text-center text-sm font-semibold text-white"
                     scope="col"
                   >
                     Count
@@ -48,9 +44,9 @@ export default function StatusCountTable(props: any) {
                   <tr key={index} className="bg-white">
                     <td className="max-w-0 whitespace-nowrap px-6 text-sm text-gray-900">
                       <div className="flex items-center justify-center">
-                        <p className="truncate text-gray-500 group-hover:text-gray-900">
+                        <div className="truncate text-gray-500 group-hover:text-gray-900">
                           {getDashboardStatusChips(statusCount.status)}
-                        </p>
+                        </div>
                       </div>
                     </td>
                     <td className="max-w-0 whitespace-nowrap px-6 py-1 text-sm text-gray-900">

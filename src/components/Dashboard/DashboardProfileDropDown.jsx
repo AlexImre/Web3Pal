@@ -23,6 +23,7 @@ export default function DashboardProfileDropDown() {
                   width={50}
                   height={50}
                   className="h-8 w-8 rounded-full"
+                  alt="image of user grabbed from their email"
                 />
                 <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
                   <span className="sr-only">Open user menu for </span>

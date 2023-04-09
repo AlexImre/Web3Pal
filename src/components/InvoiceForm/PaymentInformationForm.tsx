@@ -219,7 +219,7 @@ export default function PaymentInformationForm() {
                         value={invoiceLabelling}
                         error={error.invoiceLabelling}
                         errorMessage={errorMessage.invoiceLabelling}
-                        helperText='Specify the currency your invoice will be denominated in. E.g. "ETH"'
+                        helperText="Specify the currency that your invoice will be issued in."
                       />
                     </div>
                   </div>

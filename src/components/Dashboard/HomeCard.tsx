@@ -1,45 +1,14 @@
 import { ScaleIcon } from '@heroicons/react/24/outline';
-import { BanknotesIcon, ChevronRightIcon } from '@heroicons/react/20/solid';
 import { useContext } from 'react';
 import { StateContext } from '@/context/stateContext';
 import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
-import { getInvoiceStatus } from '../AddInvoiceDisplay/GetInvoiceStatus';
-import { getInvoiceStatusChip } from '../MyInvoices/myInvoicesUtils';
 import RecentInvoices from './RecentInvoices';
 import StatusCountTable from './StatusCountTable';
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function HomeCard() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
-
-  // sort invoices by createdTimestamp
-  const sortedInvoices = myInvoices.sort((a, b) => {
-    const date1 = new Date(a.createdTimestamp);
-    const date2 = new Date(b.createdTimestamp);
-
-    const timestamp1 = BigInt(date1.getTime());
-    const timestamp2 = BigInt(date2.getTime());
-
-    return parseInt(timestamp2.toString()) - parseInt(timestamp1.toString());
-  });
-
-  // take the first 5 invoices
-  const recentPaidInvoices = sortedInvoices.filter((invoice) => {
-    return invoice.status === 'Paid';
-  });
-
-  const recentPublishedInvoices = sortedInvoices
-    .filter((invoice) => {
-      return invoice.status !== 'Draft';
-    })
-    .slice(0, 3);
-
-  console.log('recentInvoices', recentPublishedInvoices);
 
   const totalOrgBalanceOverdue = myInvoices.reduce((acc, invoice) => {
     if (invoice.status === 'Overdue' || invoice.status === 'Unpaid') {
@@ -76,14 +45,12 @@ export default function HomeCard() {
   return (
     <>
       <main className="flex-1 pb-8">
-        {/* Page header */}
         <div className="mt-8">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-lg font-medium leading-6 text-gray-900">
               Overview
             </h2>
             <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {/* Card */}
               {cards.map((card) => (
                 <div
                   key={card.name}
@@ -111,16 +78,6 @@ export default function HomeCard() {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="bg-gray-50 px-5 py-3">
-                    <div className="text-sm">
-                      <a
-                        href={card.href}
-                        className="font-medium text-blue-700 hover:text-blue-900"
-                      >
-                        View all
-                      </a>
-                    </div>
-                  </div> */}
                 </div>
               ))}
               <StatusCountTable myInvoices={myInvoices} />
@@ -128,12 +85,16 @@ export default function HomeCard() {
           </div>
 
           <RecentInvoices
-            invoices={recentPaidInvoices}
+            myInvoices={myInvoices}
             title="Recently paid invoices"
+            dataIsPaidInvoices={true}
           />
+
           <RecentInvoices
-            invoices={recentPublishedInvoices}
-            title="Recently published invoices"
+            myInvoices={myInvoices}
+            title="Recently created invoices"
+            showHeaderButtons={true}
+            dataIsPaidInvoices={false}
           />
         </div>
       </main>

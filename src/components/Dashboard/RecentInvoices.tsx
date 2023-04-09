@@ -1,9 +1,80 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
 import { getInvoiceStatusChip } from '../MyInvoices/myInvoicesUtils';
+import Link from 'next/link';
+import { StateContext } from '@/context/stateContext';
 
 function RecentInvoices(props: any) {
-  const { invoices, title } = props;
+  const { myInvoices, title, showHeaderButtons, dataIsPaidInvoices } = props;
+  const stateContext = useContext(StateContext);
+  const { setMasterState } = stateContext;
+  const [view, setView] = useState('Published');
+  const views = ['Published', 'Draft'];
+
+  const sortedInvoices = myInvoices.sort((a, b) => {
+    const date1 = new Date(a.createdTimestamp);
+    const date2 = new Date(b.createdTimestamp);
+    const timestamp1 = BigInt(date1.getTime());
+    const timestamp2 = BigInt(date2.getTime());
+    return parseInt(timestamp2.toString()) - parseInt(timestamp1.toString());
+  });
+
+  const recentPaidInvoices = sortedInvoices
+    .filter((invoice) => {
+      return invoice.status === 'Paid';
+    })
+    .slice(0, 3);
+
+  const recentPublishedInvoices = sortedInvoices
+    .filter((invoice) => {
+      return invoice.status !== 'Draft';
+    })
+    .slice(0, 3);
+
+  const recentDraftInvoices = sortedInvoices
+    .filter((invoice) => {
+      return invoice.status === 'Draft';
+    })
+    .slice(0, 3);
+
+  let invoices = [];
+  if (dataIsPaidInvoices) {
+    invoices = recentPaidInvoices;
+  } else if (view === 'Published') {
+    invoices = recentPublishedInvoices;
+  } else {
+    invoices = recentDraftInvoices;
+  }
+
+  const headerButtons = views.map((item) => {
+    return (
+      <button
+        key={item}
+        className={`my-2 mr-2 w-32 rounded border ${
+          view === item
+            ? 'cursor-auto border border-indigo-700 bg-indigo-700 text-white'
+            : 'border-gray-400 bg-white text-gray-700 hover:bg-gray-100'
+        } py-2 px-4 text-sm font-medium shadow`}
+        onClick={() => setView(view === 'Published' ? 'Draft' : 'Published')}
+      >
+        {item}
+      </button>
+    );
+  });
+
+  const handleEdit = (invoice) => {
+    setMasterState((prevState) => ({
+      ...prevState,
+      uuid: invoice.invoiceId,
+      invoiceInformation: invoice.invoiceInformation,
+      personalInformation: invoice.personalInformation,
+      recipientInformation: invoice.recipientInformation,
+      paymentInformation: invoice.paymentInformation,
+      servicesInformation: invoice.servicesInformation,
+      notesInformation: invoice.notesInformation,
+    }));
+  };
+
   return (
     <>
       <h2 className="mx-auto mt-8 max-w-6xl px-4 text-lg font-medium leading-6 text-gray-900 sm:px-6 lg:px-8">
@@ -11,37 +82,38 @@ function RecentInvoices(props: any) {
       </h2>
       <div className="hidden sm:block">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          {showHeaderButtons && headerButtons}
           <div className="mt-2 flex flex-col">
             <div className="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead>
+                <thead className="bg-slate-900">
                   <tr>
                     <th
-                      className="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                      className="px-6 py-3 text-left text-sm font-semibold text-white"
                       scope="col"
                     >
                       Invoice Number
                     </th>
                     <th
-                      className="bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900"
+                      className="px-6 py-3 text-left text-sm font-semibold text-white"
                       scope="col"
                     >
                       To
                     </th>
                     <th
-                      className="bg-gray-50 px-6 py-3 text-right text-sm font-semibold text-gray-900"
+                      className="px-6 py-3 text-right text-sm font-semibold text-white"
                       scope="col"
                     >
                       Due Date
                     </th>
                     <th
-                      className="bg-gray-50 px-6 py-3 text-right text-sm font-semibold text-gray-900"
+                      className="px-6 py-3 text-right text-sm font-semibold text-white"
                       scope="col"
                     >
                       Amount
                     </th>
                     <th
-                      className="hidden bg-gray-50 px-6 py-3 text-left text-sm font-semibold text-gray-900 md:block"
+                      className="hidden px-6 py-3 text-left text-sm font-semibold text-white md:block"
                       scope="col"
                     >
                       Status
@@ -82,6 +154,20 @@ function RecentInvoices(props: any) {
                       </td>
                       <td className="hidden whitespace-nowrap px-6 py-4 text-sm text-gray-500 md:block">
                         <span>{getInvoiceStatusChip(invoice)}</span>
+                        <Link
+                          href={{
+                            pathname: '/addinvoice',
+                            query: { invoiceId: invoice.invoiceId },
+                          }}
+                        >
+                          <button
+                            type="button"
+                            className="ml-5 mr-2 inline-flex w-14 items-center justify-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-center text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            onClick={() => handleEdit(invoice)}
+                          >
+                            {invoice.status === 'Draft' ? 'Edit' : 'View'}
+                          </button>
+                        </Link>
                       </td>
                     </tr>
                   ))}
