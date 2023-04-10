@@ -1,6 +1,7 @@
 import { StateContext } from '@/context/stateContext';
 import { fetchInvoiceNumber } from '@/utils/fetchData';
 import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
 import { useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -39,11 +40,17 @@ export default function VoidInvoiceAlert() {
           <h3 className="text-sm font-medium text-white">
             Void invoice - This invoice is no longer published.
           </h3>
-          <div className="mt-2 text-sm text-white">
-            <p>
+          <div className="mt-2 text-sm">
+            <p className="text-white">
               If you would like to create a copy of this invoice, click the
               button below. If you wish to use the same invoice number for your
-              copy, you must first archive the void invoice from 'My invoices'.
+              copy, you must first archive the void invoice from{' '}
+              <Link
+                href="/myinvoices"
+                className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+              >
+                My invoices.
+              </Link>
               <br></br>
               <br></br>
             </p>
