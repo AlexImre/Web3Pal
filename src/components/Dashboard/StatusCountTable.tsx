@@ -17,6 +17,14 @@ export default function StatusCountTable(props: any) {
     return acc;
   }, []);
 
+  const validStatusCounts = statusCounts.filter((item) => {
+    return item.status !== 'Void' && item.status !== 'Archived';
+  });
+
+  validStatusCounts.sort((a, b) => {
+    return a.status.localeCompare(b.status);
+  });
+
   return (
     <div className="hidden sm:block">
       <div className="mx-auto max-w-6xl">
@@ -40,7 +48,7 @@ export default function StatusCountTable(props: any) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                {statusCounts.map((statusCount, index) => (
+                {validStatusCounts.map((statusCount, index) => (
                   <tr key={index} className="bg-white">
                     <td className="max-w-0 whitespace-nowrap px-6 text-sm text-gray-900">
                       <div className="flex items-center justify-center">

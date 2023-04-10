@@ -26,6 +26,8 @@ export default function HomeCard() {
     }
   }, 0);
 
+  // console.log('marketData[0]', marketData[0].current_price);
+
   const cards = [
     {
       name: 'Balance outstanding',
@@ -71,7 +73,8 @@ export default function HomeCard() {
                           </dt>
                           <dd>
                             <div className="text-lg font-medium text-gray-900">
-                              {card.amount} ETH
+                              {Intl.NumberFormat('en-US').format(card.amount)}{' '}
+                              USD
                             </div>
                           </dd>
                         </dl>
