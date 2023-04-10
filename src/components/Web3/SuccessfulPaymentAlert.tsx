@@ -14,8 +14,8 @@ export default function SuccessfulPaymentAlert(
     <div
       className={
         forRenderingInAddInvoiceDisplay
-          ? 'rounded-md bg-green-50 p-4 sm:rounded-lg'
-          : `m-5 w-[600px] rounded-md bg-green-50 p-4 sm:rounded-lg`
+          ? 'mt-4 rounded-md bg-green-50 p-4 sm:rounded-lg '
+          : `m-5 mt-4 w-[600px] rounded-md bg-green-50 p-4 sm:rounded-lg`
       }
     >
       <div className="flex">

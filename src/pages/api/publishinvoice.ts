@@ -21,7 +21,8 @@ export default async (req: Request, res: Response) => {
           status: 'Unpaid'
         }
       });
-    res.json(updateInvoice);
+
+    res.status(200).send("Invoice published");
   } catch (e) {
     console.error(e);
     throw new Error(e).message;

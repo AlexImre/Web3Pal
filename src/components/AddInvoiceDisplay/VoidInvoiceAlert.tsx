@@ -28,7 +28,7 @@ export default function VoidInvoiceAlert() {
   };
 
   return (
-    <div className="rounded-md bg-slate-900 p-4">
+    <div className="mt-4 rounded-md bg-slate-900 p-4">
       <div className="flex">
         <div className="flex-shrink-0">
           <ExclamationTriangleIcon
@@ -45,12 +45,9 @@ export default function VoidInvoiceAlert() {
               If you would like to create a copy of this invoice, click the
               button below. If you wish to use the same invoice number for your
               copy, you must first archive the void invoice from{' '}
-              <Link
-                href="/myinvoices"
-                className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-              >
-                My invoices.
-              </Link>
+              <a className="text-blue-600 underline visited:text-purple-600 hover:text-blue-800">
+                <Link href="/myinvoices"> My invoices.</Link>
+              </a>
               <br></br>
               <br></br>
             </p>

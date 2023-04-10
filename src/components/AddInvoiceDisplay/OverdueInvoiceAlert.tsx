@@ -2,7 +2,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/20/solid';
 
 export default function OverdueInvoiceAlert() {
   return (
-    <div className="rounded-md bg-red-50 p-4">
+    <div className="mt-4 rounded-md bg-red-50 p-4">
       <div className="flex">
         <div className="flex-shrink-0">
           <ExclamationTriangleIcon

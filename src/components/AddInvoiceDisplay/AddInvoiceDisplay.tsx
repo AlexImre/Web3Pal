@@ -40,6 +40,8 @@ export default function AddInvoiceDisplay() {
   const organisationId = organisation._id;
   const [showModal, setShowModal] = useState(false);
 
+  console.log('formCompleteion', formCompletion);
+
   const email = session?.user?.email;
   const saveInvoice = async () => {
     const savedToast = () => toast.success('Invoice saved.');
@@ -82,6 +84,12 @@ export default function AddInvoiceDisplay() {
   };
 
   const publishInvoice = async () => {
+    for (const form in formCompletion) {
+      if (formCompletion[form] === false) {
+        toast.error('Please complete all required sections.');
+        return;
+      }
+    }
     const publishedToast = () => toast.success('Invoice published.');
     // TODO add validation, all req fields must be filled
     console.log('publishing invoice with id:', invoiceId);
@@ -148,14 +156,14 @@ export default function AddInvoiceDisplay() {
   return (
     <>
       <div className="flex items-center">
-        <div className="m-10 flex w-[600px] max-w-2xl flex-col justify-center">
-          <div className="-mt-5 mb-2 flex items-center justify-between">
+        <div className="mx-10 my-4 flex w-[600px] max-w-2xl flex-col justify-center">
+          <div className="flex items-center justify-between">
             <div>
               <button
                 onClick={() => {
                   addDummyData(organisationId);
                 }}
-                className="my-2 mr-4 w-24 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
+                className="mr-4 w-24 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
               >
                 +Test
               </button>
@@ -225,7 +233,7 @@ export default function AddInvoiceDisplay() {
               <div className="ml-2 w-full justify-center">
                 <button
                   className="my-4 flex w-full items-center justify-center rounded border border-indigo-600 bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow hover:bg-indigo-700"
-                  onClick={() => publishInvoice()}
+                  onClick={publishInvoice}
                 >
                   <PaperAirplaneIcon className="curs mr-2 h-5 w-5 text-white hover:cursor-pointer" />
                   Publish and send invoice
