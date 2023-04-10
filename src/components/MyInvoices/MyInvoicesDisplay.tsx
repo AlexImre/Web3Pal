@@ -36,6 +36,7 @@ export default function MyInvoicesDisplay() {
     setMasterState({
       ...masterState,
       myInvoicesView,
+      selectedInvoices: [],
     });
     setInvoices(selectInvoicesGivenView(myInvoicesView));
   };
