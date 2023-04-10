@@ -4,12 +4,15 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function DashboardProfileDropDown() {
+  const { data: session } = useSession();
+  console.log('session', session);
   return (
     <>
       <div className="flex flex-1 justify-between bg-slate-100 px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
@@ -19,7 +22,7 @@ export default function DashboardProfileDropDown() {
             <div>
               <Menu.Button className="flex max-w-xs items-center rounded-full bg-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
                 <Image
-                  src={'/pixelselfie3.png'}
+                  src={session?.user.image}
                   width={50}
                   height={50}
                   className="h-8 w-8 rounded-full"
@@ -27,7 +30,7 @@ export default function DashboardProfileDropDown() {
                 />
                 <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">
                   <span className="sr-only">Open user menu for </span>
-                  Alex Imre
+                  {session?.user.name}
                 </span>
                 <ChevronDownIcon
                   className="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
