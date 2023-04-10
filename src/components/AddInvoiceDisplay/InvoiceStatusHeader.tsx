@@ -3,6 +3,7 @@ import SuccessfulPaymentAlert from '../Web3/SuccessfulPaymentAlert';
 import UnpaidInvoiceAlert from './UnpaidInvoiceAlert';
 import DraftInvoiceAlert from './DraftInvoiceAlert';
 import OverdueInvoiceAlert from './OverdueInvoiceAlert';
+import VoidInvoiceAlert from './VoidInvoiceAlert';
 
 type InvoiceStatusHeaderProps = {
   invoiceStatus: string;
@@ -27,6 +28,8 @@ function InvoiceStatusHeader(props: InvoiceStatusHeaderProps) {
         return <OverdueInvoiceAlert />;
       case 'Draft':
         return <DraftInvoiceAlert />;
+      case 'Void':
+        return <VoidInvoiceAlert />;
       default:
         return <></>;
     }
