@@ -23,7 +23,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const organisation = await fetchOrganisation(email);
 
   if (!organisation) {
-    return { props: { organisation: false } };
+    return { props: { organisation: false, myInvoices: [] } };
   }
 
   const organisationId = organisation._id;
