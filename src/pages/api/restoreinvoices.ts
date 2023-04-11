@@ -8,13 +8,11 @@ export default async (req: Request, res: Response) => {
     const invoiceIds = req.body;
 
     if (invoiceIds.length === 1) {
-      console.log("restoring one invoice")
       const archiveInvoice = await db.collection('invoices').updateOne({ invoiceId: invoiceIds[0] }, { $set: { isArchived: false }});
       res.status(200).json(archiveInvoice);
     } 
     
     else if (invoiceIds.length > 1) {
-      console.log("restoring many invoices")
       const archivedInvoices = invoiceIds.forEach(async (invoiceId) => {
         await db.collection('invoices').updateOne({ invoiceId: invoiceId }, { $set: { isArchived: false }});
       })

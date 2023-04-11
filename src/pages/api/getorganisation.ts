@@ -5,16 +5,10 @@ export default async (req: Request, res: Response) => {
   try {
     console.log("made it to fetching org")
     const client = await clientPromise;
-    const db = client.db('web3pal');
-    
+    const db = client.db('web3pal');    
     const { email } = req.body
-    console.log("email", email)
-
     const userData = await db.collection('users').findOne({ email: email });
-    console.log("userData", userData)
-
     const organisationId = userData?.organisationId;
-    console.log("organisationId", organisationId)
 
     if (organisationId) {
       const organisationData = await db.collection('organisations').findOne({ _id: organisationId });

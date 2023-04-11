@@ -6,17 +6,12 @@ export default async (req: Request, res: Response) => {
     const client = await clientPromise;
     const db = client.db('web3pal');
     const invoiceIds = req.body;
-
-    console.log("invoiceIds: ", invoiceIds)
-
     if (invoiceIds.length === 1) {
-      console.log("archiving one invoice")
       const archiveInvoice = await db.collection('invoices').updateOne({ invoiceId: invoiceIds[0] }, { $set: { isArchived: true }});
       res.status(200).json(archiveInvoice);
     } 
     
     else if (invoiceIds.length > 1) {
-      console.log("archiving many invoices")
       const archivedInvoices = invoiceIds.forEach(async (invoiceId) => {
         await db.collection('invoices').updateOne({ invoiceId: invoiceId }, { $set: { isArchived: true }});
       })

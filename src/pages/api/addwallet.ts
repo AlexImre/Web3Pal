@@ -21,11 +21,9 @@ export default async (req: Request, res: Response) => {
     const doesWalletExist = await db.collection('organisations').findOne(query);
 
     if (!doesWalletExist) {
-      console.log("wallet does not exist, creating...")
       const saveWallet = await db.collection('organisations').updateOne({ _id: o_id }, {$push: { wallets: newWallet }});
       res.status(201).json(saveWallet);
     } else {
-      console.log("wallet exists, doing nothing!...")
       res.status(400).json("wallet already exists")
     }
   } catch (e) {

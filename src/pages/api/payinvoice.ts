@@ -9,11 +9,7 @@ export default async (req: Request, res: Response) => {
     const invoice = req.body;
     const { _id, status, txHash, paidTimestamp } = invoice;
     const o_id = new ObjectId(_id);
-
-    console.log("updating invoice with the following data: ", _id, status, txHash, paidTimestamp)
-
     const update = await db.collection('invoices').updateOne({ _id: o_id }, { $set: { status: "Paid", txHash: txHash, paidTimestamp: paidTimestamp} })
-
     res.json(update);
 
   } catch (e) {

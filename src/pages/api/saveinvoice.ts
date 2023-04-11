@@ -15,7 +15,6 @@ export default async (req: Request, res: Response) => {
 
     const doesInvoiceExist = await db.collection('invoices').findOne(query);
     if (doesInvoiceExist) {
-      console.log('Invoice already exists, updating...');
       const updateInvoice = await db
         .collection('invoices')
         .updateOne(query, {
@@ -34,7 +33,6 @@ export default async (req: Request, res: Response) => {
     }
 
     if (!doesInvoiceExist) {
-      console.log('Invoice does not exist, creating...');
       const saveInvoice = await db.collection('invoices').insertOne(newInvoice);
       res.json(saveInvoice);
     }

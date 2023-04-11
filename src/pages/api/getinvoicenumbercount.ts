@@ -6,9 +6,6 @@ export default async (req: Request, res: Response) => {
   try {
     const client = await clientPromise;
     const db = client.db('web3pal');
-    console.log("generating invoice number")
-
-    // will need to change when moving to org structure    
     const { organisationId } = req.body;
     const query = { organisationId: new ObjectId(organisationId)}    
     const count = await db.collection('invoices').count(query);

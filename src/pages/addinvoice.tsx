@@ -35,9 +35,6 @@ export async function getServerSideProps({ req, query }) {
   };
 }
 
-// MOVE Market data to its own separate context
-// If Invoice is PAID, show PAID on page and don't allow any edits
-
 export default function CreateInvoice({
   marketData,
   invoice,
