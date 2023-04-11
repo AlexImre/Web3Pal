@@ -446,6 +446,7 @@ export default function MyInvoicesDisplay() {
                             invoices={invoices}
                             setInvoices={setInvoices}
                             handleArchive={handleArchive}
+                            handleDelete={handleDelete}
                             selectedInvoice={selectedInvoices}
                             index={index}
                           />

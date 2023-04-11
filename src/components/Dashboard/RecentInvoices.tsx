@@ -8,9 +8,6 @@ function RecentInvoices(props: any) {
   const { myInvoices, title, showHeaderButtons, dataIsPaidInvoices } = props;
   const stateContext = useContext(StateContext);
   const { setMasterState } = stateContext;
-  const [view, setView] = useState('Published');
-  const views = ['Published', 'Draft'];
-
   const sortedInvoices = myInvoices.sort((a, b) => {
     const date1 = new Date(a.createdTimestamp);
     const date2 = new Date(b.createdTimestamp);
@@ -36,6 +33,11 @@ function RecentInvoices(props: any) {
       return invoice.status === 'Draft';
     })
     .slice(0, 3);
+
+  const defaultView =
+    recentPublishedInvoices.length > 0 ? 'Published' : 'Draft';
+  const [view, setView] = useState(defaultView);
+  const views = ['Published', 'Draft'];
 
   let invoices = [];
   if (dataIsPaidInvoices) {

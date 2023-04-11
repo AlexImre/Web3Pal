@@ -7,6 +7,8 @@ export default async (req: Request, res: Response) => {
     const db = client.db('web3pal');
     const invoiceIds = req.body;
 
+    console.log("invoiceIds", invoiceIds)
+
     if (invoiceIds.length === 1) {
       console.log("deleting one invoice")
       const query = { invoiceId: invoiceIds[0] };

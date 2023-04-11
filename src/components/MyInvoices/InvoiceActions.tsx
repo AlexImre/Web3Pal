@@ -7,6 +7,7 @@ export default function InvoiceActions(props: any) {
   const {
     invoice,
     handleArchive,
+    handleDelete,
     selectedInvoice,
     invoices,
     setInvoices,
@@ -116,7 +117,7 @@ export default function InvoiceActions(props: any) {
         <button
           type="button"
           className="mr-2 inline-flex w-14 items-center justify-center rounded border border-transparent bg-indigo-100 px-2.5 py-1.5 text-center text-xs font-medium text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          onClick={() => handleArchive(selectedInvoice)}
+          onClick={() => handleDelete([invoice])}
         >
           Delete
         </button>

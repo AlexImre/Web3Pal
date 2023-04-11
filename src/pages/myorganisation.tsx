@@ -25,10 +25,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const organisation = await fetchOrganisation(email);
-
-  return {
-    props: { organisation },
-  };
+  if (!organisation) {
+    return { props: { organisation: false } };
+  } else {
+    return {
+      props: { organisation },
+    };
+  }
 }
 
 export default function MyOrganisation(

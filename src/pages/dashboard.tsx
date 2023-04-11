@@ -22,12 +22,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const organisation = await fetchOrganisation(email);
   if (!organisation) {
-    return { props: { organisation: false, myInvoices: [] } };
+    return { props: { organisation: false, invoices: [] } };
   } else {
     const organisationId = organisation._id;
-    const myInvoices = (await fetchInvoices(organisationId)) || [];
+    const invoices = (await fetchInvoices(organisationId)) || [];
     return {
-      props: { organisation, myInvoices },
+      props: { organisation, invoices },
     };
   }
 }
@@ -38,13 +38,18 @@ export default function Dashboard(
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { data: session } = useSession();
-  const { organisation, myInvoices } = props;
+  const { organisation, invoices } = props;
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const organisationMasterState = masterState.organisation._id;
 
   useEffect(() => {
-    setMasterState({ ...masterState, organisation, myInvoices, session });
+    setMasterState({
+      ...masterState,
+      organisation,
+      myInvoices: invoices,
+      session,
+    });
     setIsLoading(false);
   }, []);
 

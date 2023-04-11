@@ -24,12 +24,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const organisation = await fetchOrganisation(email);
-  const organisationId = organisation._id;
-  const invoices = await fetchInvoices(organisationId);
-
-  return {
-    props: { invoices, organisation },
-  };
+  if (!organisation) {
+    return { props: { organisation: false, invoices: [] } };
+  } else {
+    const organisationId = organisation._id;
+    const invoices = (await fetchInvoices(organisationId)) || [];
+    return {
+      props: { organisation, invoices },
+    };
+  }
 }
 
 export default function MyInvoices(
