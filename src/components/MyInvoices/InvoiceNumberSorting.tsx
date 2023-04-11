@@ -7,7 +7,7 @@ function classNames(...classes: string[]) {
 
 function InvoiceNumberSorting(props: any) {
   const { invoices } = props;
-  const { activeSort, setActiveSort, defaultSortState } = props;
+  const { activeSort, setActiveSort, defaultSortState, setInvoices } = props;
   const [shouldSortInvoiceNumber, setShouldSortInvoiceNumber] = useState(true);
   const handleInvoiceNumberSorting = () => {
     if (invoices.length === 0) return;
@@ -30,6 +30,7 @@ function InvoiceNumberSorting(props: any) {
         );
       }
     });
+    setInvoices(invoices);
   };
 
   return (

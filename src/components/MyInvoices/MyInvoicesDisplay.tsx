@@ -24,20 +24,18 @@ const views = ['Unpaid', 'Paid', 'Draft', 'Void', 'Archived'];
 
 export default function MyInvoicesDisplay() {
   const stateContext = useContext(StateContext);
+  const [selectedInvoices, setSelectedInvoices] = useState([]);
   const { masterState, setMasterState } = stateContext;
-  const { myInvoices, myInvoicesView } = masterState;
+  const { myInvoices } = masterState;
   const checkbox = useRef();
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
-  const { selectedInvoices } = masterState;
   const [invoices, setInvoices] = useState([]);
+  const [view, setView] = useState('Unpaid');
 
-  const setView = (myInvoicesView: string) => {
-    setMasterState({
-      ...masterState,
-      myInvoicesView,
-      selectedInvoices: [],
-    });
+  const setMyInvoicesView = (myInvoicesView: string) => {
+    setView(myInvoicesView);
+    setSelectedInvoices([]);
     setInvoices(selectInvoicesGivenView(myInvoicesView));
   };
 
@@ -76,6 +74,10 @@ export default function MyInvoicesDisplay() {
   };
 
   useEffect(() => {
+    setInvoices(selectInvoicesGivenView(view));
+  }, []);
+
+  useEffect(() => {
     const isIndeterminate =
       selectedInvoices.length > 0 &&
       selectedInvoices.length < myInvoices.length;
@@ -85,18 +87,13 @@ export default function MyInvoicesDisplay() {
       setChecked(selectedInvoices.length === myInvoices.length);
     }
     setIndeterminate(isIndeterminate);
-    setInvoices(selectInvoicesGivenView(myInvoicesView));
     // if (checkbox.current) {
     //   checkbox.current.indeterminate = isIndeterminate;
     // }
   }, [selectedInvoices]);
 
   function toggleAll() {
-    setMasterState({
-      ...masterState,
-      selectedInvoices: checked || indeterminate ? [] : myInvoices,
-    });
-    // setSelectedInvoice(checked || indeterminate ? [] : myInvoices);
+    setSelectedInvoices(checked || indeterminate ? [] : myInvoices);
     setChecked(!checked && !indeterminate);
     setIndeterminate(false);
   }
@@ -150,8 +147,8 @@ export default function MyInvoicesDisplay() {
               return invoice;
             }
           }),
-          selectedInvoices: [],
         }));
+        setSelectedInvoices([]);
         restoreToast();
       }
     }
@@ -186,8 +183,8 @@ export default function MyInvoicesDisplay() {
           myInvoices: prevState.myInvoices.filter(
             (invoice) => !selectedInvoiceIds.includes(invoice.invoiceId)
           ),
-          selectedInvoices: [],
         }));
+        setSelectedInvoices([]);
         invoiceToast();
       }
     }
@@ -229,8 +226,8 @@ export default function MyInvoicesDisplay() {
               return invoice;
             }
           }),
-          selectedInvoices: [],
         }));
+        setSelectedInvoices([]);
         archiveToast();
       }
     }
@@ -248,18 +245,18 @@ export default function MyInvoicesDisplay() {
   return (
     <>
       <div className="ml-8 mt-5 flex items-center">
-        {views.map((view) => {
+        {views.map((item) => {
           return (
             <button
-              key={view}
+              key={item}
               className={`mr-2 w-32 rounded border ${
-                myInvoicesView === view
+                view === item
                   ? 'cursor-auto border border-indigo-700 bg-indigo-700 text-white'
                   : 'border-gray-400 bg-white text-gray-700 hover:bg-gray-100'
               } py-2 px-4 text-sm font-medium shadow`}
-              onClick={() => setView(view)}
+              onClick={() => setMyInvoicesView(item)}
             >
-              {view} ({selectInvoicesGivenView(view).length})
+              {item} ({selectInvoicesGivenView(item).length})
             </button>
           );
         })}
@@ -268,20 +265,18 @@ export default function MyInvoicesDisplay() {
         <div className="mt-8 flow-root">
           <div className="-mx-4 -mt-5 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-              <div className="relative sm:rounded-lg">
+              <div className="relative w-full sm:rounded-lg">
                 {selectedInvoices.length > 0 && (
                   <div className="absolute top-0 left-14 flex h-12 items-center space-x-3 sm:left-12 sm:rounded-lg">
                     <button
                       type="button"
                       className="inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30"
-                      onClick={() =>
-                        handleBulkAction(myInvoicesView, selectedInvoices)
-                      }
+                      onClick={() => handleBulkAction(view, selectedInvoices)}
                     >
                       {`${
-                        myInvoicesView === 'Draft'
+                        view === 'Draft'
                           ? 'Delete'
-                          : myInvoicesView === 'Archived'
+                          : view === 'Archived'
                           ? 'Restore'
                           : 'Archive'
                       } selected (${selectedInvoices.length})`}
@@ -312,6 +307,7 @@ export default function MyInvoicesDisplay() {
                           setActiveSort={setActiveSort}
                           defaultSortState={defaultSortState}
                           invoices={invoices}
+                          setInvoices={setInvoices}
                         />
                       </th>
                       <th
@@ -398,17 +394,13 @@ export default function MyInvoicesDisplay() {
                             value={invoice.user}
                             checked={selectedInvoices.includes(invoice)}
                             onChange={(e) => {
-                              console.log(
-                                invoice.invoiceInformation.invoiceNumber
-                              );
-                              setMasterState({
-                                ...masterState,
-                                selectedInvoices: e.target.checked
+                              setSelectedInvoices(
+                                e.target.checked
                                   ? [...selectedInvoices, invoice]
                                   : selectedInvoices.filter(
                                       (p) => p !== invoice
-                                    ),
-                              });
+                                    )
+                              );
                             }}
                           />
                         </td>

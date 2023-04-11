@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createContext } from 'react';
-import { AnyBulkWriteOperation, ObjectId } from 'mongodb';
 export interface PersonalInformationType {
     name: string;
     email: string;
@@ -70,9 +69,7 @@ export type FormCompletionType = {
 
 export type MasterStateType = {
     invoice: InvoiceType;
-    myInvoicesView: string;
     myInvoices: Array<InvoiceType>;
-    selectedInvoices: any;
     myServices: any;
     myAmounts: any;
     marketData: any;
@@ -205,9 +202,7 @@ export const initialState: MasterStateType = {
             servicesInformation: false,
         },
     },
-    myInvoicesView: 'Unpaid',
     myInvoices: [],
-    selectedInvoices: [],
     myServices: [],
     myAmounts: [],
     marketData: [],
@@ -242,5 +237,4 @@ export const defaultState: MasterStateContextType = {
     masterState: initialState,
     setMasterState: () => { }
 }
-
 export const StateContext = createContext<MasterStateContextType | null>(defaultState);
