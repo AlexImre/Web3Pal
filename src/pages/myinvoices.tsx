@@ -43,7 +43,7 @@ export default function MyInvoices(
   const { invoices, organisation } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const { myInvoices, myInvoicesView } = masterState;
+  const { myInvoices } = masterState;
   const [isLoading, setIsLoading] = useState(true);
   const organisationMasterState = masterState.organisation._id;
 
