@@ -40,7 +40,6 @@ export default function CreateCompanyPanel() {
     }
 
     const saveOrg = async () => {
-      console.log('saving org');
       const saveOrganisation = await fetch('/api/saveorganisation', {
         method: 'POST',
         headers: {
@@ -68,7 +67,6 @@ export default function CreateCompanyPanel() {
   const [errorMessage, setErrorMessage] = useState('');
   const savedToast = () => toast.success('Company created.');
   const handleSubmit = async (e) => {
-    console.log('submitting');
     e.preventDefault();
     setError(false);
     setErrorMessage('');
@@ -80,8 +78,6 @@ export default function CreateCompanyPanel() {
     if (hasOrganizationError) {
       setError(true);
       setErrorMessage(hasOrganizationError.message);
-      console.log('error', error);
-      console.log('errorMessage', errorMessage);
       return;
     }
 

@@ -3,6 +3,8 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { Combobox } from '@headlessui/react';
 import { StateContext } from '../../context/stateContext';
 import { useContext } from 'react';
+import { CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { CurrencyPoundIcon } from '@heroicons/react/24/outline';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -11,59 +13,80 @@ function classNames(...classes) {
 type PopularCurrenciesDropDownProps = {
   tempPaymentInfo: any;
   setTempPaymentInfo: any;
-  setCurrentPrice: any;
   error: boolean;
   errorMessage: string;
 };
 
-export default function PopularCurrenciesDropDown(
+export default function InvoiceLabellingDropDown(
   props: PopularCurrenciesDropDownProps
 ) {
-  const {
-    tempPaymentInfo,
-    setTempPaymentInfo,
-    setCurrentPrice,
-    error,
-    errorMessage,
-  } = props;
+  const { tempPaymentInfo, setTempPaymentInfo, error, errorMessage } = props;
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
   const coins = masterState.marketData;
-  console.log('coins', coins);
+  const fiat = [
+    {
+      name: 'USD',
+      symbol: '$',
+      image: <CurrencyDollarIcon className="h-6 w-6" />,
+    },
+    {
+      name: 'GBP',
+      symbol: '£',
+      image: <CurrencyPoundIcon className="h-6 w-6" />,
+    },
+  ];
+
+  const invoiceLabels = fiat.concat(coins);
 
   const [query, setQuery] = useState('');
 
-  const filteredName =
+  const data =
     query === ''
-      ? coins
-      : coins.filter((currency) => {
+      ? invoiceLabels
+      : invoiceLabels.filter((currency) => {
           return currency.name.toLowerCase().includes(query.toLowerCase());
         });
 
   const handleChange = (e: any) => {
-    setCurrentPrice(e.current_price);
     setTempPaymentInfo({
       ...tempPaymentInfo,
-      popularCurrency: e.name,
-      marketPrice: e.current_price,
+      invoiceLabelling: e.name,
     });
+  };
+
+  const getImage = (currency) => {
+    if (currency.name === 'USD' || currency.name === 'GBP') {
+      return currency.image;
+    } else {
+      return (
+        <img
+          src={currency.image}
+          alt=""
+          className="h-6 w-6 flex-shrink-0 rounded-full"
+        />
+      );
+    }
   };
 
   return (
     <Combobox
       as="div"
-      value={tempPaymentInfo?.popularCurrency}
+      value={tempPaymentInfo?.invoiceLabelling}
       onChange={(e) => {
         handleChange(e);
       }}
       className="w-full"
     >
+      <label htmlFor="text" className="block text-sm font-medium text-gray-700">
+        Invoice Labelling*
+      </label>
       <div className="relative mt-1">
         <Combobox.Input
           className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
           // displayValue={(currency) => currency?.name}
-          placeholder="Select a cryptocurrency"
+          placeholder="Select a currency"
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronUpDownIcon
@@ -72,11 +95,11 @@ export default function PopularCurrenciesDropDown(
           />
         </Combobox.Button>
 
-        {filteredName.length > 0 && (
+        {data.length > 0 && (
           <Combobox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            {filteredName.map((currency) => (
+            {data.map((currency) => (
               <Combobox.Option
-                key={currency.id}
+                key={currency.name}
                 value={currency}
                 className={({ active }) =>
                   classNames(
@@ -88,11 +111,7 @@ export default function PopularCurrenciesDropDown(
                 {({ active, selected }) => (
                   <>
                     <div className="flex items-center">
-                      <img
-                        src={currency.image}
-                        alt=""
-                        className="h-6 w-6 flex-shrink-0 rounded-full"
-                      />
+                      {getImage(currency)}
                       <span
                         className={classNames(
                           'ml-3 truncate',
@@ -102,7 +121,6 @@ export default function PopularCurrenciesDropDown(
                         {currency.name}
                       </span>
                     </div>
-
                     {selected && (
                       <span
                         className={classNames(
@@ -123,6 +141,11 @@ export default function PopularCurrenciesDropDown(
       {error && (
         <p className="mt-2 text-sm text-red-600" id="email-error">
           {errorMessage}
+        </p>
+      )}
+      {!error && (
+        <p className="mt-2 text-xs text-gray-500">
+          Specify the currency that your invoice will be issued in.
         </p>
       )}
     </Combobox>

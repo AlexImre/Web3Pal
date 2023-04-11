@@ -11,6 +11,7 @@ import {
   validatePopularCurrency,
   validateWalletAddress,
 } from './Fields/formValidation';
+import InvoiceLabellingDropDown from './InvoiceLabellingDropDown';
 
 export default function PaymentInformationForm() {
   const paymentToast = () => toast.success('Information updated.');
@@ -79,8 +80,6 @@ export default function PaymentInformationForm() {
     e.preventDefault();
     setError(defaultError);
     setErrorMessage(defaultErrorMessage);
-
-    console.log('tempPaymentInfo', tempPaymentInfo);
 
     if (paymentMethod === 'crypto') {
       const hasInvoiceLabellingError =
@@ -163,9 +162,6 @@ export default function PaymentInformationForm() {
 
       validationArray.forEach(setErrorAndErrorMessages);
 
-      console.log('error', error);
-      console.log('errorMessage', errorMessage);
-
       const hasError =
         !!hasCustomCurrencyNameError ||
         !!hasCustomCurrencySymbolError ||
@@ -211,7 +207,7 @@ export default function PaymentInformationForm() {
                   </p>
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-6">
-                      <TextFieldWithValidation
+                      {/* <TextFieldWithValidation
                         label="Invoice Labelling"
                         name="invoiceLabelling"
                         width="w-full"
@@ -220,6 +216,12 @@ export default function PaymentInformationForm() {
                         error={error.invoiceLabelling}
                         errorMessage={errorMessage.invoiceLabelling}
                         helperText="Specify the currency that your invoice will be issued in."
+                      /> */}
+                      <InvoiceLabellingDropDown
+                        tempPaymentInfo={tempPaymentInfo}
+                        setTempPaymentInfo={setTempPaymentInfo}
+                        error={error.invoiceLabelling}
+                        errorMessage={errorMessage.invoiceLabelling}
                       />
                     </div>
                   </div>

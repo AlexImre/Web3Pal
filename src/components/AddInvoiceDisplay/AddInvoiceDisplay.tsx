@@ -40,8 +40,6 @@ export default function AddInvoiceDisplay() {
   const organisationId = organisation._id;
   const [showModal, setShowModal] = useState(false);
 
-  console.log('formCompleteion', formCompletion);
-
   const email = session?.user?.email;
   const saveInvoice = async () => {
     const savedToast = () => toast.success('Invoice saved.');

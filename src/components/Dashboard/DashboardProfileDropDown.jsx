@@ -12,7 +12,6 @@ function classNames(...classes) {
 
 export default function DashboardProfileDropDown() {
   const { data: session } = useSession();
-  console.log('session', session);
   return (
     <>
       <div className="flex flex-1 justify-between bg-slate-100 px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">

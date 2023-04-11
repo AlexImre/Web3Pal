@@ -49,13 +49,13 @@ export default function InvoiceProgressBar() {
               <>
                 {stepIdx !== steps.length - 1 ? (
                   <div
-                    className="absolute top-4 left-4 -ml-px mt-0.5 h-full w-0.5 bg-indigo-600"
+                    className="absolute top-4 left-4 -ml-px mt-0.5 h-full w-0.5 bg-green-400"
                     aria-hidden="true"
                   />
                 ) : null}
                 <div className="group relative flex items-center">
                   <span className="flex h-9 items-center">
-                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600">
+                    <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-green-400">
                       <CheckIcon
                         className="h-5 w-5 text-white"
                         aria-hidden="true"

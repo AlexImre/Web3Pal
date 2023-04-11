@@ -44,6 +44,8 @@ export default function HomeCard() {
     // More items...
   ];
 
+  // GET ID of COIN and fetch price from coingecko...
+
   return (
     <>
       <main className="flex-1 pb-8">
