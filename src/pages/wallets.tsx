@@ -14,16 +14,19 @@ import { fetchOrganisation } from '@/utils/fetchData';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  const email = session?.user?.email;
   if (!session) {
     return { redirect: { destination: '/auth/signin' } };
   }
+  const email = session?.user?.email;
 
   const organisation = await fetchOrganisation(email);
-
-  return {
-    props: { organisation, session },
-  };
+  if (!organisation) {
+    return { props: { organisation: false } };
+  } else {
+    return {
+      props: { organisation },
+    };
+  }
 }
 
 export default function Wallets(
@@ -41,8 +44,6 @@ export default function Wallets(
     setMasterState({ ...masterState, organisation, session });
     setIsLoading(false);
   }, []);
-
-  console.log('props', session);
 
   return (
     <>

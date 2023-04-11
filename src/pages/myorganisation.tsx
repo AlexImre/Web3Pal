@@ -18,11 +18,10 @@ import { useSession } from 'next-auth/react';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  const email = session?.user?.email;
-
   if (!session) {
     return { redirect: { destination: '/auth/signin' } };
   }
+  const email = session?.user?.email;
 
   const organisation = await fetchOrganisation(email);
   if (!organisation) {

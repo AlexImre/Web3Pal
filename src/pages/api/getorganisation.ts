@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 
 export default async (req: Request, res: Response) => {
   try {
-    console.log("made it to fetching org")
     const client = await clientPromise;
     const db = client.db('web3pal');    
     const { email } = req.body
