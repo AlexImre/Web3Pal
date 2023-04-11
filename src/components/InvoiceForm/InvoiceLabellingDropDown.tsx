@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { Combobox } from '@headlessui/react';
 import { StateContext } from '../../context/stateContext';
@@ -40,6 +40,10 @@ export default function InvoiceLabellingDropDown(
   const invoiceLabels = fiat.concat(coins);
 
   const [query, setQuery] = useState('');
+  // reset query on submit so dropdown appears again
+  useEffect(() => {
+    setQuery('');
+  }, [error]);
 
   const data =
     query === ''
@@ -85,6 +89,7 @@ export default function InvoiceLabellingDropDown(
         <Combobox.Input
           className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
+          // value={tempPaymentInfo?.invoiceLabelling}
           // displayValue={(currency) => currency?.name}
           placeholder="Select a currency"
         />

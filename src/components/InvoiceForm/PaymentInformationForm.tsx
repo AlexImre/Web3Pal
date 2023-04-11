@@ -170,6 +170,11 @@ export default function PaymentInformationForm() {
         !!hasWalletNameError ||
         !!hasWalletAddressError;
       if (hasError) {
+        setTempPaymentInfo({
+          ...tempPaymentInfo,
+          invoiceLabelling: '',
+          popularCurrency: '',
+        });
         return;
       }
 
@@ -207,16 +212,6 @@ export default function PaymentInformationForm() {
                   </p>
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-6">
-                      {/* <TextFieldWithValidation
-                        label="Invoice Labelling"
-                        name="invoiceLabelling"
-                        width="w-full"
-                        onChange={handleChange}
-                        value={invoiceLabelling}
-                        error={error.invoiceLabelling}
-                        errorMessage={errorMessage.invoiceLabelling}
-                        helperText="Specify the currency that your invoice will be issued in."
-                      /> */}
                       <InvoiceLabellingDropDown
                         tempPaymentInfo={tempPaymentInfo}
                         setTempPaymentInfo={setTempPaymentInfo}

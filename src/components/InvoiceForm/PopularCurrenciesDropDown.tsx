@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 import { Combobox } from '@headlessui/react';
 import { StateContext } from '../../context/stateContext';
@@ -29,9 +29,11 @@ export default function PopularCurrenciesDropDown(
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
   const coins = masterState.marketData;
-  console.log('coins', coins);
-
   const [query, setQuery] = useState('');
+  // reset query on submit so dropdown appears again
+  useEffect(() => {
+    setQuery('');
+  }, [error]);
 
   const filteredName =
     query === ''
