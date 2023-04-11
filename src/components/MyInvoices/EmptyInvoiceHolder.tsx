@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function EmptyInvoiceHolder() {
   return (
-    <div className="m-10 border py-10 text-center shadow sm:rounded-lg">
+    <div className="m-10 border bg-white py-10 text-center shadow sm:rounded-lg">
       <svg
         className="mx-auto h-12 w-12 text-gray-400"
         fill="none"

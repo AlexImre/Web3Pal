@@ -21,17 +21,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const organisation = await fetchOrganisation(email);
-
   if (!organisation) {
     return { props: { organisation: false, myInvoices: [] } };
+  } else {
+    const organisationId = organisation._id;
+    const myInvoices = (await fetchInvoices(organisationId)) || [];
+    return {
+      props: { organisation, myInvoices },
+    };
   }
-
-  const organisationId = organisation._id;
-  const myInvoices = await fetchInvoices(organisationId);
-
-  return {
-    props: { organisation, myInvoices },
-  };
 }
 
 export default function Dashboard(
