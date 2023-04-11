@@ -27,12 +27,18 @@ export async function getServerSideProps({ req, query }) {
   const marketData = await getMarketData();
   const invoice = await fetchInvoice(invoiceId);
   const organisation = await fetchOrganisation(email);
-  const organisationId = organisation._id;
-  const invoiceNumber = await fetchInvoiceNumber(organisationId);
 
-  return {
-    props: { marketData, invoice, invoiceNumber, organisation },
-  };
+  if (!organisation) {
+    return {
+      props: { marketData, organisation: false, invoice: [], invoiceNumber: 1 },
+    };
+  } else {
+    const organisationId = organisation._id;
+    const invoiceNumber = await fetchInvoiceNumber(organisationId);
+    return {
+      props: { marketData, invoice, invoiceNumber, organisation },
+    };
+  }
 }
 
 export default function CreateInvoice({
