@@ -62,6 +62,8 @@ export default function PaymentInformationForm() {
   const [error, setError] = useState(defaultError);
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
 
+  console.log('masterState', masterState);
+
   const setErrorAndErrorMessages = (formItem) => {
     if (formItem.error === true) {
       setError((prevState) => {

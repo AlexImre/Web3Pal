@@ -4,27 +4,32 @@ import { StateContext } from '@/context/stateContext';
 import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
 import RecentInvoices from './RecentInvoices';
 import StatusCountTable from './StatusCountTable';
+import { getTotalBalance } from './DashboardUtils';
 
 export default function HomeCard() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
 
-  const totalOrgBalanceOverdue = myInvoices.reduce((acc, invoice) => {
-    if (invoice.status === 'Overdue' || invoice.status === 'Unpaid') {
-      return acc + getServicesTotal(invoice.servicesInformation);
-    } else {
-      return acc;
-    }
-  }, 0);
+  // const totalOrgBalanceOverdue = myInvoices.reduce((acc, invoice) => {
+  //   if (invoice.status === 'Overdue' || invoice.status === 'Unpaid') {
+  //     return acc + getServicesTotal(invoice.servicesInformation);
+  //   } else {
+  //     return acc;
+  //   }
+  // }, 0);
 
-  const totalOrgBalancePaid = myInvoices.reduce((acc, invoice) => {
-    if (invoice.status === 'Paid') {
-      return acc + getServicesTotal(invoice.servicesInformation);
-    } else {
-      return acc;
-    }
-  }, 0);
+  // const totalOrgBalanceOverdue = getTotalBalance(myInvoices) || 0;
+  const totalOrgBalanceOverdue = 0;
+
+  const totalOrgBalancePaid =
+    myInvoices.reduce((acc, invoice) => {
+      if (invoice.status === 'Paid') {
+        return acc + getServicesTotal(invoice.servicesInformation);
+      } else {
+        return acc;
+      }
+    }, 0) || 0;
 
   // console.log('marketData[0]', marketData[0].current_price);
 

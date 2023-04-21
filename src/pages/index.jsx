@@ -13,17 +13,17 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>TaxPal - Accounting made simple for small businesses</title>
+        <title>Web3Pal - Crytpo Invoicing</title>
         <meta
           name="description"
-          content="Most bookkeeping software is accurate, but hard to use. We make the opposite trade-off, and hope you don’t get audited."
+          content="Making getting paid in crypto easier and faster."
         />
       </Head>
       <div className="h-screen">
         <Header />
         <Hero />
       </div>
-      {/* <main>
+      <main>
         <PrimaryFeatures />
         <SecondaryFeatures />
         <CallToAction />
@@ -31,7 +31,7 @@ export default function Home() {
         <Pricing />
         <Faqs />
       </main>
-      <Footer /> */}
+      <Footer />
     </>
   );
 }
