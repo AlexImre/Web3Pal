@@ -11,6 +11,7 @@ import { authOptions } from './api/auth/[...nextauth]';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { fetchInvoices, fetchOrganisation } from '@/utils/fetchData';
 import { useSession } from 'next-auth/react';
+import Head from 'next/head';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -55,6 +56,13 @@ export default function Dashboard(
 
   return (
     <>
+      <Head>
+        <title>Home - Web3Pal</title>
+        <meta
+          name="google-signin-client_id"
+          content="436169773174-dtov4661oe82pgn2q1oudl2d9jkgud4c.apps.googleusercontent.com"
+        />
+      </Head>
       <div className="min-h-full bg-slate-100">
         <DashboardMobileSidebar
           sidebarOpen={sidebarOpen}

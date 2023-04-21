@@ -2,9 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import { AuthLayout } from '@/components/AuthLayout';
-import { Button } from '@/components/Button';
 import { TextField } from '@/components/Fields';
-import { Logo } from '@/components/Logo';
 import GoogleLogin from '@/components/Authentication/GoogleLogin';
 
 import type {
@@ -18,16 +16,11 @@ import EmailLogin from '@/components/Authentication/EmailLogin';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
-
-  // If the user is already logged in, redirect.
-  // Note: Make sure not to redirect to the same page
-  // To avoid an infinite loop!
   if (session) {
     return { redirect: { destination: '/dashboard' } };
   }
 
   const providers = await getProviders();
-
   return {
     props: { providers: providers ?? [] },
   };
@@ -39,7 +32,7 @@ export default function SignIn({
   return (
     <>
       <Head>
-        <title>Sign In - TaxPal</title>
+        <title>Sign In - Web3Pal</title>
         <meta
           name="google-signin-client_id"
           content="436169773174-dtov4661oe82pgn2q1oudl2d9jkgud4c.apps.googleusercontent.com"
@@ -57,20 +50,10 @@ export default function SignIn({
             <h2 className="text-lg font-semibold text-gray-900">
               Sign in to your account
             </h2>
-            <p className="mt-2 text-sm text-gray-700">
-              Don’t have an account?{' '}
-              <Link
-                href="/register"
-                className="font-medium text-indigo-600 hover:underline"
-              >
-                Sign up
-              </Link>{' '}
-              for a free trial.
-            </p>
           </div>
         </div>
         <form action="#" className="mt-10 grid grid-cols-1 gap-y-2">
-          <TextField
+          {/* <TextField
             label=""
             id="email"
             name="email"
@@ -87,22 +70,10 @@ export default function SignIn({
             <div className="relative flex justify-center text-sm">
               <span className="bg-white px-2 text-gray-500">Or</span>
             </div>
-          </div>
+          </div> */}
           <GoogleLogin />
         </form>
       </AuthLayout>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button
-            type="button"
-            className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            onClick={() => signIn(provider.id)}
-          >
-            Sign in with {provider.name} id {provider.id}
-          </button>
-        </div>
-      ))}
-      Need to add styling! Also want to make them select Google account?
     </>
   );
 }

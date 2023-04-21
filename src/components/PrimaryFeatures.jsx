@@ -5,8 +5,10 @@ import clsx from 'clsx';
 
 import { Container } from '@/components/Container';
 import backgroundImage from '@/images/background-features.jpg';
-import mesh1 from '@/images/mesh2.png';
+import mesh2 from '@/images/mesh2.png';
 import gimp1 from '@/images/gimp3.png';
+import gimp4 from '@/images/gimp4.png';
+import gimp5 from '@/images/gimp5.png';
 import screenshotExpenses from '@/images/screenshots/expenses.png';
 import screenshotPayroll from '@/images/screenshots/payroll.png';
 import screenshotReporting from '@/images/screenshots/reporting.png';
@@ -16,19 +18,25 @@ const features = [
   {
     title: 'Creating',
     description:
-      "Keep track of everyone's salaries and whether or not they've been paid. Direct deposit not supported.",
-    image: gimp1,
+      'Quickly create invoices with our intuitive easy to use template, which supports major cryptocurrencies and custom EVM tokens.',
+    image: gimp4,
   },
   {
-    title: 'Payments',
+    title: 'Getting paid',
     description:
-      "All of your receipts organized into one place, as long as you don't mind typing in the data by hand.",
-    image: screenshotExpenses,
+      'Payments made via the blockchain, allowing for simple confirmation and tracking.',
+    image: gimp5,
   },
   {
-    title: 'Summary',
+    title: 'Reporting',
     description:
-      "We only sell our software to companies who don't deal with VAT at all, so technically we do all the VAT stuff they need.",
+      'View all your transactions in one place and keep up to date with outstanding invoices.',
+    image: screenshotVatReturns,
+  },
+  {
+    title: 'Exporting',
+    description:
+      'Export all your web3 data to your accounting platform of choice.',
     image: screenshotVatReturns,
   },
 ];
@@ -59,7 +67,7 @@ export function PrimaryFeatures() {
     >
       <Image
         className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
-        src={mesh1}
+        src={mesh2}
         alt=""
         width={2245}
         height={1636}
@@ -108,7 +116,7 @@ export function PrimaryFeatures() {
                           'mt-2 hidden text-sm lg:block',
                           selectedIndex === featureIndex
                             ? 'text-white'
-                            : 'text-blue-100 group-hover:text-white'
+                            : 'text-white group-hover:text-white'
                         )}
                       >
                         {feature.description}
@@ -126,7 +134,7 @@ export function PrimaryFeatures() {
                         {feature.description}
                       </p>
                     </div>
-                    <div className="mt-10 w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
+                    <div className="mt-10 w-[45rem] overflow-hidden rounded-xl shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
                       <Image
                         className="w-full"
                         src={feature.image}

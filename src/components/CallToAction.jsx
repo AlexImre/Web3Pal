@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
-import backgroundImage from '@/images/background-call-to-action.jpg';
+import mesh2 from '@/images/mesh2.png';
 
 export function CallToAction() {
   return (
@@ -12,7 +12,7 @@ export function CallToAction() {
     >
       <Image
         className="absolute top-1/2 left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2"
-        src={backgroundImage}
+        src={mesh2}
         alt=""
         width={2347}
         height={1244}
@@ -24,11 +24,10 @@ export function CallToAction() {
             Get started today
           </h2>
           <p className="mt-4 text-lg tracking-tight text-white">
-            It’s time to take control of your books. Buy our software so you can
-            feel like you’re doing something productive.
+            It&apos;s time to take control of your web3 data.
           </p>
-          <Button href="/register" color="white" className="mt-10">
-            Get 6 months free
+          <Button href="/auth/signin" color="white" className="mt-10">
+            Create your first invoice
           </Button>
         </div>
       </Container>

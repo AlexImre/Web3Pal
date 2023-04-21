@@ -19,7 +19,7 @@ export default function Home() {
           content="Making getting paid in crypto easier and faster."
         />
       </Head>
-      <div className="h-screen">
+      <div className="">
         <Header />
         <Hero />
       </div>
@@ -27,8 +27,8 @@ export default function Home() {
         <PrimaryFeatures />
         <SecondaryFeatures />
         <CallToAction />
-        <Testimonials />
-        <Pricing />
+        {/* <Testimonials /> */}
+        {/* <Pricing /> */}
         <Faqs />
       </main>
       <Footer />

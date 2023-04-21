@@ -157,23 +157,23 @@ export default function AddInvoiceDisplay() {
         <div className="mx-10 my-4 flex w-[600px] max-w-2xl flex-col justify-center">
           <div className="flex items-center justify-between">
             <div>
-              <button
+              {/* <button
                 onClick={() => {
                   addDummyData(organisationId);
                 }}
                 className="mr-4 w-24 rounded bg-red-600 py-2 px-4 text-sm font-medium text-white hover:bg-red-700"
               >
                 +Test
-              </button>
+              </button> */}
               <button
                 onClick={createNewInvoice}
-                className="mr-2 w-24 rounded border border-gray-400 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
+                className="mr-2 w-24 rounded border border-zinc-300 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
               >
                 New
               </button>
               {isInvoiceDraft && (
                 <button
-                  className="ml-2 w-24 rounded border border-gray-400 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
+                  className="ml-2 w-24 rounded border border-zinc-300 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
                   onClick={() => setShowModal(true)}
                 >
                   Edit
@@ -190,7 +190,7 @@ export default function AddInvoiceDisplay() {
               txHash={txHash}
             />
           </div>
-          <div className="bg-white shadow sm:rounded-lg">
+          <div className="border border-zinc-300 bg-white shadow sm:rounded-lg">
             <div className="px-4 py-5 sm:px-6">
               <PersonalInformationSection
                 personalInformation={personalInformation}
@@ -220,7 +220,7 @@ export default function AddInvoiceDisplay() {
             {isInvoiceDraft && (
               <div className="mr-2 w-full">
                 <button
-                  className="my-4 w-full rounded border border-gray-400 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
+                  className="my-4 w-full rounded border border-zinc-300 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
                   onClick={() => saveInvoice()}
                 >
                   Save progress
