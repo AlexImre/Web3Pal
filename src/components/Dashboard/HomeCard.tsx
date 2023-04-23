@@ -1,5 +1,5 @@
 import { ScaleIcon } from '@heroicons/react/24/outline';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StateContext } from '@/context/stateContext';
 import { getServicesTotal } from '../InvoiceForm/ServicesUtils';
 import RecentInvoices from './RecentInvoices';
@@ -10,17 +10,7 @@ export default function HomeCard() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
-
-  // const totalOrgBalanceOverdue = myInvoices.reduce((acc, invoice) => {
-  //   if (invoice.status === 'Overdue' || invoice.status === 'Unpaid') {
-  //     return acc + getServicesTotal(invoice.servicesInformation);
-  //   } else {
-  //     return acc;
-  //   }
-  // }, 0);
-
-  // const totalOrgBalanceOverdue = getTotalBalance(myInvoices) || 0;
-  const totalOrgBalanceOverdue = 0;
+  const [totalBalance, setTotalBalance] = useState(0);
 
   const totalOrgBalancePaid =
     myInvoices.reduce((acc, invoice) => {
@@ -31,14 +21,24 @@ export default function HomeCard() {
       }
     }, 0) || 0;
 
-  // console.log('marketData[0]', marketData[0].current_price);
+  useEffect(() => {
+    const fetchData = async () => {
+      const myInvoicesFiltered = myInvoices.filter(
+        (invoice) => invoice.status === 'Overdue' || invoice.status === 'Unpaid'
+      );
+      const totalOrgBalanceOverdue = await getTotalBalance(myInvoicesFiltered);
+      setTotalBalance(totalOrgBalanceOverdue);
+    };
+    fetchData();
+    // const totalOrgBalanceOverdue = 0;
+  }, []);
 
   const cards = [
     {
       name: 'Balance outstanding',
       href: '#',
       icon: ScaleIcon,
-      amount: totalOrgBalanceOverdue,
+      amount: totalBalance,
     },
     {
       name: 'Invoices paid',
@@ -79,9 +79,8 @@ export default function HomeCard() {
                             {card.name}
                           </dt>
                           <dd>
-                            <div className="text-lg font-medium text-gray-900">
-                              {Intl.NumberFormat('en-US').format(card.amount)}{' '}
-                              USD
+                            <div className="text-2xl font-semibold text-gray-900">
+                              ${Intl.NumberFormat('en-US').format(card.amount)}{' '}
                             </div>
                           </dd>
                         </dl>

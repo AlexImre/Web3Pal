@@ -29,6 +29,7 @@ export default function PopularCurrenciesDropDown(
   const stateContext = useContext(StateContext);
   const { masterState } = stateContext;
   const coins = masterState.marketData;
+  console.log('coins', coins);
   const [query, setQuery] = useState('');
   // reset query on submit so dropdown appears again
   useEffect(() => {
@@ -41,6 +42,8 @@ export default function PopularCurrenciesDropDown(
       : coins.filter((currency) => {
           return currency.name.toLowerCase().includes(query.toLowerCase());
         });
+
+  const ethereumArray = [filteredName[0]];
 
   const handleChange = (e: any) => {
     setCurrentPrice(e.current_price);
@@ -76,7 +79,7 @@ export default function PopularCurrenciesDropDown(
 
         {filteredName.length > 0 && (
           <Combobox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            {filteredName.map((currency) => (
+            {ethereumArray.map((currency) => (
               <Combobox.Option
                 key={currency.id}
                 value={currency}
@@ -90,21 +93,23 @@ export default function PopularCurrenciesDropDown(
                 {({ active, selected }) => (
                   <>
                     <div className="flex items-center">
-                      <img
-                        src={currency.image}
-                        alt=""
-                        className="h-6 w-6 flex-shrink-0 rounded-full"
-                      />
+                      {currency.image && (
+                        <img
+                          src={currency.image}
+                          alt=""
+                          className="h-6 w-6 flex-shrink-0 rounded-full"
+                        />
+                      )}
                       <span
                         className={classNames(
                           'ml-3 truncate',
-                          selected && 'font-semibold'
+                          selected && 'font-semibold',
+                          currency.id === 'none' && 'italic text-gray-400'
                         )}
                       >
                         {currency.name}
                       </span>
                     </div>
-
                     {selected && (
                       <span
                         className={classNames(
@@ -125,6 +130,11 @@ export default function PopularCurrenciesDropDown(
       {error && (
         <p className="mt-2 text-sm text-red-600" id="email-error">
           {errorMessage}
+        </p>
+      )}
+      {!error && (
+        <p className="mt-2 text-xs text-gray-500">
+          {'More currencies coming soon.'}
         </p>
       )}
     </Combobox>

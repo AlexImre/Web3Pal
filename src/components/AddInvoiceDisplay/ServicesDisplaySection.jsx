@@ -98,7 +98,7 @@ export default function ServicesDisplay(props) {
                   <tr>
                     <th
                       scope="row"
-                      colSpan={5}
+                      colSpan={4}
                       className="hidden pl-6 pr-3 pt-6 text-right text-sm font-normal text-gray-500 sm:table-cell md:pl-0"
                     >
                       Subtotal
@@ -109,7 +109,10 @@ export default function ServicesDisplay(props) {
                     >
                       Subtotal
                     </th>
-                    <td className="pl-3 pr-4 pt-6 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
+                    <td
+                      className="pl-3 pr-4 pt-6 text-right text-sm text-gray-500 sm:pr-6 md:pr-0"
+                      colspan={2}
+                    >
                       {Intl.NumberFormat('en-US').format(subTotal)}{' '}
                       {invoiceLabelling}
                     </td>
@@ -117,7 +120,7 @@ export default function ServicesDisplay(props) {
                   <tr>
                     <th
                       scope="row"
-                      colSpan={5}
+                      colSpan={4}
                       className="hidden pl-6 pr-3 pt-4 text-right text-sm font-normal text-gray-500 sm:table-cell md:pl-0"
                     >
                       Tax
@@ -128,7 +131,10 @@ export default function ServicesDisplay(props) {
                     >
                       Tax
                     </th>
-                    <td className="pl-3 pr-4 pt-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">
+                    <td
+                      className="pl-3 pr-4 pt-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0"
+                      colspan={2}
+                    >
                       {Intl.NumberFormat('en-US').format(tax)}{' '}
                       {invoiceLabelling}
                     </td>
@@ -136,7 +142,7 @@ export default function ServicesDisplay(props) {
                   <tr>
                     <th
                       scope="row"
-                      colSpan={5}
+                      colSpan={4}
                       className="hidden pl-6 pr-3 pt-4 text-right text-sm font-semibold text-gray-900 sm:table-cell md:pl-0"
                     >
                       Total
@@ -147,7 +153,10 @@ export default function ServicesDisplay(props) {
                     >
                       Total
                     </th>
-                    <td className="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 sm:pr-6 md:pr-0">
+                    <td
+                      className="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 sm:pr-6 md:pr-0"
+                      colspan={2}
+                    >
                       {Intl.NumberFormat('en-US').format(total)}{' '}
                       {invoiceLabelling}
                     </td>

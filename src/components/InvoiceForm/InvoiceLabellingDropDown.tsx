@@ -30,11 +30,11 @@ export default function InvoiceLabellingDropDown(
       symbol: '$',
       image: <CurrencyDollarIcon className="h-6 w-6" />,
     },
-    {
-      name: 'GBP',
-      symbol: '£',
-      image: <CurrencyPoundIcon className="h-6 w-6" />,
-    },
+    // {
+    //   name: 'GBP',
+    //   symbol: '£',
+    //   image: <CurrencyPoundIcon className="h-6 w-6" />,
+    // },
   ];
 
   const invoiceLabels = fiat.concat(coins);
@@ -102,7 +102,7 @@ export default function InvoiceLabellingDropDown(
 
         {data.length > 0 && (
           <Combobox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-            {data.map((currency) => (
+            {data.slice(0, 2).map((currency) => (
               <Combobox.Option
                 key={currency.name}
                 value={currency}
@@ -150,7 +150,8 @@ export default function InvoiceLabellingDropDown(
       )}
       {!error && (
         <p className="mt-2 text-xs text-gray-500">
-          Specify the currency that your invoice will be issued in.
+          Specify the currency that your invoice will be issued in.{' '}
+          <span className="font-semibold">More currencies coming soon.</span>
         </p>
       )}
     </Combobox>

@@ -4,6 +4,10 @@ import { getInvoiceStatusChip } from '../MyInvoices/myInvoicesUtils';
 import Link from 'next/link';
 import { StateContext } from '@/context/stateContext';
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
 function RecentInvoices(props: any) {
   const { myInvoices, title, showHeaderButtons, dataIsPaidInvoices } = props;
   const stateContext = useContext(StateContext);
@@ -24,7 +28,7 @@ function RecentInvoices(props: any) {
 
   const recentPublishedInvoices = sortedInvoices
     .filter((invoice) => {
-      return invoice.status !== 'Draft';
+      return invoice.status !== 'Draft' && invoice.status !== 'Paid';
     })
     .slice(0, 3);
 
@@ -82,40 +86,40 @@ function RecentInvoices(props: any) {
       <h2 className="mx-auto mt-8 max-w-6xl px-4 text-lg font-medium leading-6 text-gray-900 sm:px-6 lg:px-8">
         {title}
       </h2>
-      <div className="hidden sm:block">
+      <div className="relative">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           {showHeaderButtons && headerButtons}
           <div className="mt-2 flex flex-col">
-            <div className="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
+            <div className="min-w-full overflow-x-auto rounded-lg align-middle shadow">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-slate-900">
                   <tr>
                     <th
-                      className="px-6 py-3 text-left text-sm font-semibold text-white"
+                      className="min-w-[175px] px-6 py-3 text-left text-sm font-semibold text-white"
                       scope="col"
                     >
                       Invoice Number
                     </th>
                     <th
-                      className="px-6 py-3 text-left text-sm font-semibold text-white"
+                      className="min-w-[175px] px-6 py-3 text-left text-sm font-semibold text-white"
                       scope="col"
                     >
                       To
                     </th>
                     <th
-                      className="px-6 py-3 text-right text-sm font-semibold text-white"
+                      className="min-w-[175px] px-6 py-3 text-left text-sm font-semibold text-white"
                       scope="col"
                     >
                       Due Date
                     </th>
                     <th
-                      className="px-6 py-3 text-right text-sm font-semibold text-white"
+                      className="min-w-[200px] px-6 py-3 text-left text-sm font-semibold text-white"
                       scope="col"
                     >
                       Amount
                     </th>
                     <th
-                      className="hidden px-6 py-3 text-left text-sm font-semibold text-white md:block"
+                      className="block min-w-[200px] px-6 py-3 text-left text-sm font-semibold text-white"
                       scope="col"
                     >
                       Status
@@ -141,10 +145,7 @@ function RecentInvoices(props: any) {
                 )}
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {invoices.map((invoice) => (
-                    <tr
-                      key={invoice.invoiceInformation.invoiceNumber}
-                      className="bg-white"
-                    >
+                    <tr key={invoice.invoiceInformation.invoiceNumber}>
                       <td className="max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900">
                         <div className="flex">
                           <p className="truncate text-gray-500 group-hover:text-gray-900">
@@ -159,19 +160,19 @@ function RecentInvoices(props: any) {
                           </p>
                         </div>
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-6 py-4 text-left text-sm text-gray-500">
                         {new Date(
                           invoice.invoiceInformation.dueDate
                         ).toLocaleDateString('en-US')}{' '}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-6 py-4 text-left text-sm text-gray-500">
                         <span className="font-medium text-gray-900">
                           {`${getServicesTotal(invoice.servicesInformation)} ${
                             invoice.paymentInformation.invoiceLabelling
                           }`}
                         </span>
                       </td>
-                      <td className="hidden whitespace-nowrap px-6 py-4 text-sm text-gray-500 md:block">
+                      <td className="block whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                         <span>{getInvoiceStatusChip(invoice)}</span>
                         <Link
                           href={{

@@ -26,10 +26,10 @@ export default function StatusCountTable(props: any) {
   });
 
   return (
-    <div className="hidden sm:block">
+    <div className="block">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col">
-          <div className="min-w-full overflow-hidden overflow-x-auto align-middle shadow sm:rounded-lg">
+          <div className="min-w-full overflow-hidden overflow-x-auto rounded-lg align-middle shadow">
             <table className="min-h-full min-w-full divide-y divide-gray-200">
               <thead className="bg-slate-900">
                 <tr>
