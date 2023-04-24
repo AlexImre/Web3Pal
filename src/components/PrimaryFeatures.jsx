@@ -4,40 +4,34 @@ import { Tab } from '@headlessui/react';
 import clsx from 'clsx';
 
 import { Container } from '@/components/Container';
-import backgroundImage from '@/images/background-features.jpg';
 import mesh2 from '@/images/mesh2.png';
-import gimp1 from '@/images/gimp3.png';
-import gimp4 from '@/images/gimp4.png';
-import gimp5 from '@/images/gimp5.png';
-import screenshotExpenses from '@/images/screenshots/expenses.png';
-import screenshotPayroll from '@/images/screenshots/payroll.png';
-import screenshotReporting from '@/images/screenshots/reporting.png';
-import screenshotVatReturns from '@/images/screenshots/vat-returns.png';
+import gimp6 from '@/images/gimp6.png';
+import gimp8 from '@/images/gimp8.png';
 
 const features = [
   {
     title: 'Creating',
     description:
       'Quickly create invoices with our intuitive easy to use template, which supports major cryptocurrencies and custom EVM tokens.',
-    image: gimp4,
-  },
-  {
-    title: 'Getting paid',
-    description:
-      'Payments made via the blockchain, allowing for simple confirmation and tracking.',
-    image: gimp5,
+    image: gimp8,
   },
   {
     title: 'Reporting',
     description:
       'View all your transactions in one place and keep up to date with outstanding invoices.',
-    image: screenshotVatReturns,
+    image: gimp6,
+  },
+  {
+    title: 'Getting paid',
+    description:
+      'Payments made via the blockchain, allowing for simple confirmation and tracking.',
+    image: gimp6,
   },
   {
     title: 'Exporting',
     description:
       'Export all your web3 data to your accounting platform of choice.',
-    image: screenshotVatReturns,
+    image: gimp6,
   },
 ];
 
@@ -65,14 +59,7 @@ export function PrimaryFeatures() {
       aria-label="Features for running your books"
       className="relative overflow-hidden bg-blue-600 pt-20 pb-28 sm:py-32"
     >
-      <Image
-        className="absolute top-1/2 left-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
-        src={mesh2}
-        alt=""
-        width={2245}
-        height={1636}
-        unoptimized
-      />
+      <Image className="" src={mesh2} alt="" fill="cover" unoptimized />
       <Container className="relative">
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
@@ -103,8 +90,8 @@ export function PrimaryFeatures() {
                           className={clsx(
                             'font-display text-lg [&:not(:focus-visible)]:focus:outline-none',
                             selectedIndex === featureIndex
-                              ? 'text-blue-600 lg:text-white'
-                              : 'text-blue-100 hover:text-white lg:text-white'
+                              ? 'text-indigo-600 lg:text-white'
+                              : 'text-indigo-100 hover:text-white lg:text-white'
                           )}
                         >
                           <span className="absolute inset-0 rounded-full lg:rounded-r-none lg:rounded-l-xl" />
@@ -129,12 +116,12 @@ export function PrimaryFeatures() {
                 {features.map((feature) => (
                   <Tab.Panel key={feature.title} unmount={false}>
                     <div className="relative sm:px-6 lg:hidden">
-                      <div className="absolute -inset-x-4 top-[-6.5rem] bottom-[-4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl" />
+                      <div className="absolute -inset-x-4 top-[-6.5rem] bottom-[-4.25rem] z-0 bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl" />
                       <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
                         {feature.description}
                       </p>
                     </div>
-                    <div className="mt-10 w-[45rem] overflow-hidden rounded-xl shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
+                    <div className="relative mt-10 w-[45rem] overflow-hidden rounded-xl shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
                       <Image
                         className="w-full"
                         src={feature.image}

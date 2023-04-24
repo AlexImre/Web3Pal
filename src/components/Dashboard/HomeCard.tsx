@@ -11,6 +11,7 @@ export default function HomeCard() {
   const { masterState, setMasterState } = stateContext;
   const { myInvoices } = masterState;
   const [totalBalance, setTotalBalance] = useState(0);
+  const [paidBalance, setPaidBalance] = useState(0);
 
   const totalOrgBalancePaid =
     myInvoices.reduce((acc, invoice) => {
@@ -23,11 +24,18 @@ export default function HomeCard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const myInvoicesFiltered = myInvoices.filter(
+      const overdueAndUnpaidInvoices = myInvoices.filter(
         (invoice) => invoice.status === 'Overdue' || invoice.status === 'Unpaid'
       );
-      const totalOrgBalanceOverdue = await getTotalBalance(myInvoicesFiltered);
+      const paidInvoices = myInvoices.filter(
+        (invoice) => invoice.status === 'Paid'
+      );
+      const totalOrgBalanceOverdue = await getTotalBalance(
+        overdueAndUnpaidInvoices
+      );
+      const totalOrgBalancePaid = await getTotalBalance(paidInvoices);
       setTotalBalance(totalOrgBalanceOverdue);
+      setPaidBalance(totalOrgBalancePaid);
     };
     fetchData();
     // const totalOrgBalanceOverdue = 0;
@@ -44,7 +52,7 @@ export default function HomeCard() {
       name: 'Invoices paid',
       href: '#',
       icon: ScaleIcon,
-      amount: totalOrgBalancePaid,
+      amount: paidBalance,
     },
     // More items...
   ];

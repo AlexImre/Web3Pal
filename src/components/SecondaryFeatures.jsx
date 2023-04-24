@@ -1,12 +1,13 @@
-import { useId } from 'react'
-import Image from 'next/image'
-import { Tab } from '@headlessui/react'
-import clsx from 'clsx'
+import { useId } from 'react';
+import Image from 'next/image';
+import { Tab } from '@headlessui/react';
+import clsx from 'clsx';
 
-import { Container } from '@/components/Container'
-import screenshotContacts from '@/images/screenshots/contacts.png'
-import screenshotInventory from '@/images/screenshots/inventory.png'
-import screenshotProfitLoss from '@/images/screenshots/profit-loss.png'
+import { Container } from '@/components/Container';
+import screenshotContacts from '@/images/screenshots/contacts.png';
+import screenshotInventory from '@/images/screenshots/inventory.png';
+import screenshotProfitLoss from '@/images/screenshots/profit-loss.png';
+import gimp6 from '@/images/gimp6.png';
 
 const features = [
   {
@@ -16,7 +17,7 @@ const features = [
       'We talked about reporting in the section above but we needed three items here, so mentioning it one more time for posterity.',
     image: screenshotProfitLoss,
     icon: function ReportingIcon() {
-      let id = useId()
+      let id = useId();
       return (
         <>
           <defs>
@@ -40,7 +41,7 @@ const features = [
             strokeLinejoin="round"
           />
         </>
-      )
+      );
     },
   },
   {
@@ -68,7 +69,7 @@ const features = [
             fill="#fff"
           />
         </>
-      )
+      );
     },
   },
   {
@@ -91,10 +92,10 @@ const features = [
             fill="#fff"
           />
         </>
-      )
+      );
     },
   },
-]
+];
 
 function Feature({ feature, isActive, className, ...props }) {
   return (
@@ -125,7 +126,7 @@ function Feature({ feature, isActive, className, ...props }) {
       </p>
       <p className="mt-4 text-sm text-slate-600">{feature.description}</p>
     </div>
-  )
+  );
 }
 
 function FeaturesMobile() {
@@ -148,7 +149,7 @@ function FeaturesMobile() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 function FeaturesDesktop() {
@@ -203,7 +204,7 @@ function FeaturesDesktop() {
         </>
       )}
     </Tab.Group>
-  )
+  );
 }
 
 export function SecondaryFeatures() {
@@ -227,5 +228,5 @@ export function SecondaryFeatures() {
         <FeaturesDesktop />
       </Container>
     </section>
-  )
+  );
 }
