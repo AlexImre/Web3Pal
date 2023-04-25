@@ -1,4 +1,4 @@
-import { Fragment, useState, createRef } from 'react';
+import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import InvoiceForm from '../InvoiceForm/InvoiceForm';
 import PersonalInformationForm from '../InvoiceForm/PersonalInformationForm';
@@ -6,7 +6,7 @@ import PersonalInformationForm from '../InvoiceForm/PersonalInformationForm';
 export default function FromSectionModal(props) {
   const { open, setOpen } = props;
   const setShowModal = props.setShowModal;
-  const topOfPageRef = createRef();
+  const topOfPageRef = useRef();
 
   return (
     <Transition.Root show={open} as={Fragment}>
