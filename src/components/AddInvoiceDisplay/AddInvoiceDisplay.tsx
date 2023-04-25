@@ -81,6 +81,62 @@ export default function AddInvoiceDisplay() {
     }
   };
 
+  const sibEmail = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'api-key':
+          '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',
+      },
+      body: JSON.stringify({
+        sender: {
+          name: 'Mary from MyShop',
+          email: 'alexandre.imre@gmail.com',
+        },
+        to: [{ email: 'alexandre.imre@gmail.com', name: 'Jimmy' }],
+        htmlContent:
+          '<!DOCTYPE html> <html> <body> <h1>Confirm you email</h1> <p>Please confirm your email address by clicking on the link below</p> </body> </html>',
+        textContent:
+          'Please confirm your email address by clicking on the link https://text.domain.com',
+        subject: 'Login Email confirmation',
+        replyTo: { email: 'ann6533@example.com', name: 'Ann' },
+        // attachment: [
+        //   {
+        //     url: 'https://attachment.domain.com/myAttachmentFromUrl.jpg',
+        //     content: 'b3JkZXIucGRm',
+        //     name: 'myAttachment.png',
+        //   },
+        // ],
+        // headers: {
+        //   'sender.ip': '1.2.3.4',
+        //   'X-Mailin-custom': 'some_custom_header',
+        //   idempotencyKey: 'abc-123',
+        // },
+        templateId: 2,
+      }),
+    };
+
+    await fetch('https://api.sendinblue.com/v3/smtp/email', options)
+      .then((response) => response.json())
+      .then((response) => console.log(response))
+      .catch((err) => console.error(err));
+  };
+
+  const emailInvoice = async (invoice) => {
+    console.log('made it to emailInvoice()');
+    const emailedInvoice = await fetch('/api/send-mail', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        invoice: invoice,
+      }),
+    });
+  };
+
   const publishInvoice = async () => {
     for (const form in formCompletion) {
       if (formCompletion[form] === false) {
@@ -107,6 +163,7 @@ export default function AddInvoiceDisplay() {
           status: 'Unpaid',
         },
       });
+      emailInvoice(invoice.recipientInformation.clientEmail);
       publishedToast();
     }
   };
@@ -235,6 +292,17 @@ export default function AddInvoiceDisplay() {
                 >
                   <PaperAirplaneIcon className="curs mr-2 h-5 w-5 text-white hover:cursor-pointer" />
                   Publish and send invoice
+                </button>
+              </div>
+            )}
+            {isInvoiceDraft && (
+              <div className="ml-2 w-full justify-center">
+                <button
+                  className="my-4 flex w-full items-center justify-center rounded border border-indigo-600 bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow hover:bg-indigo-700"
+                  onClick={() => emailInvoice(invoice)}
+                >
+                  <PaperAirplaneIcon className="curs mr-2 h-5 w-5 text-white hover:cursor-pointer" />
+                  Email Test
                 </button>
               </div>
             )}

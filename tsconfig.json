@@ -27,7 +27,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/InvoiceForm/PersonalInformationForm.tsx", "src/components/Web3/Web3.js"  ],
+, "src/components/InvoiceForm/PersonalInformationForm.tsx", "src/components/Web3/Web3.js", "src/pages/api/send-mail.js"  ],
   "exclude": [
     "node_modules"
   ]
