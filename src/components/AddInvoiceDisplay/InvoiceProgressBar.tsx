@@ -13,15 +13,15 @@ export default function InvoiceProgressBar() {
 
   const steps = [
     {
-      name: 'Personal information',
-      status: formCompletion.personalInformation,
-    },
-    {
-      name: 'Invoice information',
+      name: 'Number & dates',
       status: formCompletion.invoiceInformation,
     },
     {
-      name: 'Recipient information',
+      name: 'Your details',
+      status: formCompletion.personalInformation,
+    },
+    {
+      name: 'Billed to',
       status: formCompletion.recipientInformation,
     },
     {
@@ -29,13 +29,13 @@ export default function InvoiceProgressBar() {
       status: formCompletion.paymentInformation,
     },
     {
-      name: 'Services',
+      name: 'Services info',
       status: formCompletion.servicesInformation,
     },
   ];
 
   return (
-    <div>
+    <div className="hidden w-72 rounded-lg bg-white p-8 shadow-sm ring-1 ring-gray-900/5 xl:block ">
       <ol role="list" className="overflow-hidden">
         {steps.map((step, stepIdx) => (
           <li
@@ -63,7 +63,7 @@ export default function InvoiceProgressBar() {
                     </span>
                   </span>
                   <span className="ml-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium">{step.name}</span>
+                    <span className="font-small text-sm">{step.name}</span>
                   </span>
                 </div>
               </>
@@ -82,7 +82,7 @@ export default function InvoiceProgressBar() {
                     </span>
                   </span>
                   <span className="ml-4 mr-4 flex min-w-0 flex-col">
-                    <span className="text-sm font-medium text-gray-500">
+                    <span className="font-small text-sm text-gray-500">
                       {step.name}
                     </span>
                   </span>
@@ -92,6 +92,20 @@ export default function InvoiceProgressBar() {
           </li>
         ))}
       </ol>
+      <div className="flex justify-between space-x-3 pt-8">
+        <button
+          type="button"
+          className="hidden w-full rounded-md bg-slate-600 p-3 text-sm font-semibold leading-6 text-white sm:block"
+        >
+          Save draft
+        </button>
+        <button
+          type="button"
+          className="hidden w-full rounded-md bg-indigo-600 p-3 text-sm font-semibold leading-6 text-white sm:block"
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 }
