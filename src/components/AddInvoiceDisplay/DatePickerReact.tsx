@@ -1,4 +1,4 @@
-import { forwardRef, useContext, useState } from 'react';
+import { forwardRef, useContext } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { PencilIcon } from '@heroicons/react/24/solid';
@@ -48,4 +48,5 @@ function DatePickerReact() {
   );
 }
 
+DatePickerReact.displayName = 'DatePickerReact';
 export default DatePickerReact;
