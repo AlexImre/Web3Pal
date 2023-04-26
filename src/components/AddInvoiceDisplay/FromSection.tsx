@@ -1,6 +1,6 @@
 import { PencilIcon } from '@heroicons/react/24/solid';
 import React from 'react';
-import CommandPalette from './CommandPalette';
+import CommandPalette from './ToCommandPalette';
 import { useState } from 'react';
 import InvoiceModal from '../InvoiceModal';
 import FromSectionModal from './FromSectionModal';
@@ -9,7 +9,7 @@ function FromSection() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mt-3 border-t border-gray-900/5 pt-3 text-sm sm:pr-4">
+    <div className="col-span-2 col-start-1 text-sm sm:pr-4">
       <div className="flex items-center space-x-3">
         <dt className="font-semibold text-gray-900">From</dt>
         <PencilIcon

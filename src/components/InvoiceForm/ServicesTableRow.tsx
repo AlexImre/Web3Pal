@@ -31,12 +31,22 @@ function ServicesTableRow(props: any) {
 
   return (
     <>
-      <div className="col-span-8 overflow-x-auto sm:col-span-2">
+      <div className="relative col-span-8 flex items-center sm:col-span-2">
+        <div className="absolute -left-6 overflow-visible">
+          {index === 0 ? (
+            ''
+          ) : (
+            <TrashIcon
+              className="curs h-5 w-5 text-slate-500 hover:cursor-pointer hover:text-slate-700"
+              onClick={removeRow}
+            />
+          )}
+        </div>
         <ServicesField
           type="text"
           name="description"
           width="w-full"
-          className="block w-full border-0 border-b border-transparent bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm"
+          className="block w-full overflow-x-auto border-0 border-b border-transparent bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm"
           value={description}
           handleChange={(e: any) => handleChange(e, uuid)}
           error={error}
@@ -86,18 +96,23 @@ function ServicesTableRow(props: any) {
       <div className="col-span-8 flex items-center justify-center overflow-x-auto sm:col-span-1 sm:text-sm">
         {parseFloat(serviceAmount.toFixed(2))}
       </div>
-      {index === 0 ? (
-        ''
-      ) : (
-        <div className="col-span-8 flex items-center justify-center sm:col-span-1">
-          <TrashIcon
-            className="curs h-5 w-5 text-slate-500 hover:cursor-pointer hover:text-slate-700"
-            onClick={removeRow}
-          />
-        </div>
-      )}
     </>
   );
 }
 
 export default ServicesTableRow;
+
+{
+  /* <div className="relative -left-10 overflow-visible">
+{index === 0 ? (
+  ''
+) : (
+  <div className="col-span-8 flex items-center justify-center sm:col-span-1">
+    <TrashIcon
+      className="curs h-5 w-5 text-slate-500 hover:cursor-pointer hover:text-slate-700"
+      onClick={removeRow}
+    />
+  </div>
+)}
+</div> */
+}

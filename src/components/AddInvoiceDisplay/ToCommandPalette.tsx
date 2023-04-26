@@ -3,10 +3,10 @@ import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
 import {
   ExclamationTriangleIcon,
-  FolderIcon,
   LifebuoyIcon,
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
+import RecipientInformationForm from '../InvoiceForm/RecipientInformationForm';
 
 const users = [
   {
@@ -28,8 +28,8 @@ function classNames(...classes) {
 }
 
 export default function CommandPalette(props: any) {
-  // const [open, setOpen] = useState(true);
   const { open, setOpen } = props;
+  const [showAddNewClient, setShowAddNewClient] = useState(false);
   const [rawQuery, setRawQuery] = useState('');
   const query = rawQuery.toLowerCase().replace(/^[#>]/, '');
 
@@ -152,12 +152,36 @@ export default function CommandPalette(props: any) {
                   )}
 
                 <div className="flex flex-wrap items-center bg-gray-50 px-4 py-2.5 text-sm text-gray-700">
-                  <div className="flex items-center hover:cursor-pointer hover:text-indigo-600">
+                  <div
+                    className="flex items-center hover:cursor-pointer hover:text-indigo-600"
+                    onClick={() => setShowAddNewClient(!showAddNewClient)}
+                  >
                     {' '}
                     <UserPlusIcon width={20} height={20} className="mr-2" />
                     Add new client{' '}
                   </div>
                 </div>
+
+                <Transition
+                  show={showAddNewClient}
+                  enter="transition-opacity duration-75"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="transition-opacity duration-150"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <RecipientInformationForm />
+                  <div className="flex flex-wrap items-center justify-end bg-gray-50 px-4 py-2.5 text-sm text-gray-700">
+                    <div
+                      className="flex items-center rounded-md bg-indigo-600 p-2 text-white hover:cursor-pointer hover:bg-indigo-700"
+                      onClick={() => setShowAddNewClient(!showAddNewClient)}
+                    >
+                      {' '}
+                      Add client{' '}
+                    </div>
+                  </div>
+                </Transition>
               </Combobox>
             </Dialog.Panel>
           </Transition.Child>

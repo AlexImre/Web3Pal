@@ -148,9 +148,6 @@ export default function AddInvoiceDisplay() {
         invoiceInformation: {
           ...initialState.invoice.invoiceInformation,
           invoiceNumber,
-          issueDate: convertDateStringToInputFormat(
-            new Date(Date.now()).toLocaleDateString('en-GB')
-          ),
         },
       },
     });

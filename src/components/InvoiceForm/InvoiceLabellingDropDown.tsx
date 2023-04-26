@@ -80,7 +80,7 @@ export default function InvoiceLabellingDropDown(
       onChange={(e) => {
         handleChange(e);
       }}
-      className="w-1/2"
+      className="w-16"
     >
       {/* <label htmlFor="text" className="block text-sm font-medium text-gray-700">
         Invoice Labelling*
@@ -91,7 +91,7 @@ export default function InvoiceLabellingDropDown(
           onChange={(event) => setQuery(event.target.value)}
           // value={tempPaymentInfo?.invoiceLabelling}
           // displayValue={(currency) => currency?.name}
-          placeholder="Select a currency"
+          placeholder={'$'}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronUpDownIcon
