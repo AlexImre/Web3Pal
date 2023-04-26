@@ -4,8 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { StateContext } from '@/context/stateContext';
 
-// eslint-disable-next-line react/display-name
-function DatePickerReact() {
+const DatePickerReact = () => {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { issueDate } = masterState.invoice.invoiceInformation;
@@ -23,6 +22,7 @@ function DatePickerReact() {
     });
   };
 
+  // eslint-disable-next-line react/display-name
   const ExampleCustomInput = forwardRef(
     ({ issueDate, onClick }: any, ref: any) => (
       <button
@@ -47,7 +47,7 @@ function DatePickerReact() {
       />
     </div>
   );
-}
+};
 
 DatePickerReact.displayName = 'DatePickerReact';
 export default DatePickerReact;

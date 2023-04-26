@@ -1,22 +1,23 @@
-import { ethers } from "ethers";
-import { blockChainData } from "@/components/Wallets/blockchainData";
+import { ethers } from 'ethers';
+import { blockChainData } from '@/components/Wallets/blockchainData';
 
 export function validateEmail(email: string) {
   if (email === '' || email === undefined) {
     return {
       error: true,
       message: 'Email cannot be blank',
-    }
+    };
   }
-  const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const emailRegex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const doesPassRegexTest = emailRegex.test(email);
   if (!doesPassRegexTest) {
     return {
       error: true,
       message: 'Email must be a valid email address',
-    }
+    };
   }
-  return false; 
+  return false;
 }
 
 export function validateName(name: string, property: string, label: string) {
@@ -24,8 +25,8 @@ export function validateName(name: string, property: string, label: string) {
     return {
       property,
       error: true,
-      message: `${label || "Field"} cannot be blank`,
-    }
+      message: `${label || 'Field'} cannot be blank`,
+    };
   }
   const nameRegex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
   const doesPassRegexTest = nameRegex.test(name);
@@ -34,17 +35,17 @@ export function validateName(name: string, property: string, label: string) {
       property,
       error: true,
       message: 'Please only use characters [a - z]',
-    }
+    };
   }
-  return false; 
+  return false;
 }
 
-export function hasIssueDateError(issueDate: string) {
-  if (issueDate === '' || issueDate === undefined) {
+export function hasIssueDateError(issueDate: Date) {
+  if (issueDate === undefined) {
     return {
       error: true,
       message: 'Issue date cannot be blank',
-    }
+    };
   }
   const issueDateAsDate = new Date(issueDate);
   const isDate = issueDateAsDate instanceof Date;
@@ -52,18 +53,18 @@ export function hasIssueDateError(issueDate: string) {
     const error = {
       error: true,
       message: 'Issue date must be a valid date',
-    }
+    };
     return error;
   }
   return false;
 }
 
-export function hasDueDateError(issueDate: string, dueDate: string) {
-  if (dueDate === '' || dueDate === undefined) {
+export function hasDueDateError(issueDate: Date, dueDate: Date) {
+  if (dueDate === undefined) {
     return {
       error: true,
       message: 'Due date cannot be blank',
-    }
+    };
   }
   const dueDateAsDate = new Date(dueDate);
   const isDate = dueDateAsDate instanceof Date;
@@ -71,7 +72,7 @@ export function hasDueDateError(issueDate: string, dueDate: string) {
     return {
       error: true,
       message: 'Due date must be a valid date',
-    }
+    };
   }
 
   const isDueDateAfterIssueDate = dueDate > issueDate;
@@ -79,26 +80,30 @@ export function hasDueDateError(issueDate: string, dueDate: string) {
     return {
       error: true,
       message: 'Due date must be after issue date',
-    }
+    };
   }
   return false;
 }
 
-export async function hasInvoiceNumberError(invoiceNumber: string, user: string, invoiceId: string) {
+export async function hasInvoiceNumberError(
+  invoiceNumber: string,
+  user: string,
+  invoiceId: string
+) {
   if (invoiceNumber === '' || invoiceNumber === undefined) {
     return {
       error: true,
       message: 'Invoice number cannot be blank',
-    }
+    };
   }
-  
-  const req = await fetch("/api/invoicenumberuniquecheck", {
-    method: "POST",
+
+  const req = await fetch('/api/invoicenumberuniquecheck', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({ user, invoiceNumber, invoiceId }),
-  })
+  });
 
   const isInvoiceNumberAvailable = await req.json();
 
@@ -106,7 +111,7 @@ export async function hasInvoiceNumberError(invoiceNumber: string, user: string,
     return {
       error: true,
       message: 'Invoice number already exists',
-    }
+    };
   } else {
     return false;
   }
@@ -118,7 +123,7 @@ export function validateInvoiceLabelling(invoiceLabel: string) {
       property: 'invoiceLabelling',
       error: true,
       message: 'Invoice label cannot be blank',
-    }
+    };
   }
 
   const regex = /^[a-zA-Z0-9]+$/;
@@ -128,7 +133,7 @@ export function validateInvoiceLabelling(invoiceLabel: string) {
       property: 'invoiceLabelling',
       error: true,
       message: 'Invoice label must only use characters [a - z, 0 - 9]',
-    }
+    };
   }
   return false;
 }
@@ -139,7 +144,7 @@ export function validateOrganisationName(name: string) {
       property: 'name',
       error: true,
       message: 'Company name cannot be blank',
-    }
+    };
   }
 
   const regex = /^[a-zA-Z0-9 ]+$/;
@@ -149,7 +154,7 @@ export function validateOrganisationName(name: string) {
       property: 'name',
       error: true,
       message: 'Company name must only use characters [a - z, 0 - 9]',
-    }
+    };
   }
   return false;
 }
@@ -160,7 +165,7 @@ export function validateWalletName(walletName: string) {
       property: 'walletName',
       error: true,
       message: 'Wallet name cannot be blank',
-    }
+    };
   }
 
   const regex = /^[a-zA-Z0-9 ]+$/;
@@ -170,7 +175,7 @@ export function validateWalletName(walletName: string) {
       property: 'walletName',
       error: true,
       message: 'Wallet name must only use characters [a - z, 0 - 9]',
-    }
+    };
   }
   return false;
 }
@@ -181,19 +186,19 @@ export function validatePopularCurrency(popularCurrency: string) {
       property: 'popularCurrency',
       error: true,
       message: 'Currency cannot be blank',
-    }
+    };
   }
   return false;
 }
 
 export function validateWalletAddress(walletAddress: string) {
-  console.log("validate wallet address: ", walletAddress)
+  console.log('validate wallet address: ', walletAddress);
   if (walletAddress === '' || walletAddress === undefined) {
     return {
       property: 'walletAddress',
       error: true,
       message: 'Wallet address cannot be blank',
-    }
+    };
   }
 
   const isValidWallet = ethers.utils.isAddress(walletAddress);
@@ -202,7 +207,7 @@ export function validateWalletAddress(walletAddress: string) {
       property: 'walletAddress',
       error: true,
       message: 'Wallet address is not valid',
-    }
+    };
   }
   return false;
 }
@@ -213,7 +218,7 @@ export function validateCustomCurrencySymbol(customCurrencySymbol: string) {
       property: 'customCurrencySymbol',
       error: true,
       message: 'Token symbol cannot be blank',
-    }
+    };
   }
   return false;
 }
@@ -224,7 +229,7 @@ export function validateCustomCurrencyAddress(customCurrencyAddress: string) {
       property: 'customCurrencyAddress',
       error: true,
       message: 'Token contract address cannot be blank',
-    }
+    };
   }
   return false;
 }
@@ -235,7 +240,7 @@ export function validateBlockchain(blockchain: any) {
       property: 'walletBlockchain',
       error: true,
       message: 'Blockchain cannot be blank',
-    }
+    };
   }
 
   const { name } = blockchain;
@@ -244,16 +249,18 @@ export function validateBlockchain(blockchain: any) {
       property: 'walletBlockchain',
       error: true,
       message: 'Blockchain cannot be blank',
-    }
+    };
   }
 
-  const isAllowedBlockchain = blockChainData.some((blockchain) => blockchain.name === name);
+  const isAllowedBlockchain = blockChainData.some(
+    (blockchain) => blockchain.name === name
+  );
   if (!isAllowedBlockchain) {
     return {
       property: 'walletBlockchain',
       error: true,
       message: 'Select a supported blockchain from the drop-down menu',
-    }
-}
+    };
+  }
   return false;
 }
