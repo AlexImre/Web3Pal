@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { StateContext } from '@/context/stateContext';
 
+// eslint-disable-next-line react/display-name
 function DatePickerReact() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
