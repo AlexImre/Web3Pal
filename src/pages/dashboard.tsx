@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  console.log('baseurl: ', process.env.NEXT_PUBLIC_BASE_URL);
   const session = await getServerSession(context.req, context.res, authOptions);
   const email = session?.user?.email;
 
