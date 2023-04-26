@@ -167,7 +167,7 @@ export const initialState: MasterStateType = {
       dueDate: new Date(Date.now()),
     },
     paymentInformation: {
-      invoiceLabelling: '',
+      invoiceLabelling: 'USD',
       paymentMethod: 'crypto',
       popularPlatform: '',
       popularCurrency: '',

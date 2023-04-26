@@ -1,31 +1,19 @@
-import { Fragment, useContext, useState } from 'react';
-import { Dialog, Listbox, Menu, Transition } from '@headlessui/react';
+import { Fragment, useContext } from 'react';
+import { Menu, Transition } from '@headlessui/react';
 import {
-  Bars3Icon,
-  CalendarDaysIcon,
-  CreditCardIcon,
   EllipsisVerticalIcon,
-  FaceFrownIcon,
-  FaceSmileIcon,
-  FireIcon,
-  HandThumbUpIcon,
-  HeartIcon,
-  PaperClipIcon,
-  UserCircleIcon,
-  XMarkIcon as XMarkIconMini,
+  InformationCircleIcon,
 } from '@heroicons/react/20/solid';
 import { PencilIcon } from '@heroicons/react/24/solid';
-import InvoiceProgressBar from './InvoiceProgressBar';
-import InvoiceLabellingDropDown from '../InvoiceForm/InvoiceLabellingDropDown';
-import CommandPalette from './ToCommandPalette';
 import FromSection from './FromSection';
 import ToSection from './ToSection';
 import ServiceDisplay from './ServiceDisplay';
 import TextArea from '../InvoiceForm/Fields/TextArea';
 import IssueBox from './IssueBox';
-import DateFieldWithValidation from '../InvoiceForm/Fields/DateFieldWithValidation';
 import DatePicker from './DatePickerReact';
 import { StateContext } from '@/context/stateContext';
+import { Tooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
 
 const marketCaps = [
   {
@@ -49,46 +37,6 @@ const marketCaps = [
   },
 ];
 
-const invoice = {
-  subTotal: '$8,800.00',
-  tax: '$1,760.00',
-  total: '$10,560.00',
-  items: [
-    {
-      id: 1,
-      title: 'Logo redesign',
-      description: 'New logo and digital asset playbook.',
-      hours: '20.0',
-      rate: '$100.00',
-      price: '$2,000.00',
-    },
-    {
-      id: 2,
-      title: 'Website redesign',
-      description: 'Design and program new company website.',
-      hours: '52.0',
-      rate: '$100.00',
-      price: '$5,200.00',
-    },
-    {
-      id: 3,
-      title: 'Business cards',
-      description: 'Design and production of 3.5" x 2.0" business cards.',
-      hours: '12.0',
-      rate: '$100.00',
-      price: '$1,200.00',
-    },
-    {
-      id: 4,
-      title: 'T-shirt design',
-      description: 'Three t-shirt design concepts.',
-      hours: '4.0',
-      rate: '$100.00',
-      price: '$400.00',
-    },
-  ],
-};
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -96,12 +44,7 @@ function classNames(...classes) {
 export default function InvoiceContainer() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const { issueDate } = masterState.invoice.invoiceInformation;
-  function convertDateStringToInputFormat(
-    arg0: string
-  ): import('react').ReactNode {
-    throw new Error('Function not implemented.');
-  }
+  const { issueDate, dueDate } = masterState.invoice.invoiceInformation;
 
   return (
     <>
@@ -202,7 +145,6 @@ export default function InvoiceContainer() {
         <div className="mx-auto max-w-7xl p-4 ">
           <div className="flex justify-between space-x-0 xl:space-x-6">
             <div className="mx-auto grid w-full max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-              {/* Invoice */}
               <div className="-mx-4 bg-white px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-3 lg:row-span-2 lg:row-end-2 xl:p-8">
                 <div className="grid grid-cols-4 gap-2">
                   <div className="col-span-2 col-start-1">
@@ -210,14 +152,27 @@ export default function InvoiceContainer() {
                       <h2 className="text-base text-xl font-semibold leading-6 text-gray-900">
                         Invoice #00011
                       </h2>
-                      <PencilIcon
-                        width="16"
-                        height="16"
-                        className="text-indigo-600"
-                      />
+                      <div className="w-fit cursor-pointer rounded-full p-0.5 text-indigo-600 hover:bg-indigo-100">
+                        <PencilIcon width="20" height="20" />
+                      </div>
                       <span className="text-sm">issued in</span>
                       <IssueBox />
-                      {/* <InvoiceLabellingDropDown /> */}
+                      <div id="my-anchor-element">
+                        <InformationCircleIcon
+                          width={20}
+                          className="cursor-pointer text-indigo-600"
+                        />
+                        <Tooltip
+                          className="w-24 bg-red-500"
+                          anchorSelect="#my-anchor-element"
+                          content="This is the currency that your invoice will be issued in."
+                          style={{
+                            width: '250px',
+                            textAlign: 'center',
+                            left: 200,
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -225,7 +180,6 @@ export default function InvoiceContainer() {
                     <div className="flex items-center">
                       <dt className="mr-1 inline text-gray-500">Issued on</dt>{' '}
                       <dd className="inline text-gray-500">
-                        {/* <time dateTime="2023-23-01">January 23, 2023</time> */}
                         <div>
                           {new Date(issueDate)
                             .toDateString()
@@ -234,22 +188,23 @@ export default function InvoiceContainer() {
                             .join(' ')}
                         </div>
                       </dd>
-                      <DatePicker />
+                      <DatePicker isIssueDate={true} />
                     </div>
-                    <div className="flex items-center font-medium">
+                    <div className="flex items-center font-semibold">
                       <dt className="mr-1 inline text-gray-900">Due on</dt>{' '}
                       <dd className="inline text-gray-700">
-                        <time dateTime="2023-31-01">January 31, 2023</time>
+                        <div>
+                          {new Date(dueDate)
+                            .toDateString()
+                            .split(' ')
+                            .slice(1)
+                            .join(' ')}
+                        </div>
                       </dd>
-                      <PencilIcon
-                        width="13"
-                        height="13"
-                        className="ml-3 text-indigo-600"
-                      />
+                      <DatePicker isIssueDate={false} />
                     </div>
                   </div>
                 </div>
-                {/* <div className="flex justify-between"></div> */}
 
                 <div className="grid grid-cols-4 gap-1">
                   <div className="col-span-4 my-3 border-t border-gray-300"></div>
@@ -257,21 +212,6 @@ export default function InvoiceContainer() {
                   <ToSection />
                   <div className="col-span-4 my-3 border-t border-gray-300"></div>
                 </div>
-
-                {/* <div className="mt-3 border-t border-gray-900/5 pt-3 text-sm">
-                  <dt className="font-semibold text-gray-900">Currency</dt>
-                  <dd className="text-gray-500">
-                    <p className="mt-2 text-xs text-gray-500">
-                      Specify the currency that your invoice will be issued in.{' '}
-                      <span className="font-semibold">
-                        More currencies coming soon.
-                      </span>
-                    </p>
-                    <span className="text-gray-500">
-                      Choose your invoice currency
-                    </span>
-                  </dd>
-                </div> */}
 
                 <div className="flex grid grid-cols-4 gap-1">
                   <div className="col-span-2 col-start-1">
@@ -318,9 +258,6 @@ export default function InvoiceContainer() {
                   <div className="col-span-4 my-3 border-t border-gray-300"></div>
                 </div>
 
-                {/* <div className="mt-3 border-t border-gray-900/5 pt-3 text-sm">
-                  <dt className="font-semibold text-gray-900">Services</dt>
-                </div> */}
                 <ServiceDisplay />
                 <div className="col-span-4 my-3 border-t border-gray-300"></div>
                 <div className="grid grid-cols-4 gap-1">
@@ -338,9 +275,9 @@ export default function InvoiceContainer() {
                 </div>
               </div>
             </div>
-            <div className="sticky top-0 flex h-auto justify-end self-start">
+            {/* <div className="sticky top-0 flex h-auto justify-end self-start">
               <InvoiceProgressBar />
-            </div>
+            </div> */}
           </div>
         </div>
       </main>

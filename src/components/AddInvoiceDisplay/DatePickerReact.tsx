@@ -3,11 +3,15 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { StateContext } from '@/context/stateContext';
+import subDays from 'date-fns/subDays';
 
-const DatePickerReact = () => {
+const DatePickerReact = (props: any) => {
+  const { isIssueDate } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const { issueDate } = masterState.invoice.invoiceInformation;
+  const { issueDate, dueDate } = masterState.invoice.invoiceInformation;
+  const propertyToUpdate = isIssueDate ? 'issueDate' : 'dueDate';
+  const valueToUse = isIssueDate ? issueDate : dueDate;
 
   const updateDate = (date: any) => {
     setMasterState({
@@ -16,7 +20,7 @@ const DatePickerReact = () => {
         ...masterState.invoice,
         invoiceInformation: {
           ...masterState.invoice.invoiceInformation,
-          issueDate: date,
+          [propertyToUpdate]: date,
         },
       },
     });
@@ -24,26 +28,36 @@ const DatePickerReact = () => {
 
   // eslint-disable-next-line react/display-name
   const ExampleCustomInput = forwardRef(
-    ({ issueDate, onClick }: any, ref: any) => (
+    ({ issueDate: value, onClick }: any, ref: any) => (
       <button
         className="example-custom-input flex items-center justify-end"
         onClick={onClick}
         ref={ref}
-        value={issueDate}
+        value={value}
       >
-        <PencilIcon
-          className="ml-3 h-4 w-4 text-indigo-600"
-          aria-hidden="true"
-        />
+        <div className="ml-3 w-fit cursor-pointer rounded-full p-0.5 text-indigo-600 hover:bg-indigo-100">
+          <PencilIcon width="16" height="16" />
+        </div>
       </button>
     )
   );
+
   return (
     <div className="relative">
       <DatePicker
-        selected={issueDate}
+        selected={valueToUse}
         onChange={(date: Date) => updateDate(date)}
         customInput={<ExampleCustomInput />}
+        excludeDateIntervals={
+          isIssueDate
+            ? ''
+            : [
+                {
+                  start: subDays(issueDate, 40000),
+                  end: subDays(issueDate, 1),
+                },
+              ]
+        }
       />
     </div>
   );
