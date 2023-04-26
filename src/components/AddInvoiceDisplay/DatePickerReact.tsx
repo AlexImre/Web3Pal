@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { PencilIcon } from '@heroicons/react/24/solid';
 import { StateContext } from '@/context/stateContext';
 
-export default function DatePickerReact() {
+function DatePickerReact() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { issueDate } = masterState.invoice.invoiceInformation;
@@ -47,3 +47,5 @@ export default function DatePickerReact() {
     </div>
   );
 }
+
+export default DatePickerReact;
