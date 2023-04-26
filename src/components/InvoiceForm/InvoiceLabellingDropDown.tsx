@@ -80,18 +80,18 @@ export default function InvoiceLabellingDropDown(
       onChange={(e) => {
         handleChange(e);
       }}
-      className="w-full"
+      className="w-16"
     >
-      <label htmlFor="text" className="block text-sm font-medium text-gray-700">
+      {/* <label htmlFor="text" className="block text-sm font-medium text-gray-700">
         Invoice Labelling*
-      </label>
+      </label> */}
       <div className="relative mt-1">
         <Combobox.Input
           className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
           onChange={(event) => setQuery(event.target.value)}
           // value={tempPaymentInfo?.invoiceLabelling}
           // displayValue={(currency) => currency?.name}
-          placeholder="Select a currency"
+          placeholder={'$'}
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronUpDownIcon
@@ -148,12 +148,12 @@ export default function InvoiceLabellingDropDown(
           {errorMessage}
         </p>
       )}
-      {!error && (
+      {/* {!error && (
         <p className="mt-2 text-xs text-gray-500">
           Specify the currency that your invoice will be issued in.{' '}
           <span className="font-semibold">More currencies coming soon.</span>
         </p>
-      )}
+      )} */}
     </Combobox>
   );
 }

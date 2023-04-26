@@ -4,7 +4,7 @@ type DateFieldWithValidationProps = {
   label: string;
   name: string;
   width: string;
-  value: string;
+  value: Date;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error: boolean;
   errorMessage: string;
@@ -35,7 +35,7 @@ export default function DateFieldWithValidation(
           type="date"
           name={name}
           id={name}
-          value={value}
+          value={value.toDateString()}
           onChange={(e) => onChange(e)}
           className={`${width} rounded-md pr-10 focus:outline-none sm:text-sm ${
             error

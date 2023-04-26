@@ -14,6 +14,7 @@ import {
   fetchInvoiceNumber,
   fetchOrganisation,
 } from '@/utils/fetchData';
+import InvoiceContainer from '@/components/AddInvoiceDisplay/InvoiceContainer';
 
 export async function getServerSideProps({ req, query }) {
   const session = await getSession({ req });
@@ -105,7 +106,10 @@ export default function CreateInvoice({
               <CreateCompanyPanel />
             </div>
           ) : (
-            <AddInvoiceDisplay />
+            <>
+              <InvoiceContainer />
+              <AddInvoiceDisplay />
+            </>
           )}
         </div>
       </div>
