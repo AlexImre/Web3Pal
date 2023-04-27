@@ -193,7 +193,7 @@ export const initialState: MasterStateType = {
       invoiceLabelling: 'USD',
       paymentMethod: 'crypto',
       popularPlatform: '',
-      popularCurrency: '',
+      popularCurrency: 'ETH',
       customCurrencyName: '',
       customCurrencySymbol: '',
       customCurrencyPlatform: '',

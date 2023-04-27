@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ServicesField from './Fields/ServicesField';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { getServiceAmount } from './ServicesUtils';
+import { invoiceLabels } from '../AddInvoiceDisplay/AddInvoiceUtils';
+import { StateContext } from '@/context/stateContext';
 
 function ServicesTableRow(props: any) {
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+  const { invoiceLabelling } = masterState.invoice.paymentInformation;
   const {
     service,
     index,
@@ -25,14 +30,18 @@ function ServicesTableRow(props: any) {
 
   const serviceAmount = getServiceAmount(service) || 0;
 
+  const invoiceLabel = invoiceLabels.find(
+    (label) => label.abbreviation === invoiceLabelling
+  ).symbol;
+
   useEffect(() => {
     updateServiceAmount(uuid, serviceAmount);
   }, [serviceAmount]);
 
   return (
     <>
-      <div className="relative col-span-8 flex items-center sm:col-span-2">
-        <div className="absolute -left-6 overflow-visible">
+      <div className="relative col-span-8 sm:col-span-2">
+        <div className="absolute -left-6 mt-3.5 overflow-visible">
           {index === 0 ? (
             ''
           ) : (
@@ -94,25 +103,10 @@ function ServicesTableRow(props: any) {
         />
       </div>
       <div className="col-span-8 flex items-center justify-center overflow-x-auto sm:col-span-1 sm:text-sm">
-        {parseFloat(serviceAmount.toFixed(2))}
+        {invoiceLabel + parseFloat(serviceAmount.toFixed(2))}
       </div>
     </>
   );
 }
 
 export default ServicesTableRow;
-
-{
-  /* <div className="relative -left-10 overflow-visible">
-{index === 0 ? (
-  ''
-) : (
-  <div className="col-span-8 flex items-center justify-center sm:col-span-1">
-    <TrashIcon
-      className="curs h-5 w-5 text-slate-500 hover:cursor-pointer hover:text-slate-700"
-      onClick={removeRow}
-    />
-  </div>
-)}
-</div> */
-}

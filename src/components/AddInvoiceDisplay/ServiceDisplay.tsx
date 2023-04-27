@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ServicesTableRow from '../InvoiceForm/ServicesTableRow';
 import { StateContext } from '@/context/stateContext';
 import toast from 'react-hot-toast';
+import { invoiceLabels } from './AddInvoiceUtils';
 
 export default function ServicesModal(props) {
   const stateContext = useContext(StateContext);
@@ -10,6 +11,11 @@ export default function ServicesModal(props) {
   const servicesInformation =
     stateContext.masterState.invoice.servicesInformation;
   const [tempServicesInfo, setTempServicesInfo] = useState(servicesInformation);
+  const { invoiceLabelling } = masterState.invoice.paymentInformation;
+
+  const invoiceLabel = invoiceLabels.find(
+    (label) => label.abbreviation === invoiceLabelling
+  ).symbol;
 
   const handleChange = (e: any, uuid: string) => {
     setTempServicesInfo(
@@ -86,7 +92,7 @@ export default function ServicesModal(props) {
     return startingId++;
   };
 
-  const setShowModal = props.setShowModal;
+  // const setShowModal = props.setShowModal;
 
   const addRow = (e: any) => {
     e.preventDefault();
@@ -109,7 +115,7 @@ export default function ServicesModal(props) {
         <div className="md:col-span-2">
           <div className="sm:rounded-md">
             <div className="bg-white py-2">
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-7 gap-1">
                 <div className="col-span-7 text-sm font-medium text-gray-700 sm:col-span-2">
                   Description*
                 </div>
@@ -125,7 +131,7 @@ export default function ServicesModal(props) {
                 <div className="col-span-7 text-sm font-medium text-gray-700 sm:col-span-1">
                   Tax (%)
                 </div>
-                <div className="col-span-7 text-sm font-medium text-gray-700 sm:col-span-1">
+                <div className="col-span-7 text-center text-sm font-medium text-gray-700 sm:col-span-1">
                   Amount
                 </div>
 
@@ -157,25 +163,25 @@ export default function ServicesModal(props) {
                   Amount without tax
                 </div>
                 <div className="text-md col-span-1 col-start-7 my-1 mt-3 text-center text-sm">
-                  $00001
+                  {invoiceLabel}00001
                 </div>
                 <div className="text-md col-span-2 col-start-5 my-1 text-left text-sm">
                   Total tax amount
                 </div>
                 <div className="text-md col-span-1 col-start-7 my-1 text-center text-sm">
-                  $00001
+                  {invoiceLabel}00001
                 </div>
                 <div className="text-md col-span-2 col-start-5 my-1 text-left text-sm">
                   Total Amount
                 </div>
                 <div className="text-md col-span-1 col-start-7 my-1 text-center text-sm">
-                  $00001
+                  {invoiceLabel}00001
                 </div>
                 <div className="text-md col-span-2 col-start-5 my-1 text-left text-sm">
                   Due
                 </div>
                 <div className="text-md col-span-1 col-start-7 my-1 text-center text-sm">
-                  $00001
+                  {invoiceLabel}00001
                 </div>
               </div>
             </div>

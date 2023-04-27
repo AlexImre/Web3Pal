@@ -15,28 +15,7 @@ import { StateContext } from '@/context/stateContext';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import InvoiceNumberField from './InvoiceNumberField';
-
-const marketCaps = [
-  {
-    name: 'Ethereum',
-    symbol: 'ETH',
-    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
-    cap: '$250B',
-  },
-  {
-    name: 'Tether',
-    symbol: 'USDT',
-    image:
-      'https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663',
-    cap: '$81B',
-  },
-  {
-    name: 'USD Coin',
-    symbol: 'USDC',
-    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png',
-    cap: '$32B',
-  },
-];
+import PaymentSection from './PaymentSection';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -213,34 +192,7 @@ export default function InvoiceContainer() {
                 </div>
 
                 <div className="flex grid grid-cols-4 gap-1">
-                  <div className="col-span-2 col-start-1">
-                    <div className="text-sm">
-                      <dt className="font-semibold text-gray-900">
-                        Choose what you want to be paid in
-                      </dt>
-
-                      <div className="relative flex items-center justify-start gap-x-1 py-2.5">
-                        {marketCaps.map((marketCap, index) => {
-                          return (
-                            <div className="flex items-start" key={index}>
-                              <div className="flex items-center justify-start rounded-lg border border-slate-400 bg-white px-2 py-1 hover:cursor-pointer hover:bg-slate-100">
-                                <img
-                                  className="h-5 w-5 rounded-full"
-                                  src={marketCap.image}
-                                  alt=""
-                                />
-                                <div className="ml-2 flex text-xs text-slate-200">
-                                  <div className="mr-1 text-slate-800">
-                                    {marketCap.symbol}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
+                  <PaymentSection />
 
                   <div className="col-span-2 col-start-3">
                     <div className="text-sm">

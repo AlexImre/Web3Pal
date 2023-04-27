@@ -23,8 +23,11 @@ function ToSection() {
     <div className="col-span-2 col-start-3 text-sm sm:pr-4">
       <div className="flex items-center space-x-3 ">
         <dt className="font-semibold text-gray-900">To</dt>
-        <div className="ml-3 w-fit cursor-pointer rounded-full p-0.5 text-indigo-600 hover:bg-indigo-100">
-          <PencilIcon width="13" height="13" onClick={() => setOpen(true)} />
+        <div
+          className="ml-3 w-fit cursor-pointer rounded-full p-0.5 text-indigo-600 hover:bg-indigo-100"
+          onClick={() => setOpen(true)}
+        >
+          <PencilIcon width="13" height="13" />
         </div>
       </div>
       <CommandPalette open={open} setOpen={setOpen} />

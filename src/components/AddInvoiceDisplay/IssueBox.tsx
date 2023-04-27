@@ -1,9 +1,7 @@
 import { Fragment, useContext } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-import Image from 'next/image';
-import USFlag from '@/images/US.svg';
-import GBFlag from '@/images/GB.svg';
 import { StateContext } from '@/context/stateContext';
+import { invoiceLabels } from './AddInvoiceUtils';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -27,31 +25,6 @@ export default function IssueBox() {
     });
   };
 
-  const labels = [
-    {
-      name: 'USD',
-      symbol: '$',
-      image: <Image alt="" width={20} height={20} src={USFlag} />,
-    },
-    {
-      name: 'GBP',
-      symbol: '£',
-      image: <Image alt="" width={20} height={20} src={GBFlag} />,
-    },
-    {
-      name: 'ETH',
-      symbol: 'ETH',
-      image: (
-        <Image
-          alt=""
-          width={20}
-          height={20}
-          src={'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png'}
-        />
-      ),
-    },
-  ];
-
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -70,9 +43,9 @@ export default function IssueBox() {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {labels.map((label) => {
+            {invoiceLabels.map((label) => {
               return (
                 <Menu.Item key={label.name}>
                   {({ active }) => (
@@ -81,10 +54,12 @@ export default function IssueBox() {
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block flex px-4 py-2 text-sm'
                       )}
-                      onClick={() => handleChange(label.name)}
+                      onClick={() => handleChange(label.abbreviation)}
                     >
                       {label.image}{' '}
-                      <span className="ml-3 font-medium">{label.name}</span>
+                      <span className="ml-3 font-medium">
+                        {label.abbreviation}
+                      </span>
                     </div>
                   )}
                 </Menu.Item>
