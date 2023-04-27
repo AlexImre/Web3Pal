@@ -85,7 +85,24 @@ export default function PersonalInformationForm(props: any) {
       });
     }
 
-    const hasError = !!isNameError || !!isEmailError;
+    const doesClientExist = masterState.organisation.clients.find(
+      (client) =>
+        client.clientEmail.toLocaleLowerCase() ===
+        clientEmail.toLocaleLowerCase()
+    );
+    if (!!doesClientExist) {
+      setError((prevState) => {
+        return { ...prevState, clientEmail: true };
+      });
+      setErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          clientEmail: 'Client with this email already exists.',
+        };
+      });
+    }
+
+    const hasError = !!isNameError || !!isEmailError || !!doesClientExist;
     if (hasError) {
       return;
     }
