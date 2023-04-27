@@ -115,7 +115,7 @@ export default function ToCommandPalette(props: any) {
                               value={client}
                               className={({ active }) =>
                                 classNames(
-                                  'flex cursor-default select-none items-center px-4 py-2',
+                                  'flex cursor-default select-none items-center px-4 py-2 hover:cursor-pointer',
                                   active && 'bg-indigo-600 text-white'
                                 )
                               }

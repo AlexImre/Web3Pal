@@ -10,7 +10,7 @@ import {
   validateName,
 } from '../InvoiceForm/Fields/formValidation';
 
-export default function PersonalInformationForm() {
+export default function PersonalInformationForm(props: any) {
   const pesonalToast = () => toast.success('Information updated.');
   const { masterState, setMasterState } = useContext(StateContext);
   const { organisation } = masterState;
@@ -93,6 +93,7 @@ export default function PersonalInformationForm() {
       },
     });
     pesonalToast();
+    props.setOpen(!open);
   };
 
   return (

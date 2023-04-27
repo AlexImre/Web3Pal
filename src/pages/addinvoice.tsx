@@ -108,7 +108,7 @@ export default function CreateInvoice({
           ) : (
             <>
               <InvoiceContainer />
-              <AddInvoiceDisplay />
+              {/* <AddInvoiceDisplay /> */}
             </>
           )}
         </div>

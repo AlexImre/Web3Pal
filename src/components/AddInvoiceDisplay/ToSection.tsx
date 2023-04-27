@@ -31,7 +31,8 @@ function ToSection() {
       <dd className="text-gray-500">
         <span className="font-medium text-gray-900">
           {clientName ? clientName : ''}{' '}
-        </span>
+        </span>{' '}
+        <br></br>
         <span className="font-medium text-gray-900">
           {clientEmail ? clientEmail : ''}{' '}
         </span>
