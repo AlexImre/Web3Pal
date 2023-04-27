@@ -13,7 +13,6 @@ export default function IssueBox() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { invoiceLabelling } = masterState.invoice.paymentInformation;
-  console.log('invoiceLabelling', invoiceLabelling);
 
   const handleChange = (name: string) => {
     setMasterState({
@@ -32,12 +31,12 @@ export default function IssueBox() {
     {
       name: 'USD',
       symbol: '$',
-      image: <Image alt="" width={20} src={USFlag} />,
+      image: <Image alt="" width={20} height={20} src={USFlag} />,
     },
     {
       name: 'GBP',
       symbol: '£',
-      image: <Image alt="" width={20} src={GBFlag} />,
+      image: <Image alt="" width={20} height={20} src={GBFlag} />,
     },
     {
       name: 'ETH',

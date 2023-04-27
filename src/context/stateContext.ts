@@ -129,6 +129,11 @@ export type WalletType = {
   updatedTimestamp?: Date;
 };
 
+const defaultIssueDate = new Date(Date.now());
+const defaultDueDate = new Date(
+  defaultIssueDate.valueOf() + 31 * 24 * 60 * 60 * 1000
+);
+
 export const initialState: MasterStateType = {
   invoice: {
     _id: undefined,
@@ -163,8 +168,8 @@ export const initialState: MasterStateType = {
     },
     invoiceInformation: {
       invoiceNumber: '',
-      issueDate: new Date(Date.now()),
-      dueDate: new Date(Date.now()),
+      issueDate: defaultIssueDate,
+      dueDate: defaultDueDate,
     },
     paymentInformation: {
       invoiceLabelling: 'USD',

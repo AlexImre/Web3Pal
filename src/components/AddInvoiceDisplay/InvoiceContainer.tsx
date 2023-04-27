@@ -14,6 +14,7 @@ import DatePicker from './DatePickerReact';
 import { StateContext } from '@/context/stateContext';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import InvoiceNumberField from './InvoiceNumberField';
 
 const marketCaps = [
   {
@@ -150,20 +151,18 @@ export default function InvoiceContainer() {
                   <div className="col-span-2 col-start-1">
                     <div className="flex items-center space-x-3">
                       <h2 className="text-base text-xl font-semibold leading-6 text-gray-900">
-                        Invoice #00011
+                        Invoice #
                       </h2>
-                      <div className="w-fit cursor-pointer rounded-full p-0.5 text-indigo-600 hover:bg-indigo-100">
-                        <PencilIcon width="20" height="20" />
-                      </div>
+                      <InvoiceNumberField />
                       <span className="text-sm">issued in</span>
                       <IssueBox />
                       <div id="my-anchor-element">
                         <InformationCircleIcon
                           width={20}
-                          className="cursor-pointer text-indigo-600"
+                          className="cursor-pointer text-gray-600"
                         />
                         <Tooltip
-                          className="w-24 bg-red-500"
+                          className="w-24"
                           anchorSelect="#my-anchor-element"
                           content="This is the currency that your invoice will be issued in."
                           style={{
@@ -177,7 +176,7 @@ export default function InvoiceContainer() {
                   </div>
 
                   <div className="col-span-2 col-start-3 text-sm">
-                    <div className="flex items-center">
+                    <div className="items-base flex">
                       <dt className="mr-1 inline text-gray-500">Issued on</dt>{' '}
                       <dd className="inline text-gray-500">
                         <div>
@@ -190,7 +189,7 @@ export default function InvoiceContainer() {
                       </dd>
                       <DatePicker isIssueDate={true} />
                     </div>
-                    <div className="flex items-center font-semibold">
+                    <div className="items-base flex font-semibold">
                       <dt className="mr-1 inline text-gray-900">Due on</dt>{' '}
                       <dd className="inline text-gray-700">
                         <div>
