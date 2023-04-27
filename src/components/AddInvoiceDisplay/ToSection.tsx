@@ -1,29 +1,49 @@
 import { PencilIcon } from '@heroicons/react/24/solid';
-import React from 'react';
+import React, { useContext } from 'react';
 import CommandPalette from './ToCommandPalette';
 import { useState } from 'react';
+import { StateContext } from '@/context/stateContext';
 
 function ToSection() {
+  const stateContext = useContext(StateContext);
+  const { masterState, setMasterState } = stateContext;
+  const {
+    clientName,
+    clientEmail,
+    clientAddressLine1,
+    clientAddressLine2,
+    clientCity,
+    clientCounty,
+    clientPostalCode,
+    clientCountry,
+  } = masterState.invoice.recipientInformation;
   const [open, setOpen] = useState(false);
 
   return (
     <div className="col-span-2 col-start-3 text-sm sm:pr-4">
       <div className="flex items-center space-x-3 ">
         <dt className="font-semibold text-gray-900">To</dt>
-        <PencilIcon
-          width="13"
-          height="13"
-          className="text-indigo-600 hover:cursor-pointer"
-          onClick={() => setOpen(true)}
-        />
+        <div className="ml-3 w-fit cursor-pointer rounded-full p-0.5 text-indigo-600 hover:bg-indigo-100">
+          <PencilIcon width="13" height="13" onClick={() => setOpen(true)} />
+        </div>
       </div>
       <CommandPalette open={open} setOpen={setOpen} />
       <dd className="text-gray-500">
-        <span className="font-medium text-gray-900">Tuple, Inc</span>
-        <br />
-        886 Walter Street
-        <br />
-        New York, NY 12345
+        <span className="font-medium text-gray-900">
+          {clientName ? clientName : ''}{' '}
+        </span>
+        <span className="font-medium text-gray-900">
+          {clientEmail ? clientEmail : ''}{' '}
+        </span>
+        {clientAddressLine1 ? clientAddressLine1 : ''}{' '}
+        {clientAddressLine1 ? <br></br> : ''}
+        {clientAddressLine2 ? clientAddressLine2 : ''}{' '}
+        {clientAddressLine2 ? <br></br> : ''}
+        {`${clientCity ? clientCity : ''} ${clientCounty ? clientCounty : ''} ${
+          clientPostalCode ? clientPostalCode : ''
+        }`}{' '}
+        {clientCity || clientCounty || clientPostalCode ? <br></br> : ''}
+        {clientCountry ? clientCountry : ''} {clientCountry ? <br></br> : ''}
       </dd>
     </div>
   );

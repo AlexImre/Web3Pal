@@ -2,6 +2,7 @@ import { Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import InvoiceForm from '../InvoiceForm/InvoiceForm';
 import PersonalInformationForm from '../InvoiceForm/PersonalInformationForm';
+import FromForm from './FromForm';
 
 export default function FromSectionModal(props) {
   const { open, setOpen } = props;
@@ -20,7 +21,7 @@ export default function FromSectionModal(props) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-opacity-100 bg-gradient-to-r from-indigo-600 to-indigo-500 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -39,7 +40,7 @@ export default function FromSectionModal(props) {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="sm:min-w-sm relative my-10 transform overflow-hidden rounded-lg bg-slate-200 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:p-6 md:mx-20">
-                <PersonalInformationForm />
+                <FromForm />
               </Dialog.Panel>
             </Transition.Child>
           </div>

@@ -1,16 +1,19 @@
 import EmailField from './Fields/EmailField';
 import TextFieldRequired from './Fields/TextFieldWithValidation';
 import CountriesField from './Fields/CountriesField';
-import { StateContext } from '../../context/stateContext';
-import { useContext, useState } from 'react';
+import { ClientType, StateContext } from '../../context/stateContext';
+import { useContext, useEffect, useState } from 'react';
 import TextField from './Fields/TextField';
 import toast from 'react-hot-toast';
 import { validateEmail, validateName } from './Fields/formValidation';
+import { v4 as uuidv4 } from 'uuid';
+import { useSession } from 'next-auth/react';
 
-export default function PersonalInformationForm() {
+export default function PersonalInformationForm(props: any) {
   const recipientToast = () => toast.success('Information updated.');
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  const { data: session } = useSession();
   const recipientInformation =
     stateContext.masterState.invoice.recipientInformation;
   const [tempRecipientInfo, setTempRecipientInfo] =
@@ -23,6 +26,7 @@ export default function PersonalInformationForm() {
     clientCity,
     clientCounty,
     clientPostalCode,
+    clientCountry,
   } = tempRecipientInfo;
   const handleChange = (e) => {
     setTempRecipientInfo({
@@ -30,6 +34,19 @@ export default function PersonalInformationForm() {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    setTempRecipientInfo({
+      clientName: '',
+      clientEmail: '',
+      clientAddressLine1: '',
+      clientAddressLine2: '',
+      clientCity: '',
+      clientCounty: '',
+      clientPostalCode: '',
+      clientCountry: '',
+    });
+  }, []);
 
   const defaultError = {
     clientName: false,
@@ -42,7 +59,7 @@ export default function PersonalInformationForm() {
   const [error, setError] = useState(defaultError);
   const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError(defaultError);
     setErrorMessage(defaultErrorMessage);
@@ -73,8 +90,35 @@ export default function PersonalInformationForm() {
       return;
     }
 
+    const newClient: ClientType = {
+      organisation_id: masterState.organisation._id,
+      clientId: uuidv4(),
+      clientName: clientName,
+      clientEmail: clientEmail,
+      clientAddressLine1: clientAddressLine1,
+      clientAddressLine2: clientAddressLine2,
+      clientCity: clientCity,
+      clientCounty: clientCounty,
+      clientPostalCode: clientPostalCode,
+      clientCountry: clientCountry,
+      createdBy: session.user.email,
+      createdTimestamp: new Date(Date.now()),
+    };
+
+    const addClient = await fetch('/api/addclient', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newClient),
+    });
+
     setMasterState({
       ...masterState,
+      organisation: {
+        ...masterState.organisation,
+        clients: [...masterState.organisation.clients, newClient],
+      },
       invoice: {
         ...masterState.invoice,
         recipientInformation: tempRecipientInfo,
@@ -85,6 +129,7 @@ export default function PersonalInformationForm() {
       },
     });
     recipientToast();
+    props.setShowAddNewClient(!props.showAddNewClient);
   };
 
   return (
@@ -182,14 +227,14 @@ export default function PersonalInformationForm() {
                     </div>
                   </div>
                 </div>
-                {/* <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                   <button
                     className="inline-flex w-20 justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     onClick={(e) => handleSubmit(e)}
                   >
-                    Save
+                    Add
                   </button>
-                </div> */}
+                </div>
               </div>
             </form>
           </div>

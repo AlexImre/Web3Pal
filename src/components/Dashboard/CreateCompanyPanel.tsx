@@ -21,6 +21,7 @@ export default function CreateCompanyPanel() {
     members: [],
     admins: [],
     wallets: [],
+    clients: [],
   };
   const [tempOrganisation, setTempOrganisation] = useState(defaultOrganisation);
   const [readyToSave, setReadyToSave] = useState(false);
