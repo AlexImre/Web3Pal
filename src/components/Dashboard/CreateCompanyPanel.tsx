@@ -1,7 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import TextFieldWithValidation from '../InvoiceForm/Fields/TextFieldWithValidation';
 import { StateContext } from '@/context/stateContext';
-import { validateOrganisationName } from '../InvoiceForm/Fields/formValidation';
+import {
+  validateEmail,
+  validateOrganisationName,
+} from '../InvoiceForm/Fields/formValidation';
 import toast from 'react-hot-toast';
 import { OrganisationType } from '@/context/stateContext';
 import { useSession } from 'next-auth/react';
@@ -29,7 +32,7 @@ export default function CreateCompanyPanel() {
   const handleChange = (e) => {
     const newOrganisation = {
       ...tempOrganisation,
-      organisationName: e.target.value,
+      [e.target.name]: e.target.value,
     };
 
     setTempOrganisation(newOrganisation);
@@ -64,21 +67,53 @@ export default function CreateCompanyPanel() {
     saveOrg();
   }, [readyToSave]);
 
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const defaultError = {
+    organisationName: false,
+    organisationEmail: false,
+  };
+  const defaultErrorMessage = {
+    organisationName: '',
+    organisationEmail: '',
+  };
+  const [error, setError] = useState(defaultError);
+  const [errorMessage, setErrorMessage] = useState(defaultErrorMessage);
   const savedToast = () => toast.success('Company created.');
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(false);
-    setErrorMessage('');
+    setError(defaultError);
+    setErrorMessage(defaultErrorMessage);
 
-    const hasOrganizationError = validateOrganisationName(
+    const isOrganisationNameError = validateOrganisationName(
       tempOrganisation.organisationName
     );
+    if (!!isOrganisationNameError) {
+      setError((prevState) => {
+        return { ...prevState, organisationName: true };
+      });
+      setErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          organisationName: isOrganisationNameError.message,
+        };
+      });
+    }
 
-    if (hasOrganizationError) {
-      setError(true);
-      setErrorMessage(hasOrganizationError.message);
+    const isOrganisationEmailError = validateEmail(
+      tempOrganisation.organisationEmail
+    );
+    if (!!isOrganisationEmailError) {
+      setError((prevState) => {
+        return { ...prevState, organisationEmail: true };
+      });
+      setErrorMessage((prevState) => {
+        return {
+          ...prevState,
+          organisationEmail: isOrganisationEmailError.message,
+        };
+      });
+    }
+
+    if (!!isOrganisationNameError || !!isOrganisationEmailError) {
       return;
     }
 
@@ -119,8 +154,20 @@ export default function CreateCompanyPanel() {
             onChange={(e) => {
               handleChange(e);
             }}
-            error={error}
-            errorMessage={errorMessage}
+            error={error.organisationName}
+            errorMessage={errorMessage.organisationName}
+          />
+          <br></br>
+          <TextFieldWithValidation
+            label="Organisation email"
+            name="organisationEmail"
+            width="w-full"
+            value={tempOrganisation.organisationEmail}
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            error={error.organisationEmail}
+            errorMessage={errorMessage.organisationEmail}
           />
         </div>
       </div>

@@ -4,7 +4,7 @@ import DashboardDesktopSidebar from '../components/Dashboard/DashboardDesktopSid
 import DashboardMobileSidebar from '../components/Dashboard/DashboardMobileSidebar';
 import AddInvoiceDisplay from '../components/AddInvoiceDisplay/AddInvoiceDisplay';
 import { getMarketData } from '../utils/coinGeckoApi';
-import { StateContext } from '../context/stateContext';
+import { StateContext, TempServicesInfoContext } from '../context/stateContext';
 import { useContext } from 'react';
 import { InvoiceType } from '../context/stateContext';
 import { getSession, useSession } from 'next-auth/react';
@@ -48,12 +48,20 @@ export default function CreateInvoice({
   invoiceNumber,
   organisation,
 }) {
-  const stateContext = useContext(StateContext);
+  // const stateContext = useContext(StateContext);
   const { data: session } = useSession();
+  const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const invoiceToEdit: InvoiceType = invoice[0];
   const [isLoading, setIsLoading] = useState(true);
-  const organisationMasterState = masterState.organisation._id;
+
+  // console.log('masterState', state.state.masterState);
+  const tempServicesContext = useContext(TempServicesInfoContext);
+  const [tempServicesInfo, setTempServicesInfo] = useState(
+    tempServicesContext.tempServicesInfo
+  );
+
+  const organisationMasterState = masterState.organisation._id || 'TEST';
 
   useEffect(() => {
     setIsLoading(false);
@@ -107,7 +115,11 @@ export default function CreateInvoice({
             </div>
           ) : (
             <>
-              <InvoiceContainer />
+              <TempServicesInfoContext.Provider
+                value={{ tempServicesInfo, setTempServicesInfo }}
+              >
+                <InvoiceContainer />
+              </TempServicesInfoContext.Provider>
               {/* <AddInvoiceDisplay /> */}
             </>
           )}

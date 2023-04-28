@@ -28,13 +28,14 @@ export function validateName(name: string, property: string, label: string) {
       message: `${label || 'Field'} cannot be blank`,
     };
   }
-  const nameRegex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+
+  const nameRegex = /^[a-zA-Z0-9]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
   const doesPassRegexTest = nameRegex.test(name);
   if (!doesPassRegexTest) {
     return {
       property,
       error: true,
-      message: 'Please only use characters [a - z]',
+      message: 'Please only use characters [a - z, 0 - 9]',
     };
   }
   return false;
@@ -143,7 +144,7 @@ export function validateOrganisationName(name: string) {
     return {
       property: 'name',
       error: true,
-      message: 'Company name cannot be blank',
+      message: 'Organisation name cannot be blank',
     };
   }
 
@@ -153,7 +154,7 @@ export function validateOrganisationName(name: string) {
     return {
       property: 'name',
       error: true,
-      message: 'Company name must only use characters [a - z, 0 - 9]',
+      message: 'Organisation name must only use characters [a - z, 0 - 9]',
     };
   }
   return false;

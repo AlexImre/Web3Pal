@@ -254,7 +254,20 @@ export const initialState: MasterStateType = {
   session: {},
 };
 
-type MasterStateContextType = {
+export const initialTempServicesInfo: Array<ServiceType> = [
+  {
+    uuid: uuidv4(),
+    serviceId: 0,
+    description: 'Example Service',
+    quantity: '1',
+    price: '1',
+    discount: '',
+    tax: '',
+    amount: '1',
+  },
+];
+
+export type MasterStateContextType = {
   masterState: MasterStateType;
   setMasterState: React.Dispatch<React.SetStateAction<MasterStateType>>;
 };
@@ -266,3 +279,16 @@ export const defaultState: MasterStateContextType = {
 export const StateContext = createContext<MasterStateContextType | null>(
   defaultState
 );
+
+export type TempServicesInfoContextType = {
+  tempServicesInfo: Array<ServiceType>;
+  setTempServicesInfo: React.Dispatch<React.SetStateAction<Array<ServiceType>>>;
+};
+
+export const defaultTempServicesInfo: TempServicesInfoContextType = {
+  tempServicesInfo: initialTempServicesInfo,
+  setTempServicesInfo: () => {},
+};
+
+export const TempServicesInfoContext =
+  createContext<TempServicesInfoContextType | null>(defaultTempServicesInfo);

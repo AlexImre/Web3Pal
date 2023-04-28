@@ -1,7 +1,11 @@
 import { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import ServicesTableRow from '../InvoiceForm/ServicesTableRow';
-import { StateContext } from '@/context/stateContext';
+import {
+  ServiceType,
+  StateContext,
+  TempServicesInfoContext,
+} from '@/context/stateContext';
 import toast from 'react-hot-toast';
 import { invoiceLabels } from './AddInvoiceUtils';
 import {
@@ -13,9 +17,9 @@ import {
 export default function ServicesModal(props) {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const servicesInformation =
-    stateContext.masterState.invoice.servicesInformation;
-  const [tempServicesInfo, setTempServicesInfo] = useState(servicesInformation);
+
+  const tempServicesContext = useContext(TempServicesInfoContext);
+  const { tempServicesInfo, setTempServicesInfo } = tempServicesContext;
 
   const { invoiceLabelling } = masterState.invoice.paymentInformation;
 
@@ -23,18 +27,31 @@ export default function ServicesModal(props) {
     (label) => label.abbreviation === invoiceLabelling
   ).symbol;
 
+  // const updateServiceAmount = (uuid: string, serviceAmount: number) => {
+  //   setTempServicesInfo(
+  //     tempServicesInfo.map((service: ServiceType) => {
+  //       if (service?.uuid === uuid) {
+  //         return {
+  //           ...service,
+  //           amount: serviceAmount,
+  //         };
+  //       }
+  //       return service;
+  //     })
+  //   );
+  // };
   const updateServiceAmount = (uuid: string, serviceAmount: number) => {
-    setTempServicesInfo(
-      tempServicesInfo.map((service: any) => {
-        if (service?.uuid === uuid) {
-          return {
-            ...service,
-            amount: serviceAmount,
-          };
-        }
-        return service;
-      })
-    );
+    const amount = tempServicesInfo.map((service: any) => {
+      if (service?.uuid === uuid) {
+        return {
+          ...service,
+          amount: serviceAmount,
+        };
+      }
+      return service;
+    });
+
+    setTempServicesInfo(amount);
   };
 
   const [error, setError] = useState(false);
@@ -82,7 +99,8 @@ export default function ServicesModal(props) {
 
   const addRow = (e: any) => {
     e.preventDefault();
-    const newService = {
+    console.log('addRow');
+    const newService: ServiceType = {
       uuid: uuidv4(),
       serviceId: createId(),
       description: '',
@@ -92,7 +110,8 @@ export default function ServicesModal(props) {
       tax: '',
       amount: '',
     };
-    setTempServicesInfo([...tempServicesInfo, newService]);
+    const newServicesInfo = [...tempServicesInfo, newService];
+    setTempServicesInfo(newServicesInfo);
   };
 
   return (
@@ -103,7 +122,7 @@ export default function ServicesModal(props) {
             <div className="bg-white py-2">
               <div className="grid grid-cols-7 gap-1">
                 <div className="col-span-7 text-sm font-medium text-gray-700 sm:col-span-2">
-                  Description*
+                  Description
                 </div>
                 <div className="col-span-7 text-sm font-medium text-gray-700 sm:col-span-1">
                   Quantity

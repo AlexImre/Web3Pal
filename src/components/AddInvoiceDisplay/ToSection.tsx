@@ -39,6 +39,7 @@ function ToSection() {
         <span className="font-medium text-gray-900">
           {clientEmail ? clientEmail : ''}{' '}
         </span>
+        <br></br>
         {clientAddressLine1 ? clientAddressLine1 : ''}{' '}
         {clientAddressLine1 ? <br></br> : ''}
         {clientAddressLine2 ? clientAddressLine2 : ''}{' '}

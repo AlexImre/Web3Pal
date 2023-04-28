@@ -3,22 +3,15 @@ import ServicesField from './Fields/ServicesField';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { getServiceAmount } from './ServicesUtils';
 import { invoiceLabels } from '../AddInvoiceDisplay/AddInvoiceUtils';
-import { StateContext } from '@/context/stateContext';
+import { StateContext, TempServicesInfoContext } from '@/context/stateContext';
 
 function ServicesTableRow(props: any) {
   const stateContext = useContext(StateContext);
-  const { masterState, setMasterState } = stateContext;
+  const { masterState } = stateContext;
+  const tempServicesContext = useContext(TempServicesInfoContext);
+  const { tempServicesInfo, setTempServicesInfo } = tempServicesContext;
   const { invoiceLabelling } = masterState.invoice.paymentInformation;
-  const {
-    service,
-    index,
-    tempServicesInfo,
-    setTempServicesInfo,
-    updateServiceAmount,
-    error,
-    errorMessage,
-  } = props;
-
+  const { service, index, error, errorMessage } = props;
   const { uuid, description, quantity, price, tax, discount } = service;
 
   const removeRow = () => {

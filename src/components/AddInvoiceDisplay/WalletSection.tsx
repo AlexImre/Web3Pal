@@ -17,7 +17,7 @@ function WalletSection() {
     <div className="col-span-2 col-start-3">
       <div className="flex items-center space-x-3 ">
         <dt className="text-sm font-semibold text-gray-900">
-          Where do you want to be paid?
+          Choose your wallet to receive payment
         </dt>
         <div
           className="ml-3 w-fit cursor-pointer rounded-full p-0.5 text-indigo-600 hover:bg-indigo-100"
