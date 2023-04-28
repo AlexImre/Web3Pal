@@ -12,12 +12,16 @@ import {
 import MyWalletsTable from './MyWalletsTable';
 import TextFieldWithValidation from '../InvoiceForm/Fields/TextFieldWithValidation';
 import BlockchainsDropDown from './BlockchainsDropDown';
+import { useSession } from 'next-auth/react';
 
-export default function WalletsDisplay() {
+export default function WalletsDisplay(props: any) {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
-  const { email } = masterState.session.user;
+  const { data: session } = useSession();
+  const { email } = session.user;
+
   const { wallets } = masterState.organisation;
+
   const [tempWallet, setTempWallet] = useState({
     walletName: '',
     walletBlockchain: '',
@@ -109,6 +113,7 @@ export default function WalletsDisplay() {
         },
       });
       savedToast();
+      props.setShowAddNewClient(!props.showAddNewClient);
     } else if (addWallet.status === 400) {
       errorToast();
     } else {
@@ -123,13 +128,6 @@ export default function WalletsDisplay() {
           <div className="mt-5 md:col-span-2 md:mt-0">
             <div className="overflow-hidden shadow sm:rounded-md">
               <div className="bg-white px-4 py-5 sm:p-10">
-                <div className="text-2xl font-semibold text-slate-900">
-                  Add Wallets
-                </div>
-                <p className="mt-1 mb-5 text-sm text-gray-500">
-                  Wallets added here will be available for use throughout the
-                  app.
-                </p>
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-6">
                     <TextFieldWithValidation
@@ -157,9 +155,6 @@ export default function WalletsDisplay() {
                         error={error.walletAddress}
                         errorMessage={errorMessage.walletAddress}
                       />
-                      <span className="cursor-pointer text-xs hover:text-indigo-500">
-                        Click here to add connected wallet address
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -179,7 +174,7 @@ export default function WalletsDisplay() {
 
       <br></br>
 
-      {wallets.length > 0 && <MyWalletsTable />}
+      {/* {wallets.length > 0 && <MyWalletsTable />} */}
     </>
   );
 }

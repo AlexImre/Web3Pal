@@ -4,6 +4,11 @@ import ServicesTableRow from '../InvoiceForm/ServicesTableRow';
 import { StateContext } from '@/context/stateContext';
 import toast from 'react-hot-toast';
 import { invoiceLabels } from './AddInvoiceUtils';
+import {
+  getServicesSubtotal,
+  getServicesTax,
+  getServicesTotal,
+} from '../InvoiceForm/ServicesUtils';
 
 export default function ServicesModal(props) {
   const stateContext = useContext(StateContext);
@@ -11,31 +16,12 @@ export default function ServicesModal(props) {
   const servicesInformation =
     stateContext.masterState.invoice.servicesInformation;
   const [tempServicesInfo, setTempServicesInfo] = useState(servicesInformation);
+
   const { invoiceLabelling } = masterState.invoice.paymentInformation;
 
   const invoiceLabel = invoiceLabels.find(
     (label) => label.abbreviation === invoiceLabelling
   ).symbol;
-
-  const handleChange = (e: any, uuid: string) => {
-    setTempServicesInfo(
-      tempServicesInfo.map((service: any) => {
-        if (service?.uuid === uuid) {
-          if (e.target.name === 'description') {
-            return {
-              ...service,
-              [e.target.name]: e.target.value,
-            };
-          }
-          return {
-            ...service,
-            [e.target.name]: Number(e.target.value),
-          };
-        }
-        return service;
-      })
-    );
-  };
 
   const updateServiceAmount = (uuid: string, serviceAmount: number) => {
     setTempServicesInfo(
@@ -100,11 +86,11 @@ export default function ServicesModal(props) {
       uuid: uuidv4(),
       serviceId: createId(),
       description: '',
-      quantity: 0,
-      price: 0,
-      discount: 0,
-      tax: 0,
-      amount: 0,
+      quantity: '',
+      price: '',
+      discount: '',
+      tax: '',
+      amount: '',
     };
     setTempServicesInfo([...tempServicesInfo, newService]);
   };
@@ -143,7 +129,6 @@ export default function ServicesModal(props) {
                       key={index}
                       tempServicesInfo={tempServicesInfo}
                       setTempServicesInfo={setTempServicesInfo}
-                      handleChange={handleChange}
                       updateServiceAmount={updateServiceAmount}
                       error={error}
                       errorMessage={errorMessage}
@@ -163,25 +148,29 @@ export default function ServicesModal(props) {
                   Amount without tax
                 </div>
                 <div className="text-md col-span-1 col-start-7 my-1 mt-3 text-center text-sm">
-                  {invoiceLabel}00001
+                  {invoiceLabel}
+                  {getServicesSubtotal(tempServicesInfo)}
                 </div>
                 <div className="text-md col-span-2 col-start-5 my-1 text-left text-sm">
                   Total tax amount
                 </div>
                 <div className="text-md col-span-1 col-start-7 my-1 text-center text-sm">
-                  {invoiceLabel}00001
+                  {invoiceLabel}
+                  {getServicesTax(tempServicesInfo)}
                 </div>
                 <div className="text-md col-span-2 col-start-5 my-1 text-left text-sm">
                   Total Amount
                 </div>
                 <div className="text-md col-span-1 col-start-7 my-1 text-center text-sm">
-                  {invoiceLabel}00001
+                  {invoiceLabel}
+                  {getServicesTotal(tempServicesInfo)}
                 </div>
-                <div className="text-md col-span-2 col-start-5 my-1 text-left text-sm">
+                <div className="text-md col-span-2 col-start-5 my-1 text-left text-sm font-semibold">
                   Due
                 </div>
-                <div className="text-md col-span-1 col-start-7 my-1 text-center text-sm">
-                  {invoiceLabel}00001
+                <div className="text-md col-span-1 col-start-7 my-1 text-center text-sm font-semibold">
+                  {invoiceLabel}
+                  {getServicesTotal(tempServicesInfo)}
                 </div>
               </div>
             </div>

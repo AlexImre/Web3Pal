@@ -11,6 +11,8 @@ import { useSession } from 'next-auth/react';
 
 export default function PersonalInformationForm(props: any) {
   const recipientToast = () => toast.success('Information updated.');
+  const errorToast = () => toast.error('Client already exists.');
+  const genericErrorToast = () => toast.error('Something went wrong.');
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
   const { data: session } = useSession();
@@ -122,6 +124,7 @@ export default function PersonalInformationForm(props: any) {
       createdTimestamp: new Date(Date.now()),
     };
 
+    // add try catch here
     const addClient = await fetch('/api/addclient', {
       method: 'POST',
       headers: {
@@ -130,23 +133,29 @@ export default function PersonalInformationForm(props: any) {
       body: JSON.stringify(newClient),
     });
 
-    setMasterState({
-      ...masterState,
-      organisation: {
-        ...masterState.organisation,
-        clients: [...masterState.organisation.clients, newClient],
-      },
-      invoice: {
-        ...masterState.invoice,
-        recipientInformation: tempRecipientInfo,
-        formCompletion: {
-          ...masterState.invoice.formCompletion,
-          recipientInformation: true,
+    if (addClient.status === 201) {
+      setMasterState({
+        ...masterState,
+        organisation: {
+          ...masterState.organisation,
+          clients: [...masterState.organisation.clients, newClient],
         },
-      },
-    });
-    recipientToast();
-    props.setShowAddNewClient(!props.showAddNewClient);
+        invoice: {
+          ...masterState.invoice,
+          recipientInformation: tempRecipientInfo,
+          formCompletion: {
+            ...masterState.invoice.formCompletion,
+            recipientInformation: true,
+          },
+        },
+      });
+      recipientToast();
+      props.setShowAddNewClient(!props.showAddNewClient);
+    } else if (addClient.status === 400) {
+      errorToast();
+    } else {
+      genericErrorToast();
+    }
   };
 
   return (

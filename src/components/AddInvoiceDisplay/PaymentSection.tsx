@@ -7,17 +7,17 @@ const marketCaps = [
     symbol: 'ETH',
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
   },
-  {
-    name: 'Tether',
-    symbol: 'USDT',
-    image:
-      'https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663',
-  },
-  {
-    name: 'USD Coin',
-    symbol: 'USDC',
-    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png',
-  },
+  // {
+  //   name: 'Tether',
+  //   symbol: 'USDT',
+  //   image:
+  //     'https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663',
+  // },
+  // {
+  //   name: 'USD Coin',
+  //   symbol: 'USDC',
+  //   image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png',
+  // },
   {
     name: 'Tether',
     symbol: '...',
@@ -46,7 +46,7 @@ function PaymentSection() {
     <div className="col-span-2 col-start-1">
       <div className="text-sm">
         <dt className="font-semibold text-gray-900">
-          Choose what you want to be paid in
+          What do you want to be paid in?
         </dt>
 
         <div className="relative flex items-center justify-start gap-x-1 py-2.5">

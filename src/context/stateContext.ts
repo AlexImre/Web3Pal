@@ -52,11 +52,11 @@ export type ServiceType = {
   uuid: string;
   serviceId: Number;
   description: string;
-  quantity: number;
-  price: number;
-  discount: number;
-  tax: number;
-  amount: number;
+  quantity: string;
+  price: string;
+  discount: string;
+  tax: string;
+  amount: string;
 };
 
 export type FormCompletionType = {
@@ -209,11 +209,11 @@ export const initialState: MasterStateType = {
         uuid: uuidv4(),
         serviceId: 0,
         description: 'Example Service',
-        quantity: 1,
-        price: 1,
-        discount: 0,
-        tax: 0,
-        amount: 1,
+        quantity: '1',
+        price: '1',
+        discount: '',
+        tax: '',
+        amount: '1',
       },
     ],
     notesInformation: {

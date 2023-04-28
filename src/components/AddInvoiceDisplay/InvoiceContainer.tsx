@@ -16,6 +16,7 @@ import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import InvoiceNumberField from './InvoiceNumberField';
 import PaymentSection from './PaymentSection';
+import WalletSection from './WalletSection';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -124,7 +125,7 @@ export default function InvoiceContainer() {
 
         <div className="mx-auto max-w-7xl p-4 ">
           <div className="flex justify-between space-x-0 xl:space-x-6">
-            <div className="mx-auto grid w-full max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <div className="mx-auto grid w-full max-w-none grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:grid-cols-3">
               <div className="-mx-4 bg-white px-4 py-8 shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg sm:px-8 sm:pb-14 lg:col-span-3 lg:row-span-2 lg:row-end-2 xl:p-8">
                 <div className="grid grid-cols-4 gap-2">
                   <div className="col-span-2 col-start-1">
@@ -193,19 +194,8 @@ export default function InvoiceContainer() {
 
                 <div className="flex grid grid-cols-4 gap-1">
                   <PaymentSection />
+                  <WalletSection />
 
-                  <div className="col-span-2 col-start-3">
-                    <div className="text-sm">
-                      <dt className="text-sm font-semibold text-gray-900">
-                        Where do you want to receive your money?
-                      </dt>
-                      <dd className="text-gray-500">
-                        <span className="text-gray-500">
-                          Choose your wallet
-                        </span>
-                      </dd>
-                    </div>
-                  </div>
                   <div className="col-span-4 my-3 border-t border-gray-300"></div>
                 </div>
 

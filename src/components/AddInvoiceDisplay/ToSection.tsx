@@ -1,6 +1,6 @@
 import { PencilIcon } from '@heroicons/react/24/solid';
 import React, { useContext } from 'react';
-import CommandPalette from './ToCommandPalette';
+import ToCommandPalette from './ToCommandPalette';
 import { useState } from 'react';
 import { StateContext } from '@/context/stateContext';
 
@@ -30,7 +30,7 @@ function ToSection() {
           <PencilIcon width="13" height="13" />
         </div>
       </div>
-      <CommandPalette open={open} setOpen={setOpen} />
+      <ToCommandPalette open={open} setOpen={setOpen} />
       <dd className="text-gray-500">
         <span className="font-medium text-gray-900">
           {clientName ? clientName : ''}{' '}

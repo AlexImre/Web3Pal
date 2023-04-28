@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import ServicesField from './Fields/ServicesField';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { getServiceAmount } from './ServicesUtils';
@@ -14,7 +14,6 @@ function ServicesTableRow(props: any) {
     index,
     tempServicesInfo,
     setTempServicesInfo,
-    handleChange,
     updateServiceAmount,
     error,
     errorMessage,
@@ -28,15 +27,25 @@ function ServicesTableRow(props: any) {
     );
   };
 
-  const serviceAmount = getServiceAmount(service) || 0;
+  const handleChange = (e: any, uuid: string) => {
+    setTempServicesInfo(
+      tempServicesInfo.map((service: any) => {
+        if (service?.uuid === uuid) {
+          return {
+            ...service,
+            [e.target.name]: e.target.value,
+          };
+        }
+        return service;
+      })
+    );
+  };
 
   const invoiceLabel = invoiceLabels.find(
     (label) => label.abbreviation === invoiceLabelling
   ).symbol;
 
-  useEffect(() => {
-    updateServiceAmount(uuid, serviceAmount);
-  }, [serviceAmount]);
+  const serviceAmount = getServiceAmount(service) || 0;
 
   return (
     <>
@@ -64,7 +73,7 @@ function ServicesTableRow(props: any) {
       </div>
       <div className="col-span-8 overflow-x-auto sm:col-span-1">
         <ServicesField
-          type="number"
+          type="text"
           name="quantity"
           width="w-full"
           className="block w-full border-0 border-b border-transparent bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm"
@@ -74,7 +83,7 @@ function ServicesTableRow(props: any) {
       </div>
       <div className="col-span-8 sm:col-span-1">
         <ServicesField
-          type="number"
+          type="text"
           name="price"
           width="w-full"
           className="block w-full border-0 border-b border-transparent bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm"
@@ -84,7 +93,7 @@ function ServicesTableRow(props: any) {
       </div>
       <div className="col-span-8 sm:col-span-1">
         <ServicesField
-          type="number"
+          type="text"
           name="discount"
           width="w-full"
           className="block w-full border-0 border-b border-transparent bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm"
@@ -94,7 +103,7 @@ function ServicesTableRow(props: any) {
       </div>
       <div className="col-span-8 sm:col-span-1">
         <ServicesField
-          type="number"
+          type="text"
           name="tax"
           width="w-full"
           className="block w-full border-0 border-b border-transparent bg-gray-100 focus:border-indigo-600 focus:ring-0 sm:text-sm"
@@ -103,7 +112,7 @@ function ServicesTableRow(props: any) {
         />
       </div>
       <div className="col-span-8 flex items-center justify-center overflow-x-auto sm:col-span-1 sm:text-sm">
-        {invoiceLabel + parseFloat(serviceAmount.toFixed(2))}
+        {invoiceLabel + serviceAmount.toFixed(2)}
       </div>
     </>
   );
