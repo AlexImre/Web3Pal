@@ -49,6 +49,7 @@ export default function AddInvoiceDisplay() {
       invoiceId,
       organisationId,
       user: email,
+      isDraft: true,
       status: 'Draft',
       txHash: '',
       createdTimestamp: new Date(Date.now()),

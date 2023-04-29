@@ -10,7 +10,7 @@ import type {
 } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
-import { StateContext } from '@/context/stateContext';
+import { StateContext, TempServicesInfoContext } from '@/context/stateContext';
 import EmptyInvoiceHolder from '@/components/MyInvoices/EmptyInvoiceHolder';
 import CreateCompanyPanel from '@/components/Dashboard/CreateCompanyPanel';
 import { fetchInvoices, fetchOrganisation } from '@/utils/fetchData';
@@ -43,6 +43,7 @@ export default function MyInvoices(
   const { invoices, organisation } = props;
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+
   const { myInvoices } = masterState;
   const [isLoading, setIsLoading] = useState(true);
   const organisationMasterState = masterState.organisation._id;
@@ -88,7 +89,11 @@ export default function MyInvoices(
             </div>
           ) : myInvoices.length > 0 ? (
             <div className="flex flex-col justify-end">
+              {/* <TempServicesInfoContext.Provider
+                value={{ tempServicesInfo, setTempServicesInfo }}
+              > */}
               <MyInvoicesDisplay />
+              {/* </TempServicesInfoContext.Provider> */}
             </div>
           ) : (
             <EmptyInvoiceHolder />

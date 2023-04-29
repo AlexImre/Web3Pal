@@ -115,11 +115,7 @@ export default function CreateInvoice({
             </div>
           ) : (
             <>
-              <TempServicesInfoContext.Provider
-                value={{ tempServicesInfo, setTempServicesInfo }}
-              >
-                <InvoiceContainer />
-              </TempServicesInfoContext.Provider>
+              <InvoiceContainer />
               {/* <AddInvoiceDisplay /> */}
             </>
           )}

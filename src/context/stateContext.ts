@@ -69,6 +69,12 @@ export type FormCompletionType = {
 
 export type MasterStateType = {
   invoice: InvoiceType;
+  validation: {
+    invoiceNumber: boolean;
+    dueDate: boolean;
+    recipientInformation: boolean;
+    wallet: boolean;
+  };
   myInvoices: Array<InvoiceType>;
   myServices: any;
   myAmounts: any;
@@ -86,6 +92,8 @@ export type InvoiceType = {
   updatedTimestamp?: Date;
   user: string;
   status?: string;
+  isDraft: boolean;
+  isPublished?: boolean;
   isArchived?: boolean;
   txHash?: string;
   paidTimestamp?: Date;
@@ -161,6 +169,8 @@ export const initialState: MasterStateType = {
     updatedTimestamp: undefined,
     user: '',
     status: 'Example',
+    isDraft: false,
+    isPublished: false,
     isArchived: false,
     txHash: '',
     paidTimestamp: undefined,
@@ -210,10 +220,10 @@ export const initialState: MasterStateType = {
         serviceId: 0,
         description: 'Example Service',
         quantity: '1',
-        price: '1',
+        price: '100',
         discount: '',
         tax: '',
-        amount: '1',
+        amount: '100',
       },
     ],
     notesInformation: {
@@ -226,6 +236,12 @@ export const initialState: MasterStateType = {
       paymentInformation: false,
       servicesInformation: false,
     },
+  },
+  validation: {
+    invoiceNumber: false,
+    dueDate: false,
+    recipientInformation: false,
+    wallet: false,
   },
   myInvoices: [],
   myServices: [],
@@ -260,10 +276,10 @@ export const initialTempServicesInfo: Array<ServiceType> = [
     serviceId: 0,
     description: 'Example Service',
     quantity: '1',
-    price: '1',
+    price: '100',
     discount: '',
     tax: '',
-    amount: '1',
+    amount: '100',
   },
 ];
 

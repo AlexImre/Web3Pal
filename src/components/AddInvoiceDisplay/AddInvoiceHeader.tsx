@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import 'react-tooltip/dist/react-tooltip.css';
@@ -9,6 +9,10 @@ import {
   TempServicesInfoContext,
 } from '@/context/stateContext';
 import toast from 'react-hot-toast';
+import {
+  hasDueDateError,
+  hasInvoiceNumberError,
+} from '../InvoiceForm/Fields/formValidation';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -21,7 +25,7 @@ function AddInvoiceHeader() {
   const { masterState, setMasterState } = stateContext;
   const tempServicesContext = useContext(TempServicesInfoContext);
   const { tempServicesInfo, setTempServicesInfo } = tempServicesContext;
-  const { invoice, organisation } = masterState;
+  const { invoice, organisation, validation } = masterState;
   const organisationId = organisation._id;
   const {
     invoiceId,
@@ -35,8 +39,106 @@ function AddInvoiceHeader() {
     formCompletion,
   } = masterState.invoice;
 
+  const saveInvoiceChecks = async (invoice) => {
+    setMasterState((prevState) => {
+      return {
+        ...prevState,
+        validation: {
+          ...prevState.validation,
+          invoiceNumber: false,
+          dueDate: false,
+          recipientInformation: false,
+          wallet: false,
+        },
+      };
+    });
+
+    const invoiceNumberCheck = await hasInvoiceNumberError(
+      invoice.invoiceInformation.invoiceNumber,
+      email,
+      invoice.invoiceInformation.invoiceId
+    );
+
+    if (!!invoiceNumberCheck) {
+      setMasterState((prevState) => {
+        return {
+          ...prevState,
+          validation: {
+            ...prevState.validation,
+            invoiceNumber: true,
+          },
+        };
+      });
+    }
+
+    const dueDateCheck = hasDueDateError(
+      invoice.invoiceInformation.issueDate,
+      invoice.invoiceInformation.dueDate
+    );
+
+    if (!!dueDateCheck) {
+      setMasterState((prevState) => {
+        return {
+          ...prevState,
+          validation: {
+            ...prevState.validation,
+            dueDate: true,
+          },
+        };
+      });
+    }
+
+    const isClientNameMissing =
+      invoice.recipientInformation.clientName === '' ||
+      invoice.recipientInformation.clientName === undefined;
+
+    if (isClientNameMissing) {
+      setMasterState((prevState) => {
+        return {
+          ...prevState,
+          validation: {
+            ...prevState.validation,
+            recipientInformation: true,
+          },
+        };
+      });
+    }
+
+    const isWalletAddressMissing =
+      invoice.paymentInformation.walletAddress === '' ||
+      invoice.paymentInformation.walletAddress === undefined;
+
+    if (isWalletAddressMissing) {
+      setMasterState((prevState) => {
+        return {
+          ...prevState,
+          validation: {
+            ...prevState.validation,
+            wallet: true,
+          },
+        };
+      });
+    }
+
+    const hasValidationError =
+      !!invoiceNumberCheck ||
+      !!dueDateCheck ||
+      isClientNameMissing ||
+      isWalletAddressMissing;
+
+    if (hasValidationError) {
+      return false;
+    }
+  };
+
   const saveInvoice = async () => {
     const savedToast = () => toast.success('Invoice saved.');
+
+    const doesInvoicePassValidation = await saveInvoiceChecks(invoice);
+    if (!doesInvoicePassValidation) {
+      return;
+    }
+
     // TODO add validation, all req fields must be filled
     console.log('saving invoice with id:', invoiceId);
     const invoiceToSave: InvoiceType = {
@@ -44,6 +146,7 @@ function AddInvoiceHeader() {
       organisationId,
       user: email,
       status: 'Draft',
+      isDraft: true,
       txHash: '',
       createdTimestamp: new Date(Date.now()),
       paidTimestamp: undefined,
@@ -57,24 +160,24 @@ function AddInvoiceHeader() {
     };
 
     console.log('invoiceToSave:', invoiceToSave);
-    // const addedInvoice = await fetch('/api/saveinvoice', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(invoiceToSave),
-    // });
+    const addedInvoice = await fetch('/api/saveinvoice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(invoiceToSave),
+    });
 
-    // if (addedInvoice.ok) {
-    //   setMasterState({
-    //     ...masterState,
-    //     invoice: {
-    //       ...invoice,
-    //       status: 'Draft',
-    //     },
-    //   });
-    //   savedToast();
-    // }
+    if (addedInvoice.ok) {
+      setMasterState({
+        ...masterState,
+        invoice: {
+          ...invoice,
+          status: 'Draft',
+        },
+      });
+      savedToast();
+    }
   };
 
   return (

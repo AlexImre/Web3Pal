@@ -12,6 +12,7 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import { fetchInvoices, fetchOrganisation } from '@/utils/fetchData';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
+import EmptyInvoiceHolder from '@/components/MyInvoices/EmptyInvoiceHolder';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   console.log('baseurl: ', process.env.NEXT_PUBLIC_BASE_URL);
@@ -90,6 +91,7 @@ export default function Dashboard(
             <></>
           ) : organisationMasterState ? (
             <>
+              {invoices.length < 1 && <EmptyInvoiceHolder />}
               <HomeCard />
             </>
           ) : (

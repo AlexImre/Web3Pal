@@ -45,7 +45,7 @@ const DatePickerReact = (props: any) => {
   return (
     <div className="relative">
       <DatePicker
-        selected={valueToUse}
+        selected={new Date(valueToUse)}
         onChange={(date: Date) => updateDate(date)}
         customInput={<ExampleCustomInput />}
         excludeDateIntervals={
@@ -53,8 +53,8 @@ const DatePickerReact = (props: any) => {
             ? ''
             : [
                 {
-                  start: subDays(issueDate, 40000),
-                  end: subDays(issueDate, 1),
+                  start: subDays(new Date(issueDate), 40000),
+                  end: subDays(new Date(issueDate), 1),
                 },
               ]
         }

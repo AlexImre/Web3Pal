@@ -1,4 +1,4 @@
-import { StateContext } from '@/context/stateContext';
+import { StateContext, TempServicesInfoContext } from '@/context/stateContext';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import toast from 'react-hot-toast';
@@ -16,6 +16,11 @@ export default function InvoiceActions(props: any) {
   const stateContext = useContext(StateContext);
   const { setMasterState } = stateContext;
 
+  const tempServicesContext = useContext(TempServicesInfoContext);
+  const { tempServicesInfo, setTempServicesInfo } = tempServicesContext;
+
+  console.log('tempServicesInfo', tempServicesInfo);
+
   const handleEdit = (invoice) => {
     setMasterState((prevState) => ({
       ...prevState,
@@ -27,6 +32,8 @@ export default function InvoiceActions(props: any) {
       servicesInformation: invoice.servicesInformation,
       notesInformation: invoice.notesInformation,
     }));
+
+    setTempServicesInfo(invoice.servicesInformation);
   };
 
   const handleVoid = async (invoiceId: string) => {

@@ -6,6 +6,7 @@ import WalletCommandPalette from './WalletCommandPalette';
 function WalletSection() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  const { validation } = masterState;
   const { walletName, walletAddress } = masterState.invoice.paymentInformation;
   const [open, setOpen] = useState(false);
 
@@ -26,6 +27,11 @@ function WalletSection() {
           <PencilIcon width="13" height="13" />
         </div>
       </div>
+      {validation.wallet && (
+        <span className="text-sm font-bold text-red-600">
+          Missing wallet details.
+        </span>
+      )}
       <WalletCommandPalette open={open} setOpen={setOpen} />
       <dd className="text-sm text-gray-500">
         <span className="font-medium text-gray-900">

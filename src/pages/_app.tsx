@@ -1,6 +1,6 @@
 import 'focus-visible';
 import '../styles/tailwind.css';
-import { StateContext } from '../context/stateContext';
+import { StateContext, TempServicesInfoContext } from '../context/stateContext';
 import { useState, useContext, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { SessionProvider } from 'next-auth/react';
@@ -40,6 +40,11 @@ export default function App({
   const stateContext = useContext(StateContext);
   const [masterState, setMasterState] = useState(stateContext.masterState);
 
+  const tempServicesContext = useContext(TempServicesInfoContext);
+  const [tempServicesInfo, setTempServicesInfo] = useState(
+    tempServicesContext.tempServicesInfo
+  );
+
   useEffect(() => {
     setReady(true);
   }, []);
@@ -48,11 +53,15 @@ export default function App({
     <>
       {ready ? (
         <StateContext.Provider value={{ masterState, setMasterState }}>
-          <SessionProvider session={session}>
-            <WagmiConfig client={wagmiClient}>
-              <Component {...pageProps} />
-            </WagmiConfig>
-          </SessionProvider>
+          <TempServicesInfoContext.Provider
+            value={{ tempServicesInfo, setTempServicesInfo }}
+          >
+            <SessionProvider session={session}>
+              <WagmiConfig client={wagmiClient}>
+                <Component {...pageProps} />
+              </WagmiConfig>
+            </SessionProvider>
+          </TempServicesInfoContext.Provider>
           <Toaster />
         </StateContext.Provider>
       ) : null}

@@ -17,6 +17,7 @@ import AddInvoiceHeader from './AddInvoiceHeader';
 export default function InvoiceContainer() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  const { validation } = masterState;
   const { issueDate, dueDate } = masterState.invoice.invoiceInformation;
 
   return (
@@ -54,6 +55,11 @@ export default function InvoiceContainer() {
                         />
                       </div>
                     </div>
+                    {validation.invoiceNumber && (
+                      <span className="text-sm font-bold text-red-600">
+                        Invoice number already exists.
+                      </span>
+                    )}
                   </div>
 
                   <div className="col-span-2 col-start-3 text-sm">
@@ -81,8 +87,13 @@ export default function InvoiceContainer() {
                             .join(' ')}
                         </div>
                       </dd>
-                      <DatePicker isIssueDate={false} />
+                      <DatePicker isIssueDate={false} />{' '}
                     </div>
+                    {validation.dueDate && (
+                      <span className="font-bold text-red-600">
+                        Due date cannot be earlier than issue date.
+                      </span>
+                    )}
                   </div>
                 </div>
 

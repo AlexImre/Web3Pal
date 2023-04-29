@@ -27,6 +27,9 @@ export default function ServicesModal(props) {
     (label) => label.abbreviation === invoiceLabelling
   ).symbol;
 
+  console.log('tempServicesInfo', tempServicesInfo);
+  console.log('masterState', masterState);
+
   // const updateServiceAmount = (uuid: string, serviceAmount: number) => {
   //   setTempServicesInfo(
   //     tempServicesInfo.map((service: ServiceType) => {

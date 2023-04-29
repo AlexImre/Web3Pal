@@ -7,6 +7,7 @@ import { StateContext } from '@/context/stateContext';
 function ToSection() {
   const stateContext = useContext(StateContext);
   const { masterState, setMasterState } = stateContext;
+  const { validation } = masterState;
   const {
     clientName,
     clientEmail,
@@ -20,8 +21,8 @@ function ToSection() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="col-span-2 col-start-3 text-sm sm:pr-4">
-      <div className="flex items-center space-x-3 ">
+    <div className="col-span-2 col-start-3 rounded-md text-sm sm:pr-4">
+      <div className="flex items-center space-x-3">
         <dt className="font-semibold text-gray-900">To</dt>
         <div
           className="ml-3 w-fit cursor-pointer rounded-full p-0.5 text-indigo-600 hover:bg-indigo-100"
@@ -30,6 +31,11 @@ function ToSection() {
           <PencilIcon width="13" height="13" />
         </div>
       </div>
+      {validation.recipientInformation && (
+        <span className="font-bold text-red-600">
+          Missing recipient details.
+        </span>
+      )}
       <ToCommandPalette open={open} setOpen={setOpen} />
       <dd className="text-gray-500">
         <span className="font-medium text-gray-900">

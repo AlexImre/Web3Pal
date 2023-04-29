@@ -18,7 +18,7 @@ export const invoiceLabels = [
   {
     name: 'Ethereum',
     abbreviation: 'ETH',
-    symbol: 'ETH',
+    symbol: 'ETH ',
     image: (
       <Image
         alt=""
