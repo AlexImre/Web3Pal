@@ -17,7 +17,7 @@ export default function CountriesField(props) {
     query === ''
       ? allCountries
       : allCountries.filter((country) => {
-          return country.name.toLowerCase().includes(query.toLowerCase());
+          return country.name.toLowerCase().startsWith(query.toLowerCase());
         });
 
   return (
