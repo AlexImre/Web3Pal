@@ -203,10 +203,10 @@ function AddInvoiceHeader() {
     }
   };
 
-  useEffect(() => {
-    // do checks and set "send" button to inactive
-    saveInvoiceChecks(invoice, false);
-  }, []);
+  // useEffect(() => {
+  //   // do checks and set "send" button to inactive
+  //   saveInvoiceChecks(invoice, false);
+  // }, []);
 
   useEffect(() => {
     publishValidation();

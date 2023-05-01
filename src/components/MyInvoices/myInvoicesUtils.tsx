@@ -81,7 +81,6 @@ export function getDashboardStatusChips(status: string) {
 }
 
 export function getAddInvoiceHeaderStatusChip(invoice) {
-  console.log(invoice);
   const status = invoice.status;
   const dueDate = new Date(invoice.invoiceInformation.dueDate);
   const currentDate = new Date(Date.now());

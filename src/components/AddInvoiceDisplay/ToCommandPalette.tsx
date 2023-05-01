@@ -1,6 +1,6 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { Combobox, Dialog, Transition } from '@headlessui/react';
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
+import { MagnifyingGlassIcon, UserIcon } from '@heroicons/react/20/solid';
 import {
   ExclamationTriangleIcon,
   LifebuoyIcon,
@@ -137,7 +137,7 @@ export default function ToCommandPalette(props: any) {
 
                 {clients.length === 0 && (
                   <div className="px-6 py-14 text-center text-sm sm:px-14">
-                    <LifebuoyIcon
+                    <UserIcon
                       className="mx-auto h-6 w-6 text-gray-400"
                       aria-hidden="true"
                     />
@@ -193,6 +193,8 @@ export default function ToCommandPalette(props: any) {
                   <RecipientInformationForm
                     showAddNewClient={showAddNewClient}
                     setShowAddNewClient={setShowAddNewClient}
+                    open={open}
+                    setOpen={setOpen}
                   />
                 </Transition>
               </Combobox>

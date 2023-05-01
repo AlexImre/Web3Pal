@@ -4,6 +4,7 @@ import {
   HomeIcon,
   PlusCircleIcon,
   BriefcaseIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline';
 
 export const SideBarNavItems = [
@@ -26,5 +27,6 @@ export const SideBarNavItems = [
     icon: PlusCircleIcon,
     current: false,
   },
+  { name: 'Clients', href: '/clients', icon: UserIcon, current: false },
   { name: 'Wallets', href: '/wallets', icon: CreditCardIcon, current: false },
 ];

@@ -114,6 +114,7 @@ export default function WalletsDisplay(props: any) {
       });
       savedToast();
       props.setShowAddNewClient(!props.showAddNewClient);
+      props.setOpen(!props.open);
     } else if (addWallet.status === 400) {
       errorToast();
     } else {

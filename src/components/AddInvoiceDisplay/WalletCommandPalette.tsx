@@ -194,6 +194,8 @@ export default function ToCommandPalette(props: any) {
                   <WalletsDisplay
                     showAddNewClient={showAddNewClient}
                     setShowAddNewClient={setShowAddNewClient}
+                    opem={open}
+                    setOpen={setOpen}
                   />
                 </Transition>
               </Combobox>

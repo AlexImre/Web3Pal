@@ -151,6 +151,7 @@ export default function PersonalInformationForm(props: any) {
       });
       recipientToast();
       props.setShowAddNewClient(!props.showAddNewClient);
+      props.setOpen(!props.open);
     } else if (addClient.status === 400) {
       errorToast();
     } else {
