@@ -13,6 +13,7 @@ import PaymentSection from './PaymentSection';
 import WalletSection from './WalletSection';
 import NotesForm from '../InvoiceForm/NotesForm';
 import AddInvoiceHeader from './AddInvoiceHeader';
+import InvoiceProgressBar from './InvoiceProgressBar';
 
 export default function InvoiceContainer() {
   const stateContext = useContext(StateContext);
@@ -23,7 +24,9 @@ export default function InvoiceContainer() {
   return (
     <>
       <main>
-        <AddInvoiceHeader />
+        <div className="sticky top-0 z-50 h-auto self-start bg-white">
+          <AddInvoiceHeader />
+        </div>
 
         <div className="mx-auto max-w-7xl p-4 ">
           <div className="flex justify-between space-x-0 xl:space-x-6">
@@ -132,6 +135,16 @@ export default function InvoiceContainer() {
               <InvoiceProgressBar />
             </div> */}
           </div>
+          {/* <div className="flex justify-end py-4">
+            add save invoice logic
+            <button
+              type="button"
+              className="hidden w-28 rounded-md bg-slate-800 px-3 py-2 text-sm font-semibold leading-6 text-white hover:bg-slate-900 sm:block"
+              onClick={(e) => saveInvoice(e)}
+            >
+              Save draft
+            </button>
+          </div> */}
         </div>
       </main>
     </>
