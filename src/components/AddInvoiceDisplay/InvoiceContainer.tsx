@@ -55,7 +55,7 @@ export default function InvoiceContainer() {
                         />
                       </div>
                     </div>
-                    {validation.invoiceNumber && (
+                    {validation.invoiceNumber === 'fail' && (
                       <span className="text-sm font-bold text-red-600">
                         Invoice number already exists.
                       </span>
@@ -89,7 +89,7 @@ export default function InvoiceContainer() {
                       </dd>
                       <DatePicker isIssueDate={false} />{' '}
                     </div>
-                    {validation.dueDate && (
+                    {validation.dueDate === 'fail' && (
                       <span className="font-bold text-red-600">
                         Due date cannot be earlier than issue date.
                       </span>

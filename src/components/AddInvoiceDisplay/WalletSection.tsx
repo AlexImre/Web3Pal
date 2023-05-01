@@ -27,7 +27,7 @@ function WalletSection() {
           <PencilIcon width="13" height="13" />
         </div>
       </div>
-      {validation.wallet && (
+      {validation.wallet === 'fail' && (
         <span className="text-sm font-bold text-red-600">
           Missing wallet details.
         </span>

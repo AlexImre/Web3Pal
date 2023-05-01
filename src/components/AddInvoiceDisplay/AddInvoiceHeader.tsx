@@ -1,18 +1,24 @@
-import { Fragment, useContext, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid';
 import 'react-tooltip/dist/react-tooltip.css';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import {
   InvoiceType,
   StateContext,
   TempServicesInfoContext,
+  initialState,
 } from '@/context/stateContext';
 import toast from 'react-hot-toast';
 import {
   hasDueDateError,
   hasInvoiceNumberError,
 } from '../InvoiceForm/Fields/formValidation';
+import { getAddInvoiceHeaderStatusChip } from '../MyInvoices/myInvoicesUtils';
+import { initialTempServicesInfo } from '@/context/stateContext';
+import { v4 as uuidv4 } from 'uuid';
+import { fetchInvoiceNumber } from '@/utils/fetchData';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -25,6 +31,9 @@ function AddInvoiceHeader() {
   const { masterState, setMasterState } = stateContext;
   const tempServicesContext = useContext(TempServicesInfoContext);
   const { tempServicesInfo, setTempServicesInfo } = tempServicesContext;
+
+  const [invoiceSavedTrigger, setInvoiceSavedTrigger] = useState(0);
+  const [invoicePublishedTrigger, setInvoicePublishedTrigger] = useState(0);
   const { invoice, organisation, validation } = masterState;
   const organisationId = organisation._id;
   const {
@@ -37,110 +46,116 @@ function AddInvoiceHeader() {
     paymentInformation,
     notesInformation,
     formCompletion,
+    isDraft,
   } = masterState.invoice;
+  const router = useRouter();
 
-  const saveInvoiceChecks = async (invoice) => {
+  useEffect(() => {
+    if (invoiceSavedTrigger > 0) {
+      setMasterState({
+        ...masterState,
+        invoice: {
+          ...invoice,
+          status: 'Draft',
+        },
+      });
+    }
+  }, [invoiceSavedTrigger]);
+
+  useEffect(() => {
+    if (invoicePublishedTrigger > 0) {
+      setMasterState({
+        ...masterState,
+        invoice: {
+          ...invoice,
+          status: 'Unpaid',
+        },
+      });
+    }
+  }, [invoiceSavedTrigger]);
+
+  const saveInvoiceChecks = async (invoice, isAttemptingPublish) => {
+    const invoiceNumberCheck = await hasInvoiceNumberError(
+      invoice.invoiceInformation.invoiceNumber,
+      email,
+      invoice.invoiceId
+    );
+    const dueDateCheck = hasDueDateError(
+      invoice.invoiceInformation.issueDate,
+      invoice.invoiceInformation.dueDate
+    );
+    const isClientNameMissing =
+      invoice.recipientInformation.clientName === '' ||
+      invoice.recipientInformation.clientName === undefined;
+    const isWalletAddressMissing =
+      invoice.paymentInformation.walletAddress === '' ||
+      invoice.paymentInformation.walletAddress === undefined;
+
     setMasterState((prevState) => {
       return {
         ...prevState,
         validation: {
           ...prevState.validation,
-          invoiceNumber: false,
-          dueDate: false,
-          recipientInformation: false,
-          wallet: false,
+          invoiceNumber: !!invoiceNumberCheck ? 'fail' : 'pass',
+          dueDate: !!dueDateCheck ? 'fail' : 'pass',
+          recipientInformation: isClientNameMissing ? 'fail' : 'pass',
+          wallet: isWalletAddressMissing ? 'fail' : 'pass',
         },
       };
     });
 
-    const invoiceNumberCheck = await hasInvoiceNumberError(
-      invoice.invoiceInformation.invoiceNumber,
-      email,
-      invoice.invoiceInformation.invoiceId
-    );
+    // do want to save at this stage, its on send that we want this to fail
+    if (isAttemptingPublish) {
+      const failedToast = () =>
+        toast.error('Complete all required information.');
+      const hasValidationError =
+        !!invoiceNumberCheck ||
+        !!dueDateCheck ||
+        isClientNameMissing ||
+        isWalletAddressMissing;
 
-    if (!!invoiceNumberCheck) {
-      setMasterState((prevState) => {
-        return {
-          ...prevState,
-          validation: {
-            ...prevState.validation,
-            invoiceNumber: true,
-          },
-        };
-      });
-    }
-
-    const dueDateCheck = hasDueDateError(
-      invoice.invoiceInformation.issueDate,
-      invoice.invoiceInformation.dueDate
-    );
-
-    if (!!dueDateCheck) {
-      setMasterState((prevState) => {
-        return {
-          ...prevState,
-          validation: {
-            ...prevState.validation,
-            dueDate: true,
-          },
-        };
-      });
-    }
-
-    const isClientNameMissing =
-      invoice.recipientInformation.clientName === '' ||
-      invoice.recipientInformation.clientName === undefined;
-
-    if (isClientNameMissing) {
-      setMasterState((prevState) => {
-        return {
-          ...prevState,
-          validation: {
-            ...prevState.validation,
-            recipientInformation: true,
-          },
-        };
-      });
-    }
-
-    const isWalletAddressMissing =
-      invoice.paymentInformation.walletAddress === '' ||
-      invoice.paymentInformation.walletAddress === undefined;
-
-    if (isWalletAddressMissing) {
-      setMasterState((prevState) => {
-        return {
-          ...prevState,
-          validation: {
-            ...prevState.validation,
-            wallet: true,
-          },
-        };
-      });
-    }
-
-    const hasValidationError =
-      !!invoiceNumberCheck ||
-      !!dueDateCheck ||
-      isClientNameMissing ||
-      isWalletAddressMissing;
-
-    if (hasValidationError) {
-      return false;
+      if (hasValidationError) {
+        failedToast();
+        return false;
+      }
     }
   };
 
-  const saveInvoice = async () => {
+  const createNewInvoice = async () => {
+    console.log(
+      'autoGeneratedInvoiceNumber:',
+      masterState.autoGeneratedInvoiceNumber
+    );
+
+    const invoiceNumber = await fetchInvoiceNumber(organisationId);
+
+    console.log('invoiceNumber:', invoiceNumber);
+
+    setMasterState({
+      ...initialState,
+      organisation: masterState.organisation,
+      marketData: masterState.marketData,
+      invoice: {
+        ...initialState.invoice,
+        invoiceId: uuidv4(),
+        createdTimestamp: new Date(Date.now()),
+        organisationId,
+        invoiceInformation: {
+          ...initialState.invoice.invoiceInformation,
+          invoiceNumber: masterState.autoGeneratedInvoiceNumber,
+        },
+      },
+    });
+
+    setTempServicesInfo(initialTempServicesInfo);
+
+    router.push({ pathname: '/addinvoice' }, undefined, { shallow: true });
+  };
+
+  const saveInvoice = async (e) => {
+    e.preventDefault();
     const savedToast = () => toast.success('Invoice saved.');
-
-    const doesInvoicePassValidation = await saveInvoiceChecks(invoice);
-    if (!doesInvoicePassValidation) {
-      return;
-    }
-
-    // TODO add validation, all req fields must be filled
-    console.log('saving invoice with id:', invoiceId);
+    await saveInvoiceChecks(invoice, false);
     const invoiceToSave: InvoiceType = {
       invoiceId,
       organisationId,
@@ -169,14 +184,57 @@ function AddInvoiceHeader() {
     });
 
     if (addedInvoice.ok) {
-      setMasterState({
-        ...masterState,
-        invoice: {
-          ...invoice,
-          status: 'Draft',
-        },
-      });
+      setInvoiceSavedTrigger(invoiceSavedTrigger + 1);
       savedToast();
+    } else {
+      toast.error('Something went wrong, invoice not saved.');
+    }
+  };
+
+  const [isSendButtonActive, setIsSendButtonActive] = useState(false);
+  const publishValidation = () => {
+    for (const check in validation) {
+      if (validation[check] === 'loading' || validation[check] === 'fail') {
+        setIsSendButtonActive(false);
+        return;
+      } else {
+        setIsSendButtonActive(true);
+      }
+    }
+  };
+
+  useEffect(() => {
+    // do checks and set "send" button to inactive
+    saveInvoiceChecks(invoice, false);
+  }, []);
+
+  useEffect(() => {
+    publishValidation();
+  }, [validation]);
+
+  const publishInvoice = async () => {
+    if (!isSendButtonActive) {
+      toast.error('Please complete all required sections.');
+      return;
+    }
+
+    const publishedToast = () => toast.success('Invoice published.');
+    // TODO add validation, all req fields must be filled
+    console.log('publishing invoice with id:', invoiceId);
+    const publishedInvoice = await fetch('/api/publishinvoice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(invoiceId),
+    });
+
+    if (publishedInvoice.ok) {
+      setInvoiceSavedTrigger(invoiceSavedTrigger + 1);
+      publishedToast();
+      router.push('/dashboard');
+    } else {
+      toast.error('Something went wrong, invoice not saved.');
     }
   };
 
@@ -198,29 +256,37 @@ function AddInvoiceHeader() {
         <div className="absolute inset-x-0 bottom-0 h-px bg-gray-900/5" />
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-5">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-x-8 lg:mx-0 lg:max-w-none">
-          <div className="flex items-center gap-x-6">
-            <h1>
-              <div className="text-xl font-semibold leading-6 text-indigo-500">
-                DRAFT
-              </div>
-            </h1>
-          </div>
-          <div className="flex items-center gap-x-4 sm:gap-x-6">
+          {getAddInvoiceHeaderStatusChip(invoice)}
+          <div className="flex items-center gap-x-4">
             <button
               type="button"
-              className="hidden text-sm font-semibold leading-6 text-gray-900 sm:block"
-              onClick={saveInvoice}
+              className="hidden w-28 rounded-md bg-slate-800 px-3 py-2 text-sm font-semibold leading-6 text-white hover:bg-slate-900 sm:block"
+              onClick={createNewInvoice}
+            >
+              Create new
+            </button>
+            <button
+              type="button"
+              className="hidden w-28 rounded-md bg-slate-800 px-3 py-2 text-sm font-semibold leading-6 text-white hover:bg-slate-900 sm:block"
+              onClick={(e) => saveInvoice(e)}
             >
               Save draft
             </button>
-            <a
-              href="#"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            <button
+              type="button"
+              className={classNames(
+                isSendButtonActive
+                  ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                  : 'bg-gray-400',
+                'w-28  rounded-md px-3 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              )}
+              disabled={!isSendButtonActive}
+              onClick={publishInvoice}
             >
               Send
-            </a>
+            </button>
 
             <Menu as="div" className="relative sm:hidden">
               <Menu.Button className="-m-3 block p-3">

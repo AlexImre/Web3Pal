@@ -41,46 +41,6 @@ export default function AddInvoiceDisplay() {
   const [showModal, setShowModal] = useState(false);
 
   const email = session?.user?.email;
-  const saveInvoice = async () => {
-    const savedToast = () => toast.success('Invoice saved.');
-    // TODO add validation, all req fields must be filled
-    console.log('saving invoice with id:', invoiceId);
-    const invoiceToSave: InvoiceType = {
-      invoiceId,
-      organisationId,
-      user: email,
-      isDraft: true,
-      status: 'Draft',
-      txHash: '',
-      createdTimestamp: new Date(Date.now()),
-      paidTimestamp: undefined,
-      invoiceInformation,
-      personalInformation,
-      recipientInformation,
-      paymentInformation,
-      servicesInformation,
-      notesInformation,
-      formCompletion,
-    };
-    const addedInvoice = await fetch('/api/saveinvoice', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(invoiceToSave),
-    });
-
-    if (addedInvoice.ok) {
-      setMasterState({
-        ...masterState,
-        invoice: {
-          ...invoice,
-          status: 'Draft',
-        },
-      });
-      savedToast();
-    }
-  };
 
   const emailInvoice = async (invoice) => {
     console.log('made it to emailInvoice()');
@@ -231,10 +191,7 @@ export default function AddInvoiceDisplay() {
           <div className="flex">
             {isInvoiceDraft && (
               <div className="mr-2 w-full">
-                <button
-                  className="my-4 w-full rounded border border-zinc-300 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100"
-                  onClick={() => saveInvoice()}
-                >
+                <button className="my-4 w-full rounded border border-zinc-300 bg-white py-2 px-4 text-sm text-gray-800 shadow hover:bg-gray-100">
                   Save progress
                 </button>
               </div>

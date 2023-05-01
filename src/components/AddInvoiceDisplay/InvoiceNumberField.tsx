@@ -38,8 +38,8 @@ export default function InvoiceNumberField() {
   return (
     <div>
       <input
-        type="email"
-        name="email"
+        type="text"
+        name="text"
         id="email"
         className="text-md block w-full max-w-[80px] rounded-md border-0 py-1.5 font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6"
         onChange={(e) => updateInvoiceNumber(e)}

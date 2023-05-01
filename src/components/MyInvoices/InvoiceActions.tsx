@@ -19,8 +19,6 @@ export default function InvoiceActions(props: any) {
   const tempServicesContext = useContext(TempServicesInfoContext);
   const { tempServicesInfo, setTempServicesInfo } = tempServicesContext;
 
-  console.log('tempServicesInfo', tempServicesInfo);
-
   const handleEdit = (invoice) => {
     setMasterState((prevState) => ({
       ...prevState,
@@ -37,7 +35,6 @@ export default function InvoiceActions(props: any) {
   };
 
   const handleVoid = async (invoiceId: string) => {
-    console.log('index', index);
     if (
       window.confirm(
         'Are you sure you wish to void? If you wish to continue with this action, press OK.'

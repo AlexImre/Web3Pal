@@ -70,10 +70,10 @@ export type FormCompletionType = {
 export type MasterStateType = {
   invoice: InvoiceType;
   validation: {
-    invoiceNumber: boolean;
-    dueDate: boolean;
-    recipientInformation: boolean;
-    wallet: boolean;
+    invoiceNumber: string;
+    dueDate: string;
+    recipientInformation: string;
+    wallet: string;
   };
   myInvoices: Array<InvoiceType>;
   myServices: any;
@@ -168,7 +168,7 @@ export const initialState: MasterStateType = {
     createdTimestamp: new Date(Date.now()),
     updatedTimestamp: undefined,
     user: '',
-    status: 'Example',
+    status: 'Draft',
     isDraft: false,
     isPublished: false,
     isArchived: false,
@@ -238,10 +238,10 @@ export const initialState: MasterStateType = {
     },
   },
   validation: {
-    invoiceNumber: false,
-    dueDate: false,
-    recipientInformation: false,
-    wallet: false,
+    invoiceNumber: 'loading',
+    dueDate: 'loading',
+    recipientInformation: 'loading',
+    wallet: 'loading',
   },
   myInvoices: [],
   myServices: [],

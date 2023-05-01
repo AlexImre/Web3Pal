@@ -31,7 +31,7 @@ function ToSection() {
           <PencilIcon width="13" height="13" />
         </div>
       </div>
-      {validation.recipientInformation && (
+      {validation.recipientInformation === 'fail' && (
         <span className="font-bold text-red-600">
           Missing recipient details.
         </span>

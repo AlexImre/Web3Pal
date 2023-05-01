@@ -55,12 +55,6 @@ export default function CreateInvoice({
   const invoiceToEdit: InvoiceType = invoice[0];
   const [isLoading, setIsLoading] = useState(true);
 
-  // console.log('masterState', state.state.masterState);
-  const tempServicesContext = useContext(TempServicesInfoContext);
-  const [tempServicesInfo, setTempServicesInfo] = useState(
-    tempServicesContext.tempServicesInfo
-  );
-
   const organisationMasterState = masterState.organisation._id || 'TEST';
 
   useEffect(() => {
