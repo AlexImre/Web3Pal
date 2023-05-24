@@ -1,16 +1,16 @@
-import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { SideBarNavItems } from './SidebarNavItems'
+import { Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { SideBarNavItems } from './SidebarNavItems';
 
-const navigation = SideBarNavItems
+const navigation = SideBarNavItems;
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function DashboardMobileSidebar(props) {
-  const { sidebarOpen, setSidebarOpen } = props
+  const { sidebarOpen, setSidebarOpen } = props;
 
   return (
     <>
@@ -42,7 +42,7 @@ export default function DashboardMobileSidebar(props) {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-cyan-700 pt-5 pb-4">
+              <Dialog.Panel className="relative flex w-full max-w-xs flex-1 flex-col bg-indigo-700 pt-5 pb-4">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -66,15 +66,8 @@ export default function DashboardMobileSidebar(props) {
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="flex flex-shrink-0 items-center px-4">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=cyan&shade=300"
-                    alt="Easywire logo"
-                  />
-                </div>
                 <nav
-                  className="mt-5 h-full flex-shrink-0 divide-y divide-cyan-800 overflow-y-auto"
+                  className="mt-5 h-full flex-shrink-0 divide-y divide-indigo-800 overflow-y-auto"
                   aria-label="Sidebar"
                 >
                   <div className="space-y-1 px-2">
@@ -84,14 +77,14 @@ export default function DashboardMobileSidebar(props) {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? 'bg-cyan-800 text-white'
-                            : 'text-cyan-100 hover:bg-cyan-600 hover:text-white',
+                            ? 'bg-indigo-800 text-white'
+                            : 'text-white hover:bg-indigo-600 hover:text-white',
                           'group flex items-center rounded-md px-2 py-2 text-base font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
                         <item.icon
-                          className="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
+                          className="mr-4 h-6 w-6 flex-shrink-0 text-white"
                           aria-hidden="true"
                         />
                         {item.name}
@@ -108,5 +101,5 @@ export default function DashboardMobileSidebar(props) {
         </Dialog>
       </Transition.Root>
     </>
-  )
+  );
 }

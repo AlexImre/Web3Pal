@@ -149,7 +149,7 @@ function ClientsDisplay() {
           >
             {' '}
             <UserPlusIcon width={20} height={20} className="mr-2" />
-            Add new client{' '}
+            Add / Edit clients{' '}
           </div>
         </div>
 

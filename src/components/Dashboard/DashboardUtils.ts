@@ -44,14 +44,20 @@ export const getTotalBalance = async (myInvoices: any) => {
         return servicesTotal;
       }
 
+      console.log('servicesTotal', servicesTotal);
+
       const amount = await convertCryptoToFiat(
         servicesTotal,
         invoice.paymentInformation.popularPlatform,
         invoice.paymentInformation.invoiceLabelling
       );
+      console.log('amount', amount);
+
       return amount;
     })
-  ).then((amounts) => amounts.reduce((acc, amount) => acc + amount, 0));
+  ).then((amounts) =>
+    amounts.reduce((acc, amount) => Number(acc) + Number(amount), 0)
+  );
   console.log('totalBalance', totalBalance);
   return await totalBalance;
 };
